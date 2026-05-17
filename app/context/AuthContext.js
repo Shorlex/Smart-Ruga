@@ -159,7 +159,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("sr_user");
     localStorage.removeItem("sr_role");
     localStorage.removeItem("sr_token");
-    router.push("/login");
+    router.push("/");
   };
 
   return (

@@ -1,9 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { MapPin, Eye, EyeOff, RefreshCw, Copy } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { MapPin, Eye, EyeOff, Copy, Plus, Loader2 } from "lucide-react";
 
-// ── Shared UI primitives ──────────────────────────────────────────────────────
+const API = process.env.NEXT_PUBLIC_API_URL;
+function getToken() {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem("sr_token") ?? "";
+}
+function getRole() {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem("sr_role") ?? "";
+}
+
+// ── Shared UI ─────────────────────────────────────────────────────────────────
 
 function SectionLabel({ label }) {
   return (
@@ -24,7 +34,14 @@ function FieldGroup({ label, hint, children }) {
   );
 }
 
-function TextInput({ value, onChange, type = "text", icon, readOnly }) {
+function TextInput({
+  value,
+  onChange,
+  type = "text",
+  icon,
+  readOnly,
+  placeholder,
+}) {
   return (
     <div className="relative">
       <input
@@ -32,7 +49,10 @@ function TextInput({ value, onChange, type = "text", icon, readOnly }) {
         value={value}
         onChange={onChange}
         readOnly={readOnly}
-        className={`w-full text-xs border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:border-[#4CAF50] transition-colors ${readOnly ? "bg-gray-50 text-gray-500" : "bg-white text-gray-800"} ${icon ? "pr-8" : ""}`}
+        placeholder={placeholder}
+        className={`w-full text-xs border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:border-[#4CAF50] transition-colors ${
+          readOnly ? "bg-gray-50 text-gray-500" : "bg-white text-gray-800"
+        } ${icon ? "pr-8" : ""}`}
       />
       {icon && (
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -43,7 +63,6 @@ function TextInput({ value, onChange, type = "text", icon, readOnly }) {
   );
 }
 
-// Toggle between two options (Enable/Disable style)
 function TogglePair({ options, value, onChange }) {
   return (
     <div className="flex items-center border border-gray-200 rounded-full overflow-hidden w-fit">
@@ -67,7 +86,6 @@ function TogglePair({ options, value, onChange }) {
   );
 }
 
-// Toggle among three options (Daily/Weekly/Monthly style)
 function TriToggle({ options, value, onChange }) {
   return (
     <div className="flex items-center border border-gray-200 rounded-full overflow-hidden w-fit">
@@ -110,29 +128,297 @@ function SelectInput({ value, onChange, options }) {
   );
 }
 
+// ── Banner ────────────────────────────────────────────────────────────────────
+
+function Banner({ type, message }) {
+  if (!message) return null;
+  const styles = {
+    success: "bg-[#f0fdf4] border-[#d1fae5] text-[#4CAF50]",
+    error: "bg-red-50 border-red-100 text-red-500",
+  };
+  return (
+    <div
+      className={`px-4 py-3 rounded-xl border text-xs font-medium ${styles[type]}`}
+    >
+      {type === "success" ? "✅" : "⚠️"} {message}
+    </div>
+  );
+}
+
 // ── Tab 1: Account & Ranch Info ───────────────────────────────────────────────
 
 function AccountTab() {
+  const fileInputRef = useRef(null);
+  const isOwner = getRole() === "owner" || getRole() === "admin";
+
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [imgLoading, setImgLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
   const [form, setForm] = useState({
-    name: "Adelodun Harris",
-    email: "adelodharry@mail.com",
-    ranch: "Ruga Ranch",
-    location: "Kano State, Nigeria",
-    ranchId: "RAN-45821",
-    password: "••••••••",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    location: "",
+    password: "",
   });
 
-  const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const flash = (type, msg) => {
+    if (type === "success") {
+      setSuccess(msg);
+      setError("");
+    } else {
+      setError(msg);
+      setSuccess("");
+    }
+    setTimeout(() => {
+      setSuccess("");
+      setError("");
+    }, 4000);
+  };
+
+  // ── Fetch profile ───────────────────────────────────────────────────────────
+  useEffect(() => {
+    const load = async () => {
+      // Seed form from localStorage immediately (data saved at login)
+      try {
+        const stored = JSON.parse(localStorage.getItem("sr_user") || "{}");
+        if (stored.name) {
+          const parts = stored.name.trim().split(" ");
+          const firstName = parts[0] ?? "";
+          const lastName = parts.slice(1).join(" ") ?? "";
+          setForm((f) => ({
+            ...f,
+            firstName,
+            lastName,
+            email: stored.email ?? "",
+          }));
+        }
+      } catch {}
+
+      // Fetch from API
+      try {
+        const url = `${API}/user/me`;
+        const token = getToken();
+        console.log(
+          "📡 GET",
+          url,
+          "| token:",
+          token ? token.slice(0, 20) + "..." : "MISSING",
+        );
+
+        const res = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("📡 Profile response status:", res.status);
+
+        if (!res.ok) {
+          const errBody = await res.json().catch(() => ({}));
+          if (res.status === 404) {
+            console.warn(
+              "⚠️ Profile endpoint not yet available — using login data instead",
+            );
+          } else {
+            console.error("❌ Profile fetch failed:", res.status, errBody);
+          }
+          setLoading(false);
+          return;
+        }
+
+        const json = await res.json();
+        console.log("✅ Profile raw response:", JSON.stringify(json, null, 2));
+
+        // Actual shape: { data: { user: {...}, memberships: [...] } }
+        const user = json?.data?.user ?? {};
+        const memberships = json?.data?.memberships ?? [];
+        const ranch = memberships[0] ?? null;
+
+        const profileData = { ...user, ranch, memberships };
+        console.log("✅ Profile mapped:", profileData);
+
+        setProfile(profileData);
+        setForm({
+          firstName: user.first_name ?? user.firstName ?? "",
+          lastName: user.last_name ?? user.lastName ?? "",
+          email: user.email ?? "",
+          phone: user.phone ?? "",
+          location: ranch?.location ?? "",
+          password: "",
+        });
+      } catch (err) {
+        console.error("❌ Profile fetch error:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  // Has this owner created a ranch already?
+  // Ranch is in profile.memberships[0] from the API
+  const hasRanch = !!(
+    profile?.memberships?.length > 0 || profile?.ranch?.ranchId
+  );
+
+  // ── Update profile ──────────────────────────────────────────────────────────
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      // API uses snake_case: first_name, last_name
+      const body = {
+        first_name: form.firstName,
+        last_name: form.lastName,
+        email: form.email,
+      };
+      if (form.phone) body.phone = form.phone;
+      if (form.location) body.location = form.location;
+      if (form.password) body.password = form.password;
+
+      const res = await fetch(`${API}/user/me`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Failed to update profile");
+      }
+      const json = await res.json();
+      const data = json?.data?.data ?? json?.data ?? json;
+      setProfile((p) => ({ ...p, ...data }));
+      setForm((f) => ({ ...f, password: "" }));
+      flash("success", "Profile updated successfully!");
+    } catch (err) {
+      flash("error", err.message || "Something went wrong");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // ── Upload image ────────────────────────────────────────────────────────────
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImgLoading(true);
+    try {
+      const data = new FormData();
+      data.append("image", file);
+      const res = await fetch(`${API}/user/me/image`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${getToken()}` },
+        body: data,
+      });
+      if (!res.ok) throw new Error("Image upload failed");
+      const json = await res.json();
+      const imageUrl =
+        json?.data?.imageUrl ?? json?.data?.data?.imageUrl ?? json?.imageUrl;
+      if (imageUrl) setProfile((p) => ({ ...p, imageUrl }));
+      flash("success", "Profile picture updated!");
+    } catch (err) {
+      flash("error", err.message);
+    } finally {
+      setImgLoading(false);
+    }
+  };
+
+  // ── Delete image ────────────────────────────────────────────────────────────
+  const handleImageDelete = async () => {
+    if (!profile?.imageUrl) return;
+    setImgLoading(true);
+    try {
+      const res = await fetch(`${API}/user/me/image`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      if (!res.ok) throw new Error("Failed to delete image");
+      setProfile((p) => ({ ...p, imageUrl: null }));
+      flash("success", "Profile picture removed.");
+    } catch (err) {
+      flash("error", err.message);
+    } finally {
+      setImgLoading(false);
+    }
+  };
+
+  if (loading)
+    return (
+      <div className="space-y-4 animate-pulse">
+        <div className="flex gap-5 items-center">
+          <div className="w-20 h-20 rounded-full bg-gray-100" />
+          <div className="space-y-2 flex-1">
+            <div className="h-3 bg-gray-100 rounded w-1/3" />
+            <div className="h-8 bg-gray-100 rounded w-48" />
+          </div>
+        </div>
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-10 bg-gray-100 rounded" />
+        ))}
+      </div>
+    );
 
   return (
     <div className="space-y-6">
+      <Banner type="success" message={success} />
+      <Banner type="error" message={error} />
+
+      {/* Create Ranch button — owners only, disabled if ranch already exists */}
+      {isOwner && (
+        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
+          <div>
+            <p className="text-xs font-bold text-gray-800">Ranch</p>
+            {hasRanch ? (
+              <p className="text-[11px] text-gray-500 mt-0.5">
+                {profile?.ranch?.ranchName ?? "Your ranch"} ·{" "}
+                <span className="text-gray-400">
+                  {profile?.ranch?.ranchSlug}
+                </span>
+              </p>
+            ) : (
+              <p className="text-[11px] text-amber-500 mt-0.5">
+                You haven't created a ranch yet
+              </p>
+            )}
+          </div>
+          <button
+            disabled={hasRanch}
+            title={hasRanch ? "You already have a ranch" : "Create a new ranch"}
+            className={`flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg transition-colors ${
+              hasRanch
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-[#4CAF50] hover:bg-[#43a047] text-white shadow-sm"
+            }`}
+          >
+            <Plus size={13} />
+            {hasRanch ? "Ranch Created" : "Create Ranch"}
+          </button>
+        </div>
+      )}
+
       {/* Profile picture */}
       <div className="flex items-center gap-5">
-        <div className="w-20 h-20 rounded-full bg-gray-200 overflow-hidden shrink-0">
-          <div className="w-full h-full flex items-center justify-center text-gray-400 text-2xl">
-            👤
-          </div>
+        <div className="w-20 h-20 rounded-full bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
+          {profile?.imageUrl ? (
+            <img
+              src={profile.imageUrl}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-400 text-2xl">
+              👤
+            </div>
+          )}
         </div>
         <div>
           <p className="text-sm font-semibold text-gray-800 mb-0.5">
@@ -140,12 +426,32 @@ function AccountTab() {
           </p>
           <p className="text-[11px] text-gray-400 mb-3">PNG, JPEG under 10mb</p>
           <div className="flex gap-2">
-            <button className="px-4 py-1.5 rounded-lg bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={imgLoading}
+              className="px-4 py-1.5 rounded-lg bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors disabled:opacity-60 flex items-center gap-1.5"
+            >
+              {imgLoading ? (
+                <Loader2 size={11} className="animate-spin" />
+              ) : null}
               Change Picture
             </button>
-            <button className="px-4 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-medium transition-colors">
-              Delete Picture
-            </button>
+            {profile?.imageUrl && (
+              <button
+                onClick={handleImageDelete}
+                disabled={imgLoading}
+                className="px-4 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-medium transition-colors disabled:opacity-60"
+              >
+                Delete Picture
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -154,59 +460,80 @@ function AccountTab() {
 
       {/* Name + Email */}
       <div className="grid xl:grid-cols-2 grid-cols-1 gap-6">
-        <FieldGroup label="Full Name" hint="Edit your Full name">
-          <TextInput value={form.name} onChange={set("name")} />
-        </FieldGroup>
-        <FieldGroup
-          label="Email Address"
-          hint="Manage your account email address"
-        >
-          <TextInput value={form.email} onChange={set("email")} type="email" />
-        </FieldGroup>
-      </div>
-
-      {/* Ranch info + location */}
-      <div className="grid grid-cols-2 gap-6">
-        <FieldGroup label="Ranch Information" hint="Edit your ranch name">
-          <TextInput value={form.ranch} onChange={set("ranch")} />
-        </FieldGroup>
-        <FieldGroup label="Ranch Location" hint="Edit your ranch location">
+        <FieldGroup label="First Name" hint="Edit your first name">
           <TextInput
-            value={form.location}
-            onChange={set("location")}
-            icon={<MapPin size={13} />}
+            value={form.firstName}
+            onChange={set("firstName")}
+            placeholder="First name"
+          />
+        </FieldGroup>
+        <FieldGroup label="Last Name" hint="Edit your last name">
+          <TextInput
+            value={form.lastName}
+            onChange={set("lastName")}
+            placeholder="Last name"
           />
         </FieldGroup>
       </div>
 
-      {/* Ranch ID */}
       <FieldGroup
-        label="Ranch Unique ID"
-        hint="Share this ID with your staff so they can register under your ranch"
+        label="Email Address"
+        hint="Manage your account email address"
       >
-        <div className="flex gap-3">
-          <div className="flex-1">
-            <TextInput
-              value={form.ranchId}
-              readOnly
-              icon={<Copy size={13} />}
-            />
-          </div>
-          {/* <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors whitespace-nowrap">
-            <RefreshCw size={12} /> Generate New Ranch ID
-          </button> */}
-        </div>
+        <TextInput
+          value={form.email}
+          onChange={set("email")}
+          type="email"
+          placeholder="Email address"
+        />
       </FieldGroup>
 
+      <FieldGroup label="Phone Number" hint="Your contact phone number">
+        <TextInput
+          value={form.phone}
+          onChange={set("phone")}
+          type="tel"
+          placeholder="+234 800 000 0000"
+        />
+      </FieldGroup>
+
+      {/* Ranch ID — read only, from memberships */}
+      {profile?.ranch?.ranchSlug && (
+        <FieldGroup
+          label="Ranch ID"
+          hint="Share this ID with your staff so they can register under your ranch"
+        >
+          <TextInput
+            value={profile.ranch.ranchSlug}
+            readOnly
+            icon={
+              <button
+                onClick={() =>
+                  navigator.clipboard.writeText(profile.ranch.ranchSlug)
+                }
+                className="hover:text-[#4CAF50] transition-colors"
+                title="Copy"
+              >
+                <Copy size={13} />
+              </button>
+            }
+          />
+        </FieldGroup>
+      )}
+
       {/* Password */}
-      <FieldGroup label="Password" hint="Manage your account password">
+      <FieldGroup
+        label="New Password"
+        hint="Leave blank to keep your current password"
+      >
         <div className="flex gap-3">
           <div className="flex-1 relative">
             <input
               type={showPassword ? "text" : "password"}
               value={form.password}
               onChange={set("password")}
-              className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2.5 pr-8 bg-white text-gray-800 focus:outline-none focus:border-[#4CAF50] transition-colors"
+              placeholder="Enter new password"
+              className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2.5 pr-8 bg-white text-gray-800 focus:outline-none focus:border-[#4CAF50] transition-colors placeholder-gray-400"
             />
             <button
               onClick={() => setShowPassword(!showPassword)}
@@ -215,11 +542,20 @@ function AccountTab() {
               {showPassword ? <EyeOff size={13} /> : <Eye size={13} />}
             </button>
           </div>
-          <button className="px-4 py-2 rounded-lg bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors whitespace-nowrap">
-            Change Password
-          </button>
         </div>
       </FieldGroup>
+
+      {/* Save button */}
+      <div className="flex justify-end pt-2">
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors disabled:opacity-60"
+        >
+          {saving ? <Loader2 size={12} className="animate-spin" /> : null}
+          {saving ? "Saving..." : "Save Changes"}
+        </button>
+      </div>
     </div>
   );
 }
@@ -331,7 +667,6 @@ function ReportingTab() {
 
   return (
     <div className="space-y-8">
-      {/* Report Format & Frequency */}
       <div>
         <SectionLabel label="Report Format & Frequency" />
         <div className="grid grid-cols-2 gap-6">
@@ -357,8 +692,6 @@ function ReportingTab() {
           </FieldGroup>
         </div>
       </div>
-
-      {/* Financial Preferences */}
       <div>
         <SectionLabel label="Financial Preferences" />
         <div className="grid grid-cols-2 gap-6">
@@ -384,8 +717,6 @@ function ReportingTab() {
           </FieldGroup>
         </div>
       </div>
-
-      {/* Livestock Data Preferences */}
       <div>
         <SectionLabel label="Livestock Data Preferences" />
         <div className="grid grid-cols-2 gap-6">
@@ -428,7 +759,6 @@ export default function SettingsPage() {
 
   return (
     <main className="flex-1 overflow-y-auto px-6 pt-5 pb-15 space-y-6">
-      {/* Header + tab bar */}
       <div className="flex items-center justify-between">
         <h1 className="text-base font-bold text-gray-800">Settings</h1>
         <div className="hidden lg:flex items-center bg-gray-100 rounded-full p-1 gap-1">
@@ -448,7 +778,6 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Tab content */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
         {activeTab === "account" && <AccountTab />}
         {activeTab === "roles" && <UsersRolesTab />}

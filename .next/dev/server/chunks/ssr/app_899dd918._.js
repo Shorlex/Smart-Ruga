@@ -20,7 +20,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$close$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftClose$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-close.js [app-ssr] (ecmascript) <export default as PanelLeftClose>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-open.js [app-ssr] (ecmascript) <export default as PanelLeftOpen>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$context$2f$AuthContext$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/context/AuthContext.js [app-ssr] (ecmascript)");
 "use client";
+;
 ;
 ;
 ;
@@ -62,32 +64,37 @@ const defaultNavItems = [
         href: "/settings"
     }
 ];
-function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = {
-    name: "Adelodun Harris",
-    email: "adelodharry@mail.com",
-    initials: "AH"
-}, onNavClick, onLogout }) {
+function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: userProp, onNavClick, onLogout }) {
+    const auth = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$context$2f$AuthContext$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
+    // Prefer prop, fall back to AuthContext user
+    const user = userProp ?? {
+        name: auth?.user?.name ?? "User",
+        email: auth?.user?.email ?? "",
+        initials: auth?.user?.initials ?? "U"
+    };
+    const handleLogout = ()=>{
+        if (onLogout) {
+            onLogout();
+            return;
+        }
+        auth?.logout?.(); // clears localStorage + redirects to /login
+    };
     const isMobile = ()=>("TURBOPACK compile-time value", "undefined") !== "undefined" && window.innerWidth < 768;
-    // Desktop: start expanded. Mobile: start collapsed.
     const [collapsed, setCollapsed] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(()=>isMobile());
-    // Re-evaluate on resize so switching between breakpoints snaps correctly
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const handler = ()=>{
-            if (!isMobile()) return; // don't auto-collapse on desktop resize
-            //TURBOPACK unreachable
+            if (isMobile()) //TURBOPACK unreachable
             ;
         };
         window.addEventListener("resize", handler);
         return ()=>window.removeEventListener("resize", handler);
     }, []);
     const mobile = isMobile();
-    // On mobile, close the drawer after a nav item is clicked
     const handleNavClick = (href)=>{
         onNavClick?.(href);
         if (isMobile()) //TURBOPACK unreachable
         ;
     };
-    // ── Shared inner panel ────────────────────────────────────────────────────
     const panel = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("aside", {
         className: `flex flex-col bg-white h-full transition-all duration-300 ${collapsed ? "w-14" : "w-44"}`,
         children: [
@@ -104,11 +111,10 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                                 alt: "icon"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 69,
+                                lineNumber: 63,
                                 columnNumber: 11
                             }, this),
-                            !collapsed && // <span className="font-bold text-sm text-gray-800 tracking-wide truncate">SMART-RUGA</span>
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                            !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                 src: "/images/smartRUGA.png",
                                 width: 90,
                                 height: 20,
@@ -116,13 +122,13 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                                 className: "mt-3 -ml-2"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 72,
+                                lineNumber: 65,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 65,
+                        lineNumber: 62,
                         columnNumber: 9
                     }, this),
                     !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -133,18 +139,18 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                             size: 15
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                            lineNumber: 81,
+                            lineNumber: 71,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 76,
+                        lineNumber: 69,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 64,
+                lineNumber: 61,
                 columnNumber: 7
             }, this),
             collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -157,17 +163,17 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                         size: 15
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 94,
+                        lineNumber: 80,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 89,
+                    lineNumber: 78,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 88,
+                lineNumber: 77,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -182,19 +188,19 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                                 className: "shrink-0"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 114,
+                                lineNumber: 96,
                                 columnNumber: 13
                             }, this),
                             !collapsed && label
                         ]
                     }, label, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 102,
+                        lineNumber: 88,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 100,
+                lineNumber: 86,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -208,7 +214,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                                 children: user.initials
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 123,
+                                lineNumber: 105,
                                 columnNumber: 11
                             }, this),
                             !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -221,7 +227,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                                                 children: user.name
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                                lineNumber: 129,
+                                                lineNumber: 111,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -229,13 +235,13 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                                                 children: user.email
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                                lineNumber: 130,
+                                                lineNumber: 112,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                        lineNumber: 128,
+                                        lineNumber: 110,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
@@ -243,7 +249,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                                         className: "text-gray-300"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                        lineNumber: 132,
+                                        lineNumber: 114,
                                         columnNumber: 15
                                     }, this)
                                 ]
@@ -251,11 +257,11 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 122,
+                        lineNumber: 104,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: onLogout,
+                        onClick: handleLogout,
                         title: collapsed ? "Log Out" : undefined,
                         className: `mt-3 flex items-center text-[11px] text-gray-400 hover:text-red-500 transition-colors ${collapsed ? "justify-center w-full" : "gap-1.5"}`,
                         children: [
@@ -263,38 +269,38 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user = 
                                 size: 12
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 143,
+                                lineNumber: 123,
                                 columnNumber: 11
                             }, this),
                             !collapsed && "Log Out"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 136,
+                        lineNumber: 118,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 121,
+                lineNumber: 103,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-        lineNumber: 62,
+        lineNumber: 59,
         columnNumber: 5
     }, this);
-    // ── Mobile: overlay drawer ────────────────────────────────────────────────
+    // Mobile overlay drawer
     if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
     ;
-    // ── Desktop: inline sidebar ───────────────────────────────────────────────
+    // Desktop inline
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: `shrink-0 h-screen sticky top-0 border-r border-gray-100 transition-all duration-300 ${collapsed ? "w-14" : "w-44"}`,
         children: panel
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-        lineNumber: 175,
+        lineNumber: 148,
         columnNumber: 5
     }, this);
 }
@@ -3815,7 +3821,7 @@ function Pagination({ page, totalPages, onPageChange }) {
         columnNumber: 5
     }, this);
 }
-function LivestockPage() {
+function LivestockPage({ canAdd = true }) {
     const [animals, setAnimals] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [pagination, setPagination] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
         page: 1,
@@ -4041,7 +4047,7 @@ function LivestockPage() {
                                 lineNumber: 721,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            canAdd && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>setShowModal(true),
                                 className: "flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors",
                                 children: [
@@ -4049,15 +4055,15 @@ function LivestockPage() {
                                         size: 13
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                        lineNumber: 728,
-                                        columnNumber: 13
+                                        lineNumber: 729,
+                                        columnNumber: 15
                                     }, this),
                                     " Add Animal"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 724,
-                                columnNumber: 11
+                                lineNumber: 725,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
@@ -4076,7 +4082,7 @@ function LivestockPage() {
                 onClick: ()=>setShowFilter(false)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 735,
+                lineNumber: 737,
                 columnNumber: 9
             }, this),
             loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4090,7 +4096,7 @@ function LivestockPage() {
                                 className: "h-3 bg-gray-100 rounded w-2/3 mb-3"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 749,
+                                lineNumber: 751,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4101,23 +4107,23 @@ function LivestockPage() {
                                         className: "h-8 bg-gray-100 rounded"
                                     }, j, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                        lineNumber: 752,
+                                        lineNumber: 754,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 750,
+                                lineNumber: 752,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, i, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 745,
+                        lineNumber: 747,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 743,
+                lineNumber: 745,
                 columnNumber: 9
             }, this),
             !loading && error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4128,7 +4134,7 @@ function LivestockPage() {
                         children: error
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 763,
+                        lineNumber: 765,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4137,13 +4143,13 @@ function LivestockPage() {
                         children: "Try again"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 764,
+                        lineNumber: 766,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 762,
+                lineNumber: 764,
                 columnNumber: 9
             }, this),
             !loading && !error && filteredAnimals.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4154,7 +4160,7 @@ function LivestockPage() {
                         children: "🐄"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 776,
+                        lineNumber: 778,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4162,7 +4168,7 @@ function LivestockPage() {
                         children: activeFilterCount > 0 ? "No animals match the selected filters." : "No animals found in this ranch."
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 777,
+                        lineNumber: 779,
                         columnNumber: 11
                     }, this),
                     activeFilterCount > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4171,9 +4177,9 @@ function LivestockPage() {
                         children: "Clear filters"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 783,
+                        lineNumber: 785,
                         columnNumber: 13
-                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    }, this) : canAdd && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: ()=>setShowModal(true),
                         className: "flex items-center gap-1.5 bg-[#4CAF50] text-white text-xs font-semibold px-4 py-2 rounded-lg",
                         children: [
@@ -4181,20 +4187,20 @@ function LivestockPage() {
                                 size: 13
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 794,
-                                columnNumber: 15
+                                lineNumber: 797,
+                                columnNumber: 17
                             }, this),
                             " Add First Animal"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 790,
-                        columnNumber: 13
+                        lineNumber: 793,
+                        columnNumber: 15
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 775,
+                lineNumber: 777,
                 columnNumber: 9
             }, this),
             !loading && !error && filteredAnimals.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -4207,12 +4213,12 @@ function LivestockPage() {
                                 onReportIssue: (a)=>console.log("Report issue:", a)
                             }, animal.publicId ?? i, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 805,
+                                lineNumber: 809,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 803,
+                        lineNumber: 807,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Pagination, {
@@ -4221,7 +4227,7 @@ function LivestockPage() {
                         onPageChange: handlePageChange
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 813,
+                        lineNumber: 817,
                         columnNumber: 11
                     }, this)
                 ]
@@ -4231,7 +4237,7 @@ function LivestockPage() {
                 onSuccess: ()=>fetchAnimals(page)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 823,
+                lineNumber: 827,
                 columnNumber: 9
             }, this)
         ]
@@ -4251,623 +4257,1101 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-down.js [app-ssr] (ecmascript) <export default as ChevronDown>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LayoutGrid$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/layout-grid.js [app-ssr] (ecmascript) <export default as LayoutGrid>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/plus.js [app-ssr] (ecmascript) <export default as Plus>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-ssr] (ecmascript) <export default as X>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/upload.js [app-ssr] (ecmascript) <export default as Upload>");
 "use client";
 ;
 ;
 ;
-// ── Placeholder data ──────────────────────────────────────────────────────────
-const pendingRequests = [
-    {
-        id: "#FR-1040",
-        date: "30 Aug 2025",
-        type: "Finance",
-        details: "Emergency antibiotics (mastitis outbreak)",
-        qty: "50 Cows",
-        cost: "₦150,000",
-        by: "Vet Doctor"
-    },
-    {
-        id: "#IR-2090",
-        date: "28 Aug 2025",
-        type: "Inventory",
-        details: "20 new livestock ear tags",
-        qty: "20 Cows",
-        cost: "₦200,000",
-        by: "Storekeeper"
-    },
-    {
-        id: "#TR-5020",
-        date: "29 Aug 2025",
-        type: "Ranch Operation",
-        details: "Expansion of grazing area fence",
-        qty: "Area fencing",
-        cost: "₦100,000",
-        by: "Ranch Manager"
-    },
-    {
-        id: "#FR-1040",
-        date: "30 Aug 2025",
-        type: "Finance",
-        details: "Emergency antibiotics (mastitis outbreak)",
-        qty: "50 Cows",
-        cost: "₦150,000",
-        by: "Vet Doctor"
-    },
-    {
-        id: "#IR-2090",
-        date: "28 Aug 2025",
-        type: "Inventory",
-        details: "20 new livestock ear tags",
-        qty: "20 Cows",
-        cost: "₦200,000",
-        by: "Storekeeper"
-    },
-    {
-        id: "#TR-5020",
-        date: "29 Aug 2025",
-        type: "Ranch Operation",
-        details: "Expansion of grazing area fence",
-        qty: "Area fencing",
-        cost: "₦100,000",
-        by: "Ranch Manager"
-    },
-    {
-        id: "#FR-1040",
-        date: "30 Aug 2025",
-        type: "Finance",
-        details: "Emergency antibiotics (mastitis outbreak)",
-        qty: "50 Cows",
-        cost: "₦150,000",
-        by: "Vet Doctor"
-    }
-];
-const approvalHistory = [
-    {
-        id: "#FR-1040",
-        date: "30 Aug 2025",
-        type: "Finance",
-        details: "Emergency antibiotics (mastitis outbreak)",
-        qty: "50 Cows",
-        cost: "₦150,000",
-        by: "Vet Doctor",
-        status: "Approved"
-    },
-    {
-        id: "#IR-2090",
-        date: "28 Aug 2025",
-        type: "Inventory",
-        details: "20 new livestock ear tags",
-        qty: "20 Cows",
-        cost: "₦200,000",
-        by: "Storekeeper",
-        status: "Declined"
-    },
-    {
-        id: "#TR-5020",
-        date: "29 Aug 2025",
-        type: "Ranch Operation",
-        details: "Expansion of grazing area fence",
-        qty: "Area fencing",
-        cost: "₦100,000",
-        by: "Ranch Manager",
-        status: "Approved"
-    },
-    {
-        id: "#FR-1040",
-        date: "30 Aug 2025",
-        type: "Finance",
-        details: "Emergency antibiotics (mastitis outbreak)",
-        qty: "50 Cows",
-        cost: "₦150,000",
-        by: "Vet Doctor",
-        status: "Approved"
-    },
-    {
-        id: "#IR-2090",
-        date: "28 Aug 2025",
-        type: "Inventory",
-        details: "20 new livestock ear tags",
-        qty: "20 Cows",
-        cost: "₦200,000",
-        by: "Storekeeper",
-        status: "Declined"
-    },
-    {
-        id: "#TR-5020",
-        date: "29 Aug 2025",
-        type: "Ranch Operation",
-        details: "Expansion of grazing area fence",
-        qty: "Area fencing",
-        cost: "₦100,000",
-        by: "Ranch Manager",
-        status: "Approved"
-    },
-    {
-        id: "#FR-1040",
-        date: "30 Aug 2025",
-        type: "Finance",
-        details: "Emergency antibiotics (mastitis outbreak)",
-        qty: "50 Cows",
-        cost: "₦150,000",
-        by: "Vet Doctor",
-        status: "Approved"
-    }
-];
-// ── Status Badge ──────────────────────────────────────────────────────────────
-function StatusBadge({ status }) {
-    const approved = status === "Approved";
+const API = ("TURBOPACK compile-time value", "https://smartruga-api-d11b7da5a7fa.herokuapp.com/api/v1");
+function getSlug() {
+    return localStorage.getItem("sr_slug") ?? "";
+}
+function getToken() {
+    return localStorage.getItem("sr_token") ?? "";
+}
+function formatDate(str) {
+    if (!str) return "—";
+    return new Date(str).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
+// ── Badge helpers ─────────────────────────────────────────────────────────────
+const STATUS_STYLES = {
+    open: "bg-amber-50 text-amber-500",
+    in_review: "bg-blue-50 text-blue-500",
+    resolved: "bg-[#f0fdf4] text-[#4CAF50]",
+    dismissed: "bg-gray-100 text-gray-400"
+};
+const PRIORITY_STYLES = {
+    low: "bg-gray-100 text-gray-500",
+    medium: "bg-amber-50 text-amber-500",
+    high: "bg-orange-50 text-orange-500",
+    urgent: "bg-red-50 text-red-500"
+};
+function Badge({ value, styleMap }) {
+    const s = (value ?? "").toLowerCase();
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-        className: `flex items-center gap-1 text-xs font-semibold ${approved ? "text-[#4CAF50]" : "text-red-500"}`,
-        children: [
-            approved ? "✅" : "❌",
-            " ",
-            status
-        ]
-    }, void 0, true, {
+        className: `px-2.5 py-1 rounded-full text-[11px] font-semibold capitalize whitespace-nowrap ${styleMap[s] ?? "bg-gray-100 text-gray-500"}`,
+        children: (value ?? "—").replace("_", " ")
+    }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-        lineNumber: 152,
+        lineNumber: 43,
         columnNumber: 5
     }, this);
 }
-// ── Shared table columns ──────────────────────────────────────────────────────
-const sharedColumns = [
-    "Request ID",
-    "Date",
-    "Request Type",
-    "Details",
-    "Units / Qty",
-    "Est. Cost",
-    "Requested By"
+// ── New Request Modal ─────────────────────────────────────────────────────────
+const CATEGORIES = [
+    "health",
+    "inventory",
+    "animal",
+    "facility",
+    "security",
+    "task",
+    "other"
 ];
-// ── Pending Table ─────────────────────────────────────────────────────────────
-function PendingTable({ rows, onApprove, onDecline }) {
+const PRIORITIES = [
+    "low",
+    "medium",
+    "high",
+    "urgent"
+];
+function NewRequestModal({ onClose, onSuccess }) {
+    const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
+        title: "",
+        description: "",
+        category: "",
+        priority: "",
+        assignedToUserId: "",
+        entityType: "",
+        entityPublicId: ""
+    });
+    const [image, setImage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const set = (k)=>(e)=>setForm((f)=>({
+                    ...f,
+                    [k]: e.target.value
+                }));
+    const isValid = form.title && form.description && form.category;
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        setError("");
+        setLoading(true);
+        try {
+            const data = new FormData();
+            data.append("title", form.title);
+            data.append("description", form.description);
+            data.append("category", form.category);
+            if (form.priority) data.append("priority", form.priority);
+            if (form.assignedToUserId) data.append("assignedToUserId", form.assignedToUserId);
+            if (form.entityType) data.append("entityType", form.entityType);
+            if (form.entityPublicId) data.append("entityPublicId", form.entityPublicId);
+            if (image) data.append("image", image);
+            const res = await fetch(`${API}/ranches/${getSlug()}/concerns`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: data
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message || "Failed to create request");
+            }
+            onSuccess();
+            onClose();
+        } catch (err) {
+            setError(err.message);
+        } finally{
+            setLoading(false);
+        }
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-2 px-5 py-4 border-b border-gray-100",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-base",
-                        children: "🟠"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 179,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                        className: "text-sm font-bold text-gray-800",
-                        children: "All Pending Approvals"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 180,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 178,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "overflow-x-auto",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
-                    className: "w-full text-xs",
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-center justify-between px-6 py-4 border-b border-gray-100",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                                className: "border-b border-gray-100",
-                                children: [
-                                    ...sharedColumns,
-                                    "Action"
-                                ].map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                        className: "text-left py-3 px-5 text-gray-500 font-medium whitespace-nowrap",
-                                        children: col
-                                    }, col, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 190,
-                                        columnNumber: 17
-                                    }, this))
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                            className: "text-sm font-bold text-gray-800",
+                            children: "New Request"
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 122,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: onClose,
+                            className: "text-gray-400 hover:text-gray-600",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                size: 18
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 188,
+                                lineNumber: 127,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 187,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
-                            children: rows.map((row, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                                    className: "border-b border-gray-50 hover:bg-gray-50 transition-colors",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 font-medium text-gray-700 whitespace-nowrap",
-                                            children: row.id
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 205,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-500 whitespace-nowrap",
-                                            children: row.date
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 208,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-600 whitespace-nowrap",
-                                            children: row.type
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 211,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-600 max-w-40",
-                                            children: row.details
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 214,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-600 whitespace-nowrap",
-                                            children: row.qty
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 217,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-700 font-medium whitespace-nowrap",
-                                            children: row.cost
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 220,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-600 whitespace-nowrap",
-                                            children: row.by
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 223,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex gap-2",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                        onClick: ()=>onDecline?.(row),
-                                                        className: "px-4 py-1.5 rounded-full border border-gray-200 text-gray-500 hover:bg-gray-50 text-[11px] font-medium transition-colors",
-                                                        children: "Decline"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                        lineNumber: 228,
-                                                        columnNumber: 21
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                        onClick: ()=>onApprove?.(row),
-                                                        className: "px-4 py-1.5 rounded-full bg-[#4CAF50] text-white hover:bg-[#43a047] text-[11px] font-medium transition-colors",
-                                                        children: "Approve"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                        lineNumber: 234,
-                                                        columnNumber: 21
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 227,
-                                                columnNumber: 19
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 226,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, i, true, {
-                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 201,
-                                    columnNumber: 15
-                                }, this))
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 199,
+                            lineNumber: 123,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                    lineNumber: 186,
+                    lineNumber: 121,
                     columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 185,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-        lineNumber: 176,
-        columnNumber: 5
-    }, this);
-}
-// ── History Table ─────────────────────────────────────────────────────────────
-function HistoryTable({ rows }) {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-2 px-5 py-4 border-b border-gray-100",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-base",
-                        children: "🟠"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 257,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                        className: "text-sm font-bold text-gray-800",
-                        children: "Approvals History"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 258,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 256,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "overflow-x-auto",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
-                    className: "w-full text-xs",
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                    onSubmit: handleSubmit,
+                    className: "px-6 py-5 space-y-4",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                                className: "border-b border-gray-100",
-                                children: [
-                                    ...sharedColumns,
-                                    "Status"
-                                ].map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                        className: "text-left py-3 px-5 text-gray-500 font-medium whitespace-nowrap",
-                                        children: col
-                                    }, col, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 266,
-                                        columnNumber: 17
-                                    }, this))
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 264,
-                                columnNumber: 13
-                            }, this)
+                        error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-xs text-red-500",
+                            children: error
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 263,
-                            columnNumber: 11
+                            lineNumber: 133,
+                            columnNumber: 13
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
-                            children: rows.map((row, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                                    className: "border-b border-gray-50 hover:bg-gray-50 transition-colors",
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 font-medium text-gray-700 whitespace-nowrap",
-                                            children: row.id
+                                        "Title ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-red-400",
+                                            children: "*"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 281,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-500 whitespace-nowrap",
-                                            children: row.date
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 284,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-600 whitespace-nowrap",
-                                            children: row.type
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 287,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-600 max-w-40",
-                                            children: row.details
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 290,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-600 whitespace-nowrap",
-                                            children: row.qty
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 293,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-700 font-medium whitespace-nowrap",
-                                            children: row.cost
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 296,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 text-gray-600 whitespace-nowrap",
-                                            children: row.by
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 299,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                            className: "py-4 px-5 whitespace-nowrap",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StatusBadge, {
-                                                status: row.status
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 303,
-                                                columnNumber: 19
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 302,
-                                            columnNumber: 17
+                                            lineNumber: 141,
+                                            columnNumber: 21
                                         }, this)
                                     ]
-                                }, i, true, {
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 277,
-                                    columnNumber: 15
-                                }, this))
-                        }, void 0, false, {
+                                    lineNumber: 140,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    value: form.title,
+                                    onChange: set("title"),
+                                    placeholder: "Brief title of the request",
+                                    className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 143,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 275,
+                            lineNumber: 139,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: [
+                                        "Description ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-red-400",
+                                            children: "*"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 154,
+                                            columnNumber: 27
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 153,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                    value: form.description,
+                                    onChange: set("description"),
+                                    rows: 3,
+                                    placeholder: "Describe the issue or request in detail...",
+                                    className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors resize-none"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 156,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 152,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "grid grid-cols-2 gap-4",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                            children: [
+                                                "Category ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-red-400",
+                                                    children: "*"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 169,
+                                                    columnNumber: 26
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 168,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                            value: form.category,
+                                            onChange: set("category"),
+                                            className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors appearance-none",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "",
+                                                    children: "Select category"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 176,
+                                                    columnNumber: 17
+                                                }, this),
+                                                CATEGORIES.map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                        value: c,
+                                                        className: "capitalize",
+                                                        children: c
+                                                    }, c, false, {
+                                                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                        lineNumber: 178,
+                                                        columnNumber: 19
+                                                    }, this))
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 171,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 167,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                            children: "Priority"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 185,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                            value: form.priority,
+                                            onChange: set("priority"),
+                                            className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors appearance-none",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "",
+                                                    children: "Select priority"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 193,
+                                                    columnNumber: 17
+                                                }, this),
+                                                PRIORITIES.map((p)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                        value: p,
+                                                        className: "capitalize",
+                                                        children: p
+                                                    }, p, false, {
+                                                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                        lineNumber: 195,
+                                                        columnNumber: 19
+                                                    }, this))
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 188,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 184,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 166,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: "Assign To (User ID)"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 205,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    value: form.assignedToUserId,
+                                    onChange: set("assignedToUserId"),
+                                    placeholder: "UUID of staff member (optional)",
+                                    className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 208,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 204,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "grid grid-cols-2 gap-4",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                            children: "Entity Type"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 219,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                            value: form.entityType,
+                                            onChange: set("entityType"),
+                                            className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors appearance-none",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "",
+                                                    children: "None"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 227,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "animal",
+                                                    children: "Animal"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 228,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "facility",
+                                                    children: "Facility"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 229,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "task",
+                                                    children: "Task"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 230,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 222,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 218,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                            children: "Entity Public ID"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 234,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            value: form.entityPublicId,
+                                            onChange: set("entityPublicId"),
+                                            placeholder: "UUID (optional)",
+                                            className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 237,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 233,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 217,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: "Attach Photo (optional)"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 248,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "w-full border-2 border-dashed border-gray-200 rounded-xl py-4 flex flex-col items-center gap-1.5 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] transition-colors cursor-pointer bg-gray-50",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__["Upload"], {
+                                            size: 16
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 252,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-xs font-medium",
+                                            children: image ? image.name : "Click to upload photo"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 253,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            type: "file",
+                                            accept: "image/*",
+                                            className: "hidden",
+                                            onChange: (e)=>setImage(e.target.files?.[0] ?? null)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 256,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 251,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 247,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex gap-3 pt-1",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    type: "button",
+                                    onClick: onClose,
+                                    className: "flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition-colors",
+                                    children: "Cancel"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 267,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    type: "submit",
+                                    disabled: !isValid || loading,
+                                    className: `flex-1 py-2.5 rounded-xl text-xs font-semibold text-white transition-colors ${isValid && !loading ? "bg-[#4CAF50] hover:bg-[#43a047]" : "bg-[#a5d6a7] cursor-not-allowed"}`,
+                                    children: loading ? "Submitting..." : "Submit Request"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 274,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 266,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                    lineNumber: 262,
+                    lineNumber: 131,
                     columnNumber: 9
                 }, this)
-            }, void 0, false, {
-                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 261,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
+            ]
+        }, void 0, true, {
+            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+            lineNumber: 119,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-        lineNumber: 255,
+        lineNumber: 118,
         columnNumber: 5
     }, this);
 }
+// ── Page ──────────────────────────────────────────────────────────────────────
+const STATUSES = [
+    "open",
+    "in_review",
+    "resolved",
+    "dismissed"
+];
+const PRIORITIES_F = [
+    "low",
+    "medium",
+    "high",
+    "urgent"
+];
+const CATEGORIES_F = [
+    "health",
+    "inventory",
+    "animal",
+    "facility",
+    "security",
+    "task",
+    "other"
+];
+const EMPTY_FILTERS = {
+    status: "",
+    priority: "",
+    category: "",
+    raisedByMe: false
+};
 function RequestsApprovalsPage() {
-    const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("pending");
-    const period = activeTab === "pending" ? "Last 7 days" : "Last 30 days";
+    const [concerns, setConcerns] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [filters, setFilters] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(EMPTY_FILTERS);
+    const [showModal, setShowModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [pagination, setPagination] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
+        total: 0
+    });
+    const fetchConcerns = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async (f)=>{
+        setLoading(true);
+        setError("");
+        try {
+            const params = new URLSearchParams();
+            if (f.status) params.append("status", f.status);
+            if (f.priority) params.append("priority", f.priority);
+            if (f.category) params.append("category", f.category);
+            if (f.raisedByMe) params.append("raisedByMe", "true");
+            const query = params.toString() ? `?${params.toString()}` : "";
+            const res = await fetch(`${API}/ranches/${getSlug()}/concerns${query}`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error("Failed to fetch concerns");
+            const json = await res.json();
+            console.log("✅ Concerns:", json);
+            const list = json?.data?.data?.concerns ?? json?.data?.concerns ?? json?.concerns ?? (Array.isArray(json?.data) ? json.data : []);
+            setConcerns(list);
+            setPagination(json?.data?.pagination ?? json?.pagination ?? {
+                total: list.length
+            });
+        } catch (err) {
+            setError(err.message);
+        } finally{
+            setLoading(false);
+        }
+    }, []);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        fetchConcerns(filters);
+    }, [
+        filters,
+        fetchConcerns
+    ]);
+    const setFilter = (k, v)=>setFilters((f)=>({
+                ...f,
+                [k]: v
+            }));
+    const clearFilters = ()=>setFilters(EMPTY_FILTERS);
+    const activeFilters = Object.values(filters).filter(Boolean).length;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
         className: "flex-1 overflow-y-auto px-6 py-5 space-y-5",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-3 justify-between flex-wrap-reverse",
+                className: "flex items-center justify-between",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex items-center bg-gray-100 rounded-full p-1 gap-1",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                onClick: ()=>setActiveTab("pending"),
-                                className: `px-5 py-2 rounded-full text-xs font-semibold transition-all ${activeTab === "pending" ? "bg-white text-gray-800 shadow-sm" : "text-gray-400 hover:text-gray-600"}`,
-                                children: "Pending Request"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                className: "text-base font-bold text-gray-800",
+                                children: "Requests & Approvals"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 326,
+                                lineNumber: 368,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                onClick: ()=>setActiveTab("history"),
-                                className: `px-5 py-2 rounded-full text-xs font-semibold transition-all ${activeTab === "history" ? "bg-white text-gray-800 shadow-sm" : "text-gray-400 hover:text-gray-600"}`,
-                                children: "Approvals History"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 336,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 325,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex w-full justify-end gap-3",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                className: "p-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LayoutGrid$3e$__["LayoutGrid"], {
-                                    size: 15,
-                                    className: "text-gray-500"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 351,
-                                    columnNumber: 13
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 350,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                className: "flex items-center gap-1.5 text-xs font-medium px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors",
+                            !loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-xs text-gray-400 mt-0.5",
                                 children: [
-                                    period,
-                                    " ",
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
-                                        size: 13
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 354,
-                                        columnNumber: 22
-                                    }, this)
+                                    pagination.total ?? concerns.length,
+                                    " total"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 353,
-                                columnNumber: 11
+                                lineNumber: 372,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 349,
+                        lineNumber: 367,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setShowModal(true),
+                        className: "flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
+                                size: 13
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                lineNumber: 381,
+                                columnNumber: 11
+                            }, this),
+                            " New Request"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                        lineNumber: 377,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 323,
+                lineNumber: 366,
                 columnNumber: 7
             }, this),
-            activeTab === "pending" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(PendingTable, {
-                rows: pendingRequests,
-                onApprove: (row)=>console.log("Approved", row),
-                onDecline: (row)=>console.log("Declined", row)
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex flex-wrap items-center gap-2",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                        value: filters.status,
+                        onChange: (e)=>setFilter("status", e.target.value),
+                        className: "border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-600 focus:outline-none focus:border-[#4CAF50] bg-white appearance-none",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "",
+                                children: "All Statuses"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                lineNumber: 392,
+                                columnNumber: 11
+                            }, this),
+                            STATUSES.map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                    value: s,
+                                    children: s.replace("_", " ")
+                                }, s, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 394,
+                                    columnNumber: 13
+                                }, this))
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                        lineNumber: 387,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                        value: filters.priority,
+                        onChange: (e)=>setFilter("priority", e.target.value),
+                        className: "border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-600 focus:outline-none focus:border-[#4CAF50] bg-white appearance-none",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "",
+                                children: "All Priorities"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                lineNumber: 405,
+                                columnNumber: 11
+                            }, this),
+                            PRIORITIES_F.map((p)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                    value: p,
+                                    className: "capitalize",
+                                    children: p
+                                }, p, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 407,
+                                    columnNumber: 13
+                                }, this))
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                        lineNumber: 400,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                        value: filters.category,
+                        onChange: (e)=>setFilter("category", e.target.value),
+                        className: "border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-600 focus:outline-none focus:border-[#4CAF50] bg-white appearance-none",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "",
+                                children: "All Categories"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                lineNumber: 418,
+                                columnNumber: 11
+                            }, this),
+                            CATEGORIES_F.map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                    value: c,
+                                    className: "capitalize",
+                                    children: c
+                                }, c, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 420,
+                                    columnNumber: 13
+                                }, this))
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                        lineNumber: 413,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setFilter("raisedByMe", !filters.raisedByMe),
+                        className: `px-3 py-2 rounded-lg border text-xs font-medium transition-colors ${filters.raisedByMe ? "border-[#4CAF50] bg-[#f0fdf4] text-[#4CAF50]" : "border-gray-200 text-gray-500 hover:bg-gray-50"}`,
+                        children: "My Requests"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                        lineNumber: 426,
+                        columnNumber: 9
+                    }, this),
+                    activeFilters > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: clearFilters,
+                        className: "flex items-center gap-1 text-xs text-red-400 hover:text-red-600 font-medium",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                size: 12
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                lineNumber: 442,
+                                columnNumber: 13
+                            }, this),
+                            " Clear (",
+                            activeFilters,
+                            ")"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                        lineNumber: 438,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                lineNumber: 386,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden",
+                children: loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "p-6 space-y-3",
+                    children: [
+                        1,
+                        2,
+                        3,
+                        4
+                    ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex gap-4 animate-pulse",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "h-3 bg-gray-100 rounded flex-1"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 453,
+                                    columnNumber: 17
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "h-3 bg-gray-100 rounded w-20"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 454,
+                                    columnNumber: 17
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "h-3 bg-gray-100 rounded w-16"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 455,
+                                    columnNumber: 17
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "h-3 bg-gray-100 rounded w-16"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 456,
+                                    columnNumber: 17
+                                }, this)
+                            ]
+                        }, i, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 452,
+                            columnNumber: 15
+                        }, this))
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                    lineNumber: 450,
+                    columnNumber: 11
+                }, this) : error ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "p-8 text-center",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-sm text-red-500 mb-2",
+                            children: error
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 462,
+                            columnNumber: 13
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: ()=>fetchConcerns(filters),
+                            className: "text-xs text-[#4CAF50] hover:underline",
+                            children: "Try again"
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 463,
+                            columnNumber: 13
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                    lineNumber: 461,
+                    columnNumber: 11
+                }, this) : concerns.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "p-8 text-center",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-sm text-gray-400",
+                            children: "No requests found."
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 472,
+                            columnNumber: 13
+                        }, this),
+                        activeFilters > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: clearFilters,
+                            className: "mt-2 text-xs text-[#4CAF50] hover:underline",
+                            children: "Clear filters"
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                            lineNumber: 474,
+                            columnNumber: 15
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                    lineNumber: 471,
+                    columnNumber: 11
+                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "overflow-x-auto",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                        className: "w-full text-xs",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                    className: "border-b border-gray-100",
+                                    children: [
+                                        "Title",
+                                        "Category",
+                                        "Priority",
+                                        "Status",
+                                        "Raised By",
+                                        "Assigned To",
+                                        "Date"
+                                    ].map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                            className: "text-left py-3 px-5 text-gray-500 font-medium whitespace-nowrap",
+                                            children: col
+                                        }, col, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                            lineNumber: 496,
+                                            columnNumber: 21
+                                        }, this))
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                    lineNumber: 486,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                lineNumber: 485,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                                children: concerns.map((c, i)=>{
+                                    const raisedBy = [
+                                        c.raisedBy?.firstName,
+                                        c.raisedBy?.lastName
+                                    ].filter(Boolean).join(" ") || c.raisedBy?.email || "—";
+                                    const assignedTo = [
+                                        c.assignedTo?.firstName,
+                                        c.assignedTo?.lastName
+                                    ].filter(Boolean).join(" ") || c.assignedTo?.email || "—";
+                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                        className: "border-b border-gray-50 hover:bg-gray-50 transition-colors",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: "py-4 px-5 font-medium text-gray-800 max-w-[200px]",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "truncate",
+                                                            children: c.title ?? "—"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                            lineNumber: 526,
+                                                            columnNumber: 27
+                                                        }, this),
+                                                        c.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-[10px] text-gray-400 truncate mt-0.5",
+                                                            children: c.description
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                            lineNumber: 528,
+                                                            columnNumber: 29
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 525,
+                                                    columnNumber: 25
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                lineNumber: 524,
+                                                columnNumber: 23
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: "py-4 px-5 text-gray-500 whitespace-nowrap capitalize",
+                                                children: c.category ?? "—"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                lineNumber: 534,
+                                                columnNumber: 23
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: "py-4 px-5 whitespace-nowrap",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Badge, {
+                                                    value: c.priority,
+                                                    styleMap: PRIORITY_STYLES
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 538,
+                                                    columnNumber: 25
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                lineNumber: 537,
+                                                columnNumber: 23
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: "py-4 px-5 whitespace-nowrap",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Badge, {
+                                                    value: c.status,
+                                                    styleMap: STATUS_STYLES
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                    lineNumber: 541,
+                                                    columnNumber: 25
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                lineNumber: 540,
+                                                columnNumber: 23
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: "py-4 px-5 text-gray-600 whitespace-nowrap",
+                                                children: raisedBy
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                lineNumber: 543,
+                                                columnNumber: 23
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: "py-4 px-5 text-gray-500 whitespace-nowrap",
+                                                children: assignedTo
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                lineNumber: 546,
+                                                columnNumber: 23
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                className: "py-4 px-5 text-gray-400 whitespace-nowrap",
+                                                children: formatDate(c.createdAt)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                                lineNumber: 549,
+                                                columnNumber: 23
+                                            }, this)
+                                        ]
+                                    }, c.id ?? i, true, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                        lineNumber: 520,
+                                        columnNumber: 21
+                                    }, this);
+                                })
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                                lineNumber: 505,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                        lineNumber: 484,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
+                    lineNumber: 483,
+                    columnNumber: 11
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 361,
-                columnNumber: 9
-            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(HistoryTable, {
-                rows: approvalHistory
+                lineNumber: 448,
+                columnNumber: 7
+            }, this),
+            showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(NewRequestModal, {
+                onClose: ()=>setShowModal(false),
+                onSuccess: ()=>fetchConcerns(filters)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 367,
+                lineNumber: 563,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-        lineNumber: 321,
+        lineNumber: 364,
         columnNumber: 5
     }, this);
 }
@@ -4886,181 +5370,152 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 ;
 ;
 ;
-// ── Placeholder data ──────────────────────────────────────────────────────────
-const staffList = [
-    {
-        name: "Amin Danladi",
-        role: "Ranch Manager",
-        staffId: "#021",
-        status: "Active",
-        lastLogin: "30 Aug 2025, 8:15 AM",
-        contact: "09152875444"
-    },
-    {
-        name: "Grace Daniels",
-        role: "Store Keeper",
-        staffId: "#026",
-        status: "Active",
-        lastLogin: "29 Aug 2025, 1:25 PM",
-        contact: "grace@demo.com"
-    },
-    {
-        name: "Dr. Musa Halim",
-        role: "Veterinarian",
-        staffId: "#036",
-        status: "Active",
-        lastLogin: "26 Aug 2025, 8:15 AM",
-        contact: "08032875464"
-    },
-    {
-        name: "Abdul Hassan",
-        role: "Worker-Herder",
-        staffId: "#039",
-        status: "Active",
-        lastLogin: "30 Aug 2025, 8:15 AM",
-        contact: "09152875444"
-    },
-    {
-        name: "Aliyu Muiz",
-        role: "Worker-Herder",
-        staffId: "#039",
-        status: "Suspended",
-        lastLogin: "30 Aug 2025, 8:15 AM",
-        contact: "09152875444"
-    },
-    {
-        name: "James Micheal",
-        role: "Worker-Herder",
-        staffId: "#039",
-        status: "Active",
-        lastLogin: "30 Aug 2025, 8:15 AM",
-        contact: "09152875444"
-    },
-    {
-        name: "Kaleel Abu",
-        role: "Worker-Herder",
-        staffId: "#039",
-        status: "Active",
-        lastLogin: "30 Aug 2025, 8:15 AM",
-        contact: "09152875444"
-    },
-    {
-        name: "Abubakar Karl",
-        role: "Worker-Herder",
-        staffId: "#039",
-        status: "Active",
-        lastLogin: "30 Aug 2025, 8:15 AM",
-        contact: "09152875444"
-    }
-];
-const workLogs = [
-    {
-        name: "Amin Danladi",
-        role: "Ranch Manager",
-        checkIn: "07:00 AM",
-        tasksCompleted: "12/12",
-        completion: "100%",
-        issues: 0,
-        status: "Active"
-    },
-    {
-        name: "Grace Daniels",
-        role: "Store Keeper",
-        checkIn: "07:10 AM",
-        tasksCompleted: "8/12",
-        completion: "80%",
-        issues: 1,
-        status: "Active"
-    },
-    {
-        name: "Dr. Musa Halim",
-        role: "Veterinarian",
-        checkIn: "12:00 PM",
-        tasksCompleted: "4/4",
-        completion: "100%",
-        issues: 3,
-        status: "Active"
-    },
-    {
-        name: "Abdul Hassan",
-        role: "Worker-Herder",
-        checkIn: "07:00 AM",
-        tasksCompleted: "12/12",
-        completion: "100%",
-        issues: 0,
-        status: "Active"
-    },
-    {
-        name: "Aliyu Muiz",
-        role: "Worker-Herder",
-        checkIn: "07:00 AM",
-        tasksCompleted: "12/12",
-        completion: "100%",
-        issues: 0,
-        status: "Active"
-    },
-    {
-        name: "James Micheal",
-        role: "Worker-Herder",
-        checkIn: "--------",
-        tasksCompleted: "---",
-        completion: "0%",
-        issues: 0,
-        status: "Absent"
-    },
-    {
-        name: "Kaleel Abu",
-        role: "Worker-Herder",
-        checkIn: "07:00 AM",
-        tasksCompleted: "12/12",
-        completion: "100%",
-        issues: 0,
-        status: "Active"
-    },
-    {
-        name: "Abubakar Karl",
-        role: "Worker-Herder",
-        checkIn: "07:00 AM",
-        tasksCompleted: "12/12",
-        completion: "100%",
-        issues: 0,
-        status: "Active"
-    }
-];
-// ── Badges ────────────────────────────────────────────────────────────────────
+const API = ("TURBOPACK compile-time value", "https://smartruga-api-d11b7da5a7fa.herokuapp.com/api/v1");
+function getSlug() {
+    return localStorage.getItem("sr_slug") ?? "";
+}
+function getToken() {
+    return localStorage.getItem("sr_token") ?? "";
+}
+function getRole() {
+    return localStorage.getItem("sr_role") ?? "";
+}
+function formatDate(str) {
+    if (!str) return "—";
+    return new Date(str).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    }) + " · " + new Date(str).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}
+function actorName(actor) {
+    if (!actor) return "System";
+    const name = [
+        actor.firstName,
+        actor.lastName
+    ].filter(Boolean).join(" ");
+    return name || actor.email || "Unknown";
+}
+// ── Status Badge ──────────────────────────────────────────────────────────────
 function StaffStatusBadge({ status }) {
+    const s = (status ?? "").toLowerCase();
     const styles = {
-        Active: "text-[#4CAF50]",
-        Suspended: "text-orange-500",
-        Absent: "text-red-500"
+        active: "text-[#4CAF50]",
+        inactive: "text-orange-500",
+        suspended: "text-orange-500",
+        pending: "text-amber-500"
     };
     const icons = {
-        Active: "🟢",
-        Suspended: "🔒",
-        Absent: "🔴"
+        active: "🟢",
+        inactive: "🔒",
+        suspended: "🔒",
+        pending: "🟡"
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-        className: `flex items-center gap-1 text-xs font-semibold ${styles[status] ?? "text-gray-500"}`,
+        className: `flex items-center gap-1 text-xs font-semibold ${styles[s] ?? "text-gray-500"}`,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                 className: "text-[11px]",
-                children: icons[status]
+                children: icons[s] ?? "⚪"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 164,
+                lineNumber: 60,
                 columnNumber: 7
             }, this),
-            " ",
-            status
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                className: "capitalize",
+                children: status ?? "—"
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                lineNumber: 61,
+                columnNumber: 7
+            }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 161,
+        lineNumber: 57,
         columnNumber: 5
     }, this);
 }
-// ── All Staffs Table ──────────────────────────────────────────────────────────
-function StaffListTable({ rows, onEdit, onSuspend, onReinstate }) {
+// ── Members Table ─────────────────────────────────────────────────────────────
+function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
+    const userRole = getRole();
+    const isManager = userRole === "manager";
+    if (loading) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-3",
+        children: [
+            1,
+            2,
+            3,
+            4
+        ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex gap-4 animate-pulse",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-3 bg-gray-100 rounded flex-1"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 77,
+                        columnNumber: 13
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-3 bg-gray-100 rounded w-24"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 78,
+                        columnNumber: 13
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-3 bg-gray-100 rounded w-16"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 79,
+                        columnNumber: 13
+                    }, this)
+                ]
+            }, i, true, {
+                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                lineNumber: 76,
+                columnNumber: 11
+            }, this))
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 74,
+        columnNumber: 7
+    }, this);
+    if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm p-8 text-center",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+            className: "text-sm text-red-500",
+            children: error
+        }, void 0, false, {
+            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+            lineNumber: 88,
+            columnNumber: 9
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 87,
+        columnNumber: 7
+    }, this);
+    if (rows.length === 0) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm p-8 text-center",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+            className: "text-sm text-gray-400",
+            children: "No staff members found."
+        }, void 0, false, {
+            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+            lineNumber: 95,
+            columnNumber: 9
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 94,
+        columnNumber: 7
+    }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5074,315 +5529,552 @@ function StaffListTable({ rows, onEdit, onSuspend, onReinstate }) {
                             children: [
                                 "Name",
                                 "Role",
-                                "Staff ID",
+                                "Email",
                                 "Status",
-                                "Last Login",
-                                "Phone/Email",
+                                "Joined",
                                 "Actions"
                             ].map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
                                     className: "text-left py-3 px-5 text-gray-500 font-medium whitespace-nowrap",
                                     children: col
                                 }, col, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                    lineNumber: 187,
-                                    columnNumber: 17
+                                    lineNumber: 107,
+                                    columnNumber: 19
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                            lineNumber: 177,
+                            lineNumber: 104,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 176,
+                        lineNumber: 103,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
-                        children: rows.map((row, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                        children: rows.map((row, i)=>{
+                            const firstName = row.user?.firstName ?? row.firstName ?? "";
+                            const lastName = row.user?.lastName ?? row.lastName ?? "";
+                            const fullName = [
+                                firstName,
+                                lastName
+                            ].filter(Boolean).join(" ") || "—";
+                            const email = row.user?.email ?? row.email ?? "—";
+                            const role = row.role ?? row.ranchRole ?? "—";
+                            const status = row.status ?? row.user?.status ?? "—";
+                            const joined = row.createdAt ?? row.joinedAt ?? row.created_at ?? row.joined_at ?? row.user?.createdAt ?? row.user?.created_at;
+                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                 className: "border-b border-gray-50 hover:bg-gray-50 transition-colors",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         className: "py-4 px-5 font-medium text-gray-800 whitespace-nowrap",
-                                        children: row.name
+                                        children: fullName
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 202,
-                                        columnNumber: 17
+                                        lineNumber: 139,
+                                        columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5 text-gray-500 whitespace-nowrap",
-                                        children: row.role
+                                        className: "py-4 px-5 text-gray-500 whitespace-nowrap capitalize",
+                                        children: role
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 205,
-                                        columnNumber: 17
+                                        lineNumber: 142,
+                                        columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         className: "py-4 px-5 text-gray-600 whitespace-nowrap",
-                                        children: row.staffId
+                                        children: email
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 208,
-                                        columnNumber: 17
+                                        lineNumber: 145,
+                                        columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         className: "py-4 px-5",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StaffStatusBadge, {
-                                            status: row.status
+                                            status: status
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 212,
-                                            columnNumber: 19
+                                            lineNumber: 149,
+                                            columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 211,
-                                        columnNumber: 17
+                                        lineNumber: 148,
+                                        columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5 text-gray-500 whitespace-nowrap",
-                                        children: row.lastLogin
+                                        className: "py-4 px-5 text-gray-400 whitespace-nowrap",
+                                        children: formatDate(joined)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 214,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5 text-gray-600 whitespace-nowrap",
-                                        children: row.contact
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 217,
-                                        columnNumber: 17
+                                        lineNumber: 151,
+                                        columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         className: "py-4 px-5",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: isManager ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex items-center gap-2",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                    onClick: ()=>onEdit?.(row),
-                                                    className: "px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 text-[11px] font-medium transition-colors",
-                                                    children: "Edit"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                                    defaultValue: role,
+                                                    onChange: (e)=>onRoleChange?.(row, e.target.value),
+                                                    className: "border border-gray-200 rounded-lg px-2 py-1 text-[11px] text-gray-600 focus:outline-none focus:border-[#4CAF50] bg-white appearance-none",
+                                                    children: [
+                                                        "owner",
+                                                        "manager",
+                                                        "vet",
+                                                        "storekeeper",
+                                                        "worker"
+                                                    ].map((r)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                            value: r,
+                                                            className: "capitalize",
+                                                            children: r
+                                                        }, r, false, {
+                                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                            lineNumber: 169,
+                                                            columnNumber: 29
+                                                        }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 222,
+                                                    lineNumber: 157,
+                                                    columnNumber: 25
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                    onClick: ()=>onDelete?.(row),
+                                                    className: "px-3 py-1.5 rounded-full bg-red-50 text-red-500 hover:bg-red-100 text-[11px] font-medium transition-colors",
+                                                    children: "Remove"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 174,
+                                                    columnNumber: 25
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 156,
+                                            columnNumber: 23
+                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-[11px] text-gray-400 italic",
+                                            children: "View only"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 182,
+                                            columnNumber: 23
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                        lineNumber: 154,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, row.id ?? i, true, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                lineNumber: 135,
+                                columnNumber: 17
+                            }, this);
+                        })
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 117,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                lineNumber: 102,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+            lineNumber: 101,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 100,
+        columnNumber: 5
+    }, this);
+}
+// ── Ranch Activity Log ────────────────────────────────────────────────────────
+const EVENT_COLORS = {
+    animal_update: {
+        dot: "bg-[#4CAF50]",
+        ring: "border-[#4CAF50]",
+        bg: "bg-[#f0fdf4]"
+    },
+    animal_created: {
+        dot: "bg-blue-500",
+        ring: "border-blue-500",
+        bg: "bg-blue-50"
+    },
+    member_added: {
+        dot: "bg-purple-500",
+        ring: "border-purple-500",
+        bg: "bg-purple-50"
+    },
+    default: {
+        dot: "bg-gray-400",
+        ring: "border-gray-300",
+        bg: "bg-gray-50"
+    }
+};
+function ActivityLog({ events, loading, error }) {
+    if (loading) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-5",
+        children: [
+            1,
+            2,
+            3
+        ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex gap-4 animate-pulse",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "w-7 h-7 rounded-full bg-gray-100 shrink-0"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 224,
+                        columnNumber: 13
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex-1 space-y-2",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "h-2.5 bg-gray-100 rounded w-1/3"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                lineNumber: 226,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "h-2 bg-gray-100 rounded w-2/3"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                lineNumber: 227,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 225,
+                        columnNumber: 13
+                    }, this)
+                ]
+            }, i, true, {
+                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                lineNumber: 223,
+                columnNumber: 11
+            }, this))
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 221,
+        columnNumber: 7
+    }, this);
+    if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm p-8 text-center",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+            className: "text-sm text-red-500",
+            children: error
+        }, void 0, false, {
+            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+            lineNumber: 237,
+            columnNumber: 9
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 236,
+        columnNumber: 7
+    }, this);
+    if (events.length === 0) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm p-8 text-center",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+            className: "text-sm text-gray-400",
+            children: "No ranch activity recorded yet."
+        }, void 0, false, {
+            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+            lineNumber: 244,
+            columnNumber: 9
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 243,
+        columnNumber: 7
+    }, this);
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm p-5",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "relative",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "absolute left-3 top-0 bottom-0 w-px bg-gray-100"
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                    lineNumber: 251,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "space-y-5",
+                    children: events.map((event, i)=>{
+                        const colors = EVENT_COLORS[event.eventType] ?? EVENT_COLORS.default;
+                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex gap-4 relative",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: `w-7 h-7 rounded-full ${colors.bg} border-2 ${colors.ring} flex items-center justify-center shrink-0 z-10`,
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: `w-2 h-2 rounded-full ${colors.dot}`
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                        lineNumber: 261,
+                                        columnNumber: 19
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                    lineNumber: 258,
+                                    columnNumber: 17
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex-1 min-w-0 pb-1",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-start justify-between gap-2 mb-1",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-xs font-semibold text-gray-700 capitalize",
+                                                    children: event.eventType?.replace(/_/g, " ") ?? "Event"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 265,
                                                     columnNumber: 21
                                                 }, this),
-                                                row.status === "Suspended" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                    onClick: ()=>onReinstate?.(row),
-                                                    className: "px-4 py-1.5 rounded-full bg-[#4CAF50] text-white hover:bg-[#43a047] text-[11px] font-medium transition-colors",
-                                                    children: "Reinstate"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-[10px] text-gray-400 whitespace-nowrap shrink-0",
+                                                    children: formatDate(event.createdAt)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 229,
-                                                    columnNumber: 23
-                                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                    onClick: ()=>onSuspend?.(row),
-                                                    className: "px-4 py-1.5 rounded-full bg-orange-500 text-white hover:bg-orange-600 text-[11px] font-medium transition-colors",
-                                                    children: "Suspend"
+                                                    lineNumber: 268,
+                                                    columnNumber: 21
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 264,
+                                            columnNumber: 19
+                                        }, this),
+                                        event.animal?.tagNumber && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-[11px] text-gray-500 mb-1",
+                                            children: [
+                                                "Animal:",
+                                                " ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "font-medium text-gray-700",
+                                                    children: event.animal.tagNumber
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 236,
+                                                    lineNumber: 275,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 221,
+                                            lineNumber: 273,
+                                            columnNumber: 21
+                                        }, this),
+                                        event.field && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-xs text-gray-500 mb-1",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "font-medium text-gray-700 capitalize",
+                                                    children: event.field
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 282,
+                                                    columnNumber: 23
+                                                }, this),
+                                                " changed from ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "px-1.5 py-0.5 rounded bg-red-50 text-red-500 font-medium text-[10px]",
+                                                    children: event.fromValue ?? "—"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 286,
+                                                    columnNumber: 23
+                                                }, this),
+                                                " → ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "px-1.5 py-0.5 rounded bg-[#f0fdf4] text-[#4CAF50] font-medium text-[10px]",
+                                                    children: event.toValue ?? "—"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 290,
+                                                    columnNumber: 23
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 281,
+                                            columnNumber: 21
+                                        }, this),
+                                        event.notes && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-[11px] text-gray-400 italic mb-1",
+                                            children: [
+                                                '"',
+                                                event.notes,
+                                                '"'
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 296,
+                                            columnNumber: 21
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-[10px] text-gray-400",
+                                            children: [
+                                                "By",
+                                                " ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "font-medium text-gray-600",
+                                                    children: actorName(event.actor)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 302,
+                                                    columnNumber: 21
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 300,
                                             columnNumber: 19
                                         }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 220,
-                                        columnNumber: 17
-                                    }, this)
-                                ]
-                            }, i, true, {
-                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 198,
-                                columnNumber: 15
-                            }, this))
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 196,
-                        columnNumber: 11
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 175,
-                columnNumber: 9
-            }, this)
-        }, void 0, false, {
-            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-            lineNumber: 174,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
-        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 173,
-        columnNumber: 5
-    }, this);
-}
-// ── Daily Work Log Table ──────────────────────────────────────────────────────
-function WorkLogTable({ rows, onView }) {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden",
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "overflow-x-auto",
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
-                className: "w-full text-xs",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                            className: "border-b border-gray-100",
-                            children: [
-                                "Name",
-                                "Role",
-                                "Check-In Today",
-                                "Tasks Completed",
-                                "Completion %",
-                                "Issues Logged",
-                                "Status",
-                                "Actions"
-                            ].map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                    className: "text-left py-3 px-5 text-gray-500 font-medium whitespace-nowrap",
-                                    children: col
-                                }, col, false, {
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                    lineNumber: 273,
+                                    lineNumber: 263,
                                     columnNumber: 17
-                                }, this))
-                        }, void 0, false, {
+                                }, this)
+                            ]
+                        }, event.id ?? i, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                            lineNumber: 262,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 261,
-                        columnNumber: 11
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
-                        children: rows.map((row, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                                className: "border-b border-gray-50 hover:bg-gray-50 transition-colors",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5 font-medium text-gray-800 whitespace-nowrap",
-                                        children: row.name
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 288,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5 text-gray-500 whitespace-nowrap",
-                                        children: row.role
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 291,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: `py-4 px-5 whitespace-nowrap ${row.status === "Absent" ? "text-gray-300" : "text-gray-600"}`,
-                                        children: row.checkIn
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 294,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: `py-4 px-5 whitespace-nowrap ${row.status === "Absent" ? "text-gray-300" : "text-gray-600"}`,
-                                        children: row.tasksCompleted
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 299,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5 whitespace-nowrap",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: `font-semibold ${row.completion === "0%" ? "text-red-400" : "text-gray-700"}`,
-                                            children: row.completion
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 305,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 304,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5 text-gray-600 whitespace-nowrap",
-                                        children: row.issues
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 311,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StaffStatusBadge, {
-                                            status: row.status
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 315,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 314,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            onClick: ()=>onView?.(row),
-                                            className: "px-4 py-1.5 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 text-[11px] font-medium transition-colors",
-                                            children: "View"
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 318,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 317,
-                                        columnNumber: 17
-                                    }, this)
-                                ]
-                            }, i, true, {
-                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 284,
-                                columnNumber: 15
-                            }, this))
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 282,
-                        columnNumber: 11
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 260,
-                columnNumber: 9
-            }, this)
-        }, void 0, false, {
+                            lineNumber: 257,
+                            columnNumber: 15
+                        }, this);
+                    })
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                    lineNumber: 252,
+                    columnNumber: 9
+                }, this)
+            ]
+        }, void 0, true, {
             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-            lineNumber: 259,
+            lineNumber: 250,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 258,
+        lineNumber: 249,
         columnNumber: 5
     }, this);
 }
 function StaffManagementPage() {
     const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("staff");
+    const [members, setMembers] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [membersLoading, setMembersLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [membersError, setMembersError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [events, setEvents] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [eventsLoading, setEventsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [eventsError, setEventsError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const fetchMembers = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
+        setMembersLoading(true);
+        setMembersError("");
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/members`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error("Failed to fetch members");
+            const json = await res.json();
+            console.log("✅ Members response:", json);
+            const list = json?.data?.data?.members ?? json?.data?.members ?? json?.members ?? (Array.isArray(json?.data) ? json.data : []);
+            setMembers(list);
+        } catch (err) {
+            setMembersError(err.message);
+        } finally{
+            setMembersLoading(false);
+        }
+    }, []);
+    const fetchActivity = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
+        setEventsLoading(true);
+        setEventsError("");
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/activity`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error("Failed to fetch activity");
+            const json = await res.json();
+            console.log("✅ Activity response:", json);
+            const list = json?.data?.events ?? json?.events ?? (Array.isArray(json?.data) ? json.data : []);
+            setEvents(list);
+        } catch (err) {
+            setEventsError(err.message);
+        } finally{
+            setEventsLoading(false);
+        }
+    }, []);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        fetchMembers();
+    }, [
+        fetchMembers
+    ]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        fetchActivity();
+    }, [
+        fetchActivity
+    ]);
+    const handleRoleChange = async (member, newRole)=>{
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/members/${member.id}/role`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: JSON.stringify({
+                    role: newRole
+                })
+            });
+            if (!res.ok) throw new Error("Failed to update role");
+            setMembers((prev)=>prev.map((m)=>m.id === member.id ? {
+                        ...m,
+                        role: newRole
+                    } : m));
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+    const handleDelete = async (member)=>{
+        const name = [
+            member.user?.firstName,
+            member.user?.lastName
+        ].filter(Boolean).join(" ") || "this member";
+        if (!confirm(`Remove ${name} from the ranch?`)) return;
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/members/${member.id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error("Failed to remove member");
+            setMembers((prev)=>prev.filter((m)=>m.id !== member.id));
+        } catch (err) {
+            alert(err.message);
+        }
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
         className: "flex-1 overflow-y-auto px-6 py-5 space-y-5",
         children: [
@@ -5392,74 +6084,84 @@ function StaffManagementPage() {
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex items-center bg-gray-100 rounded-full p-1 gap-1",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                onClick: ()=>setActiveTab("staff"),
-                                className: `px-5 py-2 rounded-full text-xs font-semibold transition-all ${activeTab === "staff" ? "bg-white text-gray-800 shadow-sm" : "text-gray-400 hover:text-gray-600"}`,
-                                children: "All Staffs List"
-                            }, void 0, false, {
+                            "staff",
+                            "worklog"
+                        ].map((tab)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>setActiveTab(tab),
+                                className: `px-5 py-2 rounded-full text-xs font-semibold transition-all ${activeTab === tab ? "bg-white text-gray-800 shadow-sm" : "text-gray-400 hover:text-gray-600"}`,
+                                children: tab === "staff" ? "All Staffs List" : "Daily Work Log"
+                            }, tab, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 344,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                onClick: ()=>setActiveTab("worklog"),
-                                className: `px-5 py-2 rounded-full text-xs font-semibold transition-all ${activeTab === "worklog" ? "bg-white text-gray-800 shadow-sm" : "text-gray-400 hover:text-gray-600"}`,
-                                children: "Daily Work Log"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 354,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
+                                lineNumber: 427,
+                                columnNumber: 13
+                            }, this))
+                    }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 343,
+                        lineNumber: 425,
                         columnNumber: 9
                     }, this),
-                    activeTab === "staff" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    getRole() === "manager" && activeTab === "staff" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         className: "flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UserPlus$3e$__["UserPlus"], {
                                 size: 13
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 368,
+                                lineNumber: 442,
                                 columnNumber: 13
                             }, this),
-                            "Invite New Staff"
+                            " Invite New Staff"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 367,
+                        lineNumber: 441,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 342,
+                lineNumber: 424,
                 columnNumber: 7
             }, this),
-            activeTab === "staff" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StaffListTable, {
-                rows: staffList,
-                onEdit: (row)=>console.log("Edit", row),
-                onSuspend: (row)=>console.log("Suspend", row),
-                onReinstate: (row)=>console.log("Reinstate", row)
+            activeTab === "staff" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                children: [
+                    !membersLoading && !membersError && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-xs text-gray-400",
+                        children: [
+                            members.length,
+                            " member",
+                            members.length !== 1 ? "s" : ""
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 450,
+                        columnNumber: 13
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StaffListTable, {
+                        rows: members,
+                        loading: membersLoading,
+                        error: membersError,
+                        onRoleChange: handleRoleChange,
+                        onDelete: handleDelete
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 454,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ActivityLog, {
+                events: events,
+                loading: eventsLoading,
+                error: eventsError
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 376,
-                columnNumber: 9
-            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(WorkLogTable, {
-                rows: workLogs,
-                onView: (row)=>console.log("View", row)
-            }, void 0, false, {
-                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 383,
+                lineNumber: 463,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 340,
+        lineNumber: 423,
         columnNumber: 5
     }, this);
 }
@@ -5472,177 +6174,229 @@ __turbopack_context__.s([
     ()=>NotificationsPage
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCheck$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/check-check.js [app-ssr] (ecmascript) <export default as CheckCheck>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/check.js [app-ssr] (ecmascript) <export default as Check>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/square.js [app-ssr] (ecmascript) <export default as Square>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2d$check$2d$big$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckSquare$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/square-check-big.js [app-ssr] (ecmascript) <export default as CheckSquare>");
 "use client";
 ;
-// ── Placeholder data ──────────────────────────────────────────────────────────
-const notifications = [
-    {
-        category: "Inventory",
-        icon: "📦",
-        iconBg: "bg-amber-50",
-        message: "Feed stock low alert – only 1,200 kg maize feed left.",
-        reporter: "Reported by: Storekeeper (Abdul)",
-        time: "29 Aug 2025 | 2:00 PM",
-        action: {
-            label: "View Stock Report",
-            type: "primary"
-        }
-    },
-    {
-        category: "Health",
-        icon: "❤️",
-        iconBg: "bg-red-50",
-        message: "Cow #1123 flagged sick – fever & cough symptoms.",
-        reporter: "Reported by: Veterinarian (Dr. Musa)",
-        time: "29 Aug 2025 | 2:00 PM",
-        action: {
-            label: "View Animal Record",
-            type: "primary"
-        }
-    },
-    {
-        category: "Finance",
-        icon: "✅",
-        iconBg: "bg-green-50",
-        message: "Request for ₦250,000 medicine restock.",
-        reporter: "Requested by: Manager (Amin)",
-        time: "29 Aug 2025 | 2:00 PM",
-        action: {
-            label: "Approved",
-            type: "approved"
-        }
-    },
-    {
-        category: "Task",
-        icon: "📋",
-        iconBg: "bg-gray-100",
-        message: "Fence repair in North Section completed.",
-        reporter: "Logged by: Manager (Amin)",
-        time: "29 Aug 2025 | 2:00 PM",
-        action: {
-            label: "Mark As Read",
-            type: "outline"
-        }
-    },
-    {
-        category: "Health",
-        icon: "❤️",
-        iconBg: "bg-red-50",
-        message: "Vaccination program completed – Herd A & B (320 cows).",
-        reporter: "Reported by: Veterinarian (Dr. Musa)",
-        time: "29 Aug 2025 | 2:00 PM",
-        action: {
-            label: "View Animal Record",
-            type: "primary"
-        }
-    },
-    {
-        category: "Finance",
-        icon: "✅",
-        iconBg: "bg-green-50",
-        message: "Feed stock low alert – only 1,200 kg maize feed left.",
-        reporter: "Reported by: Storekeeper (Abdul)",
-        time: "29 Aug 2025 | 2:00 PM",
-        action: {
-            label: "View Stock Report",
-            type: "primary"
-        }
-    },
-    {
-        category: "Task",
-        icon: "📋",
-        iconBg: "bg-gray-100",
-        message: "Fence repair in West Section completed.",
-        reporter: "Logged by: Manager (Amin)",
-        time: "29 Aug 2025 | 2:00 PM",
-        action: {
-            label: "View Stock Report",
-            type: "primary"
-        }
-    }
-];
-// ── Action Button ─────────────────────────────────────────────────────────────
-function ActionButton({ action, onClick }) {
-    if (action.type === "approved") {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-            className: "flex items-center gap-1 text-xs font-semibold text-[#4CAF50]",
-            children: "✅ Approved"
-        }, void 0, false, {
-            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-            lineNumber: 76,
-            columnNumber: 7
-        }, this);
-    }
-    if (action.type === "outline") {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-            onClick: onClick,
-            className: "px-4 py-1.5 rounded-full border border-[#4CAF50] text-[#4CAF50] hover:bg-green-50 text-xs font-semibold transition-colors whitespace-nowrap",
-            children: action.label
-        }, void 0, false, {
-            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-            lineNumber: 83,
-            columnNumber: 7
-        }, this);
-    }
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-        onClick: onClick,
-        className: "px-4 py-1.5 rounded-full bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors whitespace-nowrap",
-        children: action.label
-    }, void 0, false, {
-        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-        lineNumber: 92,
-        columnNumber: 5
-    }, this);
+;
+;
+const API = ("TURBOPACK compile-time value", "https://smartruga-api-d11b7da5a7fa.herokuapp.com/api/v1");
+function getSlug() {
+    if ("TURBOPACK compile-time truthy", 1) return "";
+    //TURBOPACK unreachable
+    ;
 }
-// ── Notification Row ──────────────────────────────────────────────────────────
-function NotificationRow({ notification, onAction }) {
+function getToken() {
+    if ("TURBOPACK compile-time truthy", 1) return "";
+    //TURBOPACK unreachable
+    ;
+}
+function formatTime(str) {
+    if (!str) return "—";
+    const d = new Date(str);
+    return d.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    }) + " | " + d.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}
+function alertMeta(alert) {
+    const type = (alert.alertType ?? alert.type ?? alert.category ?? "").toLowerCase();
+    if (type.includes("health") || type.includes("sick") || type.includes("quarantine")) return {
+        icon: "❤️",
+        bg: "bg-red-50",
+        label: "Health"
+    };
+    if (type.includes("vaccination") || type.includes("overdue")) return {
+        icon: "💉",
+        bg: "bg-blue-50",
+        label: "Vaccination"
+    };
+    if (type.includes("inventory") || type.includes("feed") || type.includes("stock")) return {
+        icon: "📦",
+        bg: "bg-amber-50",
+        label: "Inventory"
+    };
+    if (type.includes("task")) return {
+        icon: "📋",
+        bg: "bg-gray-100",
+        label: "Task"
+    };
+    if (type.includes("concern")) return {
+        icon: "⚠️",
+        bg: "bg-orange-50",
+        label: "Concern"
+    };
+    return {
+        icon: "🔔",
+        bg: "bg-blue-50",
+        label: type || "Alert"
+    };
+}
+// Extract a reliable unique ID — API uses publicId as the identifier
+function getAlertId(alert) {
+    return alert.publicId ?? alert.id ?? alert.alertId ?? alert._id ?? null;
+}
+// Check if an alert is read
+function isAlertRead(alert) {
+    return alert.isRead === true || alert.read === true || !!alert.readAt;
+}
+// ── Single Row ────────────────────────────────────────────────────────────────
+function NotificationRow({ alert, selected, onToggleSelect, onMarkOneRead }) {
+    const { icon, bg, label } = alertMeta(alert);
+    const alertId = getAlertId(alert);
+    const read = isAlertRead(alert);
+    const message = alert.message ?? alert.title ?? alert.description ?? "No message";
+    const reporter = alert.actor ? `By: ${[
+        alert.actor.firstName,
+        alert.actor.lastName
+    ].filter(Boolean).join(" ") || alert.actor.email}` : alert.reporter ?? "";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4",
+        className: `bg-white rounded-xl border shadow-sm px-5 py-4 transition-all ${read ? "border-gray-100 opacity-75" : "border-l-4 border-l-[#4CAF50] border-gray-100"} ${selected ? "ring-2 ring-[#4CAF50]/40 bg-[#f0fdf4]/20" : ""}`,
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "flex items-start justify-between gap-4",
+            className: "flex items-start gap-3",
             children: [
+                !read ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    onClick: (e)=>{
+                        e.stopPropagation();
+                        onToggleSelect(alertId);
+                    },
+                    className: "mt-0.5 shrink-0 text-gray-300 hover:text-[#4CAF50] transition-colors",
+                    children: selected ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2d$check$2d$big$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckSquare$3e$__["CheckSquare"], {
+                        size: 16,
+                        className: "text-[#4CAF50]"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                        lineNumber: 99,
+                        columnNumber: 15
+                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"], {
+                        size: 16
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                        lineNumber: 101,
+                        columnNumber: 15
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                    lineNumber: 91,
+                    columnNumber: 11
+                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "w-4 shrink-0"
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                    lineNumber: 105,
+                    columnNumber: 11
+                }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "flex-1 min-w-0",
+                    className: "flex-1 min-w-0 flex items-start justify-between gap-4",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center gap-2 mb-1.5",
+                            className: "flex-1 min-w-0",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: `w-7 h-7 rounded-lg ${notification.iconBg} flex items-center justify-center text-sm shrink-0`,
-                                    children: notification.icon
-                                }, void 0, false, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex items-center gap-2 mb-1.5 flex-wrap",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: `w-7 h-7 rounded-lg ${bg} flex items-center justify-center text-sm shrink-0`,
+                                            children: icon
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                            lineNumber: 112,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-xs font-semibold text-gray-500 border border-gray-200 rounded-full px-2.5 py-0.5",
+                                            children: label
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                            lineNumber: 117,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-sm font-semibold text-gray-800",
+                                            children: message
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                            lineNumber: 120,
+                                            columnNumber: 15
+                                        }, this),
+                                        !read && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "w-2 h-2 rounded-full bg-[#4CAF50] shrink-0"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                            lineNumber: 122,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                                    lineNumber: 110,
+                                    lineNumber: 111,
                                     columnNumber: 13
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "text-xs font-semibold text-gray-500 border border-gray-200 rounded-full px-2.5 py-0.5",
-                                    children: notification.category
+                                reporter && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-xs text-gray-400 ml-9",
+                                    children: reporter
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                                    lineNumber: 115,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-sm font-semibold text-gray-800 truncate",
-                                    children: notification.message
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                                    lineNumber: 118,
-                                    columnNumber: 13
+                                    lineNumber: 126,
+                                    columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                            lineNumber: 109,
+                            lineNumber: 110,
                             columnNumber: 11
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-xs text-gray-400 ml-9",
-                            children: notification.reporter
-                        }, void 0, false, {
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex flex-col items-end gap-2 shrink-0",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "text-[11px] text-gray-400 whitespace-nowrap",
+                                    children: formatTime(alert.createdAt)
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                    lineNumber: 132,
+                                    columnNumber: 13
+                                }, this),
+                                !read && alertId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    onClick: (e)=>{
+                                        e.stopPropagation();
+                                        onMarkOneRead(alertId);
+                                    },
+                                    className: "flex items-center gap-1 px-3 py-1.5 rounded-full border border-[#4CAF50] text-[#4CAF50] hover:bg-green-50 text-xs font-semibold transition-colors",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__["Check"], {
+                                            size: 11
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                            lineNumber: 143,
+                                            columnNumber: 17
+                                        }, this),
+                                        " Mark Read"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                    lineNumber: 136,
+                                    columnNumber: 15
+                                }, this),
+                                read && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "text-[10px] text-gray-300 font-medium",
+                                    children: "Read"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                    lineNumber: 147,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                            lineNumber: 122,
+                            lineNumber: 131,
                             columnNumber: 11
                         }, this)
                     ]
@@ -5650,68 +6404,415 @@ function NotificationRow({ notification, onAction }) {
                     fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
                     lineNumber: 108,
                     columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "flex flex-col items-end gap-2 shrink-0",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            className: "text-[11px] text-gray-400 whitespace-nowrap",
-                            children: notification.time
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                            lineNumber: 127,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ActionButton, {
-                            action: notification.action,
-                            onClick: ()=>onAction?.(notification)
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                            lineNumber: 130,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                    lineNumber: 126,
-                    columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-            lineNumber: 106,
+            lineNumber: 88,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-        lineNumber: 105,
+        lineNumber: 81,
         columnNumber: 5
     }, this);
 }
 function NotificationsPage() {
+    const [alerts, setAlerts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [selected, setSelected] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(new Set());
+    const [marking, setMarking] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const fetchAlerts = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
+        setLoading(true);
+        setError("");
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/alerts`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error("Failed to fetch alerts");
+            const json = await res.json();
+            console.log("✅ Alerts raw:", json);
+            const list = json?.data?.alerts ?? // ← actual shape: { data: { alerts: [] }, meta: {} }
+            json?.data?.data?.alerts ?? json?.alerts ?? (Array.isArray(json?.data) ? json.data : []);
+            // Assign guaranteed unique _key using publicId
+            const withKeys = list.map((a, i)=>({
+                    ...a,
+                    _key: a.publicId ?? `alert-${i}`
+                }));
+            console.log("✅ Alerts parsed:", withKeys.length, "items, IDs:", withKeys.map((a)=>a._key));
+            setAlerts(withKeys);
+            setSelected(new Set());
+        } catch (err) {
+            setError(err.message);
+        } finally{
+            setLoading(false);
+        }
+    }, []);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        fetchAlerts();
+    }, [
+        fetchAlerts
+    ]);
+    // ── Toggle single checkbox ──────────────────────────────────────────────
+    const toggleSelect = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])((alertId)=>{
+        if (!alertId) return;
+        setSelected((prev)=>{
+            const next = new Set(prev);
+            if (next.has(alertId)) {
+                next.delete(alertId);
+            } else {
+                next.add(alertId);
+            }
+            return next;
+        });
+    }, []);
+    // ── Mark ONE specific alert as read ────────────────────────────────────────
+    const markOneRead = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async (alertId)=>{
+        if (!alertId || marking) return;
+        setMarking(true);
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/alerts/${alertId}/read`, {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error();
+            // Update ONLY this specific alert by matching publicId
+            setAlerts((prev)=>prev.map((a)=>a.publicId === alertId ? {
+                        ...a,
+                        isRead: true
+                    } : a));
+            setSelected((prev)=>{
+                const n = new Set(prev);
+                n.delete(alertId);
+                return n;
+            });
+        } catch  {
+            fetchAlerts();
+        } finally{
+            setMarking(false);
+        }
+    }, [
+        marking,
+        fetchAlerts
+    ]);
+    // ── Mark SELECTED alerts as read ───────────────────────────────────────────
+    const markSelectedRead = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
+        const ids = [
+            ...selected
+        ].filter(Boolean);
+        if (!ids.length || marking) return;
+        setMarking(true);
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/alerts/read`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: JSON.stringify({
+                    alertIds: ids
+                })
+            });
+            if (!res.ok) throw new Error();
+            setAlerts((prev)=>prev.map((a)=>ids.includes(a.publicId) ? {
+                        ...a,
+                        isRead: true
+                    } : a));
+            setSelected(new Set());
+        } catch  {
+            fetchAlerts();
+        } finally{
+            setMarking(false);
+        }
+    }, [
+        selected,
+        marking,
+        fetchAlerts
+    ]);
+    // ── Mark ALL as read ────────────────────────────────────────────────────────
+    const markAllRead = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
+        if (marking) return;
+        setMarking(true);
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/alerts/read-all`, {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error();
+            setAlerts((prev)=>prev.map((a)=>({
+                        ...a,
+                        isRead: true,
+                        read: true
+                    })));
+            setSelected(new Set());
+        } catch  {
+            fetchAlerts();
+        } finally{
+            setMarking(false);
+        }
+    }, [
+        marking,
+        fetchAlerts
+    ]);
+    // ── Derived counts ──────────────────────────────────────────────────────────
+    const unreadAlerts = alerts.filter((a)=>!isAlertRead(a));
+    const unreadCount = unreadAlerts.length;
+    const unreadIds = unreadAlerts.map((a)=>getAlertId(a) ?? a._key).filter(Boolean);
+    const allUnreadSelected = unreadIds.length > 0 && unreadIds.every((id)=>selected.has(id));
+    const selectedCount = selected.size;
+    const toggleSelectAll = ()=>{
+        if (allUnreadSelected) {
+            setSelected(new Set());
+        } else {
+            setSelected(new Set(unreadIds));
+        }
+    };
+    // ── Render ──────────────────────────────────────────────────────────────────
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
         className: "flex-1 overflow-y-auto px-6 py-5 space-y-3",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                className: "text-base font-bold text-gray-800 mb-4",
-                children: "Notifications"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between mb-2",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                className: "text-base font-bold text-gray-800",
+                                children: "Notifications"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                lineNumber: 336,
+                                columnNumber: 11
+                            }, this),
+                            unreadCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-xs text-[#4CAF50] font-medium mt-0.5",
+                                children: [
+                                    unreadCount,
+                                    " unread"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                lineNumber: 338,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                        lineNumber: 335,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center gap-2",
+                        children: [
+                            selectedCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: markSelectedRead,
+                                disabled: marking,
+                                className: "flex items-center gap-1.5 text-xs text-white bg-[#4CAF50] hover:bg-[#43a047] px-3 py-1.5 rounded-lg font-semibold transition-colors disabled:opacity-50",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__["Check"], {
+                                        size: 13
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                        lineNumber: 352,
+                                        columnNumber: 15
+                                    }, this),
+                                    marking ? "Marking..." : `Mark ${selectedCount} Read`
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                lineNumber: 347,
+                                columnNumber: 13
+                            }, this),
+                            unreadCount > 0 && selectedCount === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: markAllRead,
+                                disabled: marking,
+                                className: "flex items-center gap-1.5 text-xs text-[#4CAF50] border border-[#4CAF50] hover:bg-green-50 px-3 py-1.5 rounded-lg font-semibold transition-colors disabled:opacity-50",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCheck$3e$__["CheckCheck"], {
+                                        size: 13
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                        lineNumber: 363,
+                                        columnNumber: 15
+                                    }, this),
+                                    marking ? "Marking..." : "Mark All Read"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                lineNumber: 358,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                        lineNumber: 344,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                lineNumber: 145,
+                lineNumber: 334,
                 columnNumber: 7
             }, this),
-            notifications.map((n, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(NotificationRow, {
-                    notification: n,
-                    onAction: (n)=>console.log("Action:", n)
-                }, i, false, {
+            !loading && unreadCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center gap-2 px-1 pb-1",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    onClick: toggleSelectAll,
+                    className: "flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 font-medium transition-colors",
+                    children: [
+                        allUnreadSelected ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2d$check$2d$big$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckSquare$3e$__["CheckSquare"], {
+                            size: 14,
+                            className: "text-[#4CAF50]"
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                            lineNumber: 378,
+                            columnNumber: 15
+                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"], {
+                            size: 14
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                            lineNumber: 380,
+                            columnNumber: 15
+                        }, this),
+                        allUnreadSelected ? "Deselect all" : `Select all unread (${unreadCount})`
+                    ]
+                }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-                    lineNumber: 148,
-                    columnNumber: 9
+                    lineNumber: 373,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                lineNumber: 372,
+                columnNumber: 9
+            }, this),
+            loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-3",
+                children: [
+                    1,
+                    2,
+                    3,
+                    4
+                ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "bg-white rounded-xl border border-gray-100 px-5 py-4 animate-pulse",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex gap-3",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "w-4 h-4 bg-gray-100 rounded mt-0.5 shrink-0"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                    lineNumber: 398,
+                                    columnNumber: 17
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "w-7 h-7 bg-gray-100 rounded-lg shrink-0"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                    lineNumber: 399,
+                                    columnNumber: 17
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex-1 space-y-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "h-3 bg-gray-100 rounded w-2/3"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                            lineNumber: 401,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "h-2.5 bg-gray-100 rounded w-1/3"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                            lineNumber: 402,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                                    lineNumber: 400,
+                                    columnNumber: 17
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                            lineNumber: 397,
+                            columnNumber: 15
+                        }, this)
+                    }, i, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                        lineNumber: 393,
+                        columnNumber: 13
+                    }, this))
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                lineNumber: 391,
+                columnNumber: 9
+            }, this),
+            !loading && error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "bg-white rounded-xl border border-gray-100 p-8 text-center",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-sm text-red-500 mb-2",
+                        children: error
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                        lineNumber: 413,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: fetchAlerts,
+                        className: "text-xs text-[#4CAF50] hover:underline",
+                        children: "Try again"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                        lineNumber: 414,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                lineNumber: 412,
+                columnNumber: 9
+            }, this),
+            !loading && !error && alerts.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "bg-white rounded-xl border border-gray-100 p-8 text-center",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                    className: "text-sm text-gray-400",
+                    children: "No notifications yet."
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                    lineNumber: 426,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                lineNumber: 425,
+                columnNumber: 9
+            }, this),
+            !loading && !error && alerts.map((alert)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(NotificationRow, {
+                    alert: alert,
+                    selected: selected.has(getAlertId(alert) ?? alert._key),
+                    onToggleSelect: toggleSelect,
+                    onMarkOneRead: markOneRead
+                }, alert._key, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
+                    lineNumber: 434,
+                    columnNumber: 11
                 }, this))
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx",
-        lineNumber: 144,
+        lineNumber: 332,
         columnNumber: 5
     }, this);
 }
@@ -5725,15 +6826,27 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-ssr] (ecmascript) <export default as MapPin>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/eye.js [app-ssr] (ecmascript) <export default as Eye>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__EyeOff$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/eye-off.js [app-ssr] (ecmascript) <export default as EyeOff>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/copy.js [app-ssr] (ecmascript) <export default as Copy>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/plus.js [app-ssr] (ecmascript) <export default as Plus>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-ssr] (ecmascript) <export default as Loader2>");
 "use client";
 ;
 ;
 ;
-// ── Shared UI primitives ──────────────────────────────────────────────────────
+const API = ("TURBOPACK compile-time value", "https://smartruga-api-d11b7da5a7fa.herokuapp.com/api/v1");
+function getToken() {
+    if ("TURBOPACK compile-time truthy", 1) return "";
+    //TURBOPACK unreachable
+    ;
+}
+function getRole() {
+    if ("TURBOPACK compile-time truthy", 1) return "";
+    //TURBOPACK unreachable
+    ;
+}
+// ── Shared UI ─────────────────────────────────────────────────────────────────
 function SectionLabel({ label }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex items-center gap-1.5 mb-4",
@@ -5742,7 +6855,7 @@ function SectionLabel({ label }) {
                 className: "w-2 h-2 rounded-full bg-[#4CAF50]"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 11,
+                lineNumber: 21,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5750,13 +6863,13 @@ function SectionLabel({ label }) {
                 children: label
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 12,
+                lineNumber: 22,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 10,
+        lineNumber: 20,
         columnNumber: 5
     }, this);
 }
@@ -5769,7 +6882,7 @@ function FieldGroup({ label, hint, children }) {
                 children: label
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 20,
+                lineNumber: 30,
                 columnNumber: 7
             }, this),
             hint && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5777,18 +6890,18 @@ function FieldGroup({ label, hint, children }) {
                 children: hint
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 21,
+                lineNumber: 31,
                 columnNumber: 16
             }, this),
             children
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 19,
+        lineNumber: 29,
         columnNumber: 5
     }, this);
 }
-function TextInput({ value, onChange, type = "text", icon, readOnly }) {
+function TextInput({ value, onChange, type = "text", icon, readOnly, placeholder }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "relative",
         children: [
@@ -5797,10 +6910,11 @@ function TextInput({ value, onChange, type = "text", icon, readOnly }) {
                 value: value,
                 onChange: onChange,
                 readOnly: readOnly,
+                placeholder: placeholder,
                 className: `w-full text-xs border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:border-[#4CAF50] transition-colors ${readOnly ? "bg-gray-50 text-gray-500" : "bg-white text-gray-800"} ${icon ? "pr-8" : ""}`
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 30,
+                lineNumber: 47,
                 columnNumber: 7
             }, this),
             icon && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5808,17 +6922,16 @@ function TextInput({ value, onChange, type = "text", icon, readOnly }) {
                 children: icon
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 38,
+                lineNumber: 58,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 29,
+        lineNumber: 46,
         columnNumber: 5
     }, this);
 }
-// Toggle between two options (Enable/Disable style)
 function TogglePair({ options, value, onChange }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex items-center border border-gray-200 rounded-full overflow-hidden w-fit",
@@ -5830,23 +6943,22 @@ function TogglePair({ options, value, onChange }) {
                         className: "w-1.5 h-1.5 rounded-full bg-[#4CAF50]"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 61,
+                        lineNumber: 80,
                         columnNumber: 13
                     }, this),
                     opt
                 ]
             }, opt, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 51,
+                lineNumber: 70,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 49,
+        lineNumber: 68,
         columnNumber: 5
     }, this);
 }
-// Toggle among three options (Daily/Weekly/Monthly style)
 function TriToggle({ options, value, onChange }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex items-center border border-gray-200 rounded-full overflow-hidden w-fit",
@@ -5858,19 +6970,19 @@ function TriToggle({ options, value, onChange }) {
                         className: "w-1.5 h-1.5 rounded-full bg-[#4CAF50]"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 85,
+                        lineNumber: 103,
                         columnNumber: 13
                     }, this),
                     opt
                 ]
             }, opt, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 75,
+                lineNumber: 93,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 73,
+        lineNumber: 91,
         columnNumber: 5
     }, this);
 }
@@ -5886,12 +6998,12 @@ function SelectInput({ value, onChange, options }) {
                         children: o
                     }, o, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 103,
+                        lineNumber: 121,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 97,
+                lineNumber: 115,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5899,50 +7011,410 @@ function SelectInput({ value, onChange, options }) {
                 children: "▾"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 106,
+                lineNumber: 124,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 96,
+        lineNumber: 114,
+        columnNumber: 5
+    }, this);
+}
+// ── Banner ────────────────────────────────────────────────────────────────────
+function Banner({ type, message }) {
+    if (!message) return null;
+    const styles = {
+        success: "bg-[#f0fdf4] border-[#d1fae5] text-[#4CAF50]",
+        error: "bg-red-50 border-red-100 text-red-500"
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: `px-4 py-3 rounded-xl border text-xs font-medium ${styles[type]}`,
+        children: [
+            type === "success" ? "✅" : "⚠️",
+            " ",
+            message
+        ]
+    }, void 0, true, {
+        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+        lineNumber: 140,
         columnNumber: 5
     }, this);
 }
 // ── Tab 1: Account & Ranch Info ───────────────────────────────────────────────
 function AccountTab() {
+    const fileInputRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const isOwner = getRole() === "owner" || getRole() === "admin";
+    const [profile, setProfile] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [saving, setSaving] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [imgLoading, setImgLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [showPassword, setShowPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [success, setSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
-        name: "Adelodun Harris",
-        email: "adelodharry@mail.com",
-        ranch: "Ruga Ranch",
-        location: "Kano State, Nigeria",
-        ranchId: "RAN-45821",
-        password: "••••••••"
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        location: "",
+        password: ""
     });
-    const set = (key)=>(e)=>setForm((f)=>({
+    const set = (k)=>(e)=>setForm((f)=>({
                     ...f,
-                    [key]: e.target.value
+                    [k]: e.target.value
                 }));
+    const flash = (type, msg)=>{
+        if (type === "success") {
+            setSuccess(msg);
+            setError("");
+        } else {
+            setError(msg);
+            setSuccess("");
+        }
+        setTimeout(()=>{
+            setSuccess("");
+            setError("");
+        }, 4000);
+    };
+    // ── Fetch profile ───────────────────────────────────────────────────────────
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        const load = async ()=>{
+            // Seed form from localStorage immediately (data saved at login)
+            try {
+                const stored = JSON.parse(localStorage.getItem("sr_user") || "{}");
+                if (stored.name) {
+                    const parts = stored.name.trim().split(" ");
+                    const firstName = parts[0] ?? "";
+                    const lastName = parts.slice(1).join(" ") ?? "";
+                    setForm((f)=>({
+                            ...f,
+                            firstName,
+                            lastName,
+                            email: stored.email ?? ""
+                        }));
+                }
+            } catch  {}
+            // Fetch from API
+            try {
+                const url = `${API}/user/me`;
+                const token = getToken();
+                console.log("📡 GET", url, "| token:", token ? token.slice(0, 20) + "..." : "MISSING");
+                const res = await fetch(url, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                console.log("📡 Profile response status:", res.status);
+                if (!res.ok) {
+                    const errBody = await res.json().catch(()=>({}));
+                    if (res.status === 404) {
+                        console.warn("⚠️ Profile endpoint not yet available — using login data instead");
+                    } else {
+                        console.error("❌ Profile fetch failed:", res.status, errBody);
+                    }
+                    setLoading(false);
+                    return;
+                }
+                const json = await res.json();
+                console.log("✅ Profile raw response:", JSON.stringify(json, null, 2));
+                // Actual shape: { data: { user: {...}, memberships: [...] } }
+                const user = json?.data?.user ?? {};
+                const memberships = json?.data?.memberships ?? [];
+                const ranch = memberships[0] ?? null;
+                const profileData = {
+                    ...user,
+                    ranch,
+                    memberships
+                };
+                console.log("✅ Profile mapped:", profileData);
+                setProfile(profileData);
+                setForm({
+                    firstName: user.first_name ?? user.firstName ?? "",
+                    lastName: user.last_name ?? user.lastName ?? "",
+                    email: user.email ?? "",
+                    phone: user.phone ?? "",
+                    location: ranch?.location ?? "",
+                    password: ""
+                });
+            } catch (err) {
+                console.error("❌ Profile fetch error:", err.message);
+            } finally{
+                setLoading(false);
+            }
+        };
+        load();
+    }, []);
+    // Has this owner created a ranch already?
+    // Ranch is in profile.memberships[0] from the API
+    const hasRanch = !!(profile?.memberships?.length > 0 || profile?.ranch?.ranchId);
+    // ── Update profile ──────────────────────────────────────────────────────────
+    const handleSave = async ()=>{
+        setSaving(true);
+        try {
+            // API uses snake_case: first_name, last_name
+            const body = {
+                first_name: form.firstName,
+                last_name: form.lastName,
+                email: form.email
+            };
+            if (form.phone) body.phone = form.phone;
+            if (form.location) body.location = form.location;
+            if (form.password) body.password = form.password;
+            const res = await fetch(`${API}/user/me`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message || "Failed to update profile");
+            }
+            const json = await res.json();
+            const data = json?.data?.data ?? json?.data ?? json;
+            setProfile((p)=>({
+                    ...p,
+                    ...data
+                }));
+            setForm((f)=>({
+                    ...f,
+                    password: ""
+                }));
+            flash("success", "Profile updated successfully!");
+        } catch (err) {
+            flash("error", err.message || "Something went wrong");
+        } finally{
+            setSaving(false);
+        }
+    };
+    // ── Upload image ────────────────────────────────────────────────────────────
+    const handleImageUpload = async (e)=>{
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setImgLoading(true);
+        try {
+            const data = new FormData();
+            data.append("image", file);
+            const res = await fetch(`${API}/user/me/image`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: data
+            });
+            if (!res.ok) throw new Error("Image upload failed");
+            const json = await res.json();
+            const imageUrl = json?.data?.imageUrl ?? json?.data?.data?.imageUrl ?? json?.imageUrl;
+            if (imageUrl) setProfile((p)=>({
+                    ...p,
+                    imageUrl
+                }));
+            flash("success", "Profile picture updated!");
+        } catch (err) {
+            flash("error", err.message);
+        } finally{
+            setImgLoading(false);
+        }
+    };
+    // ── Delete image ────────────────────────────────────────────────────────────
+    const handleImageDelete = async ()=>{
+        if (!profile?.imageUrl) return;
+        setImgLoading(true);
+        try {
+            const res = await fetch(`${API}/user/me/image`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error("Failed to delete image");
+            setProfile((p)=>({
+                    ...p,
+                    imageUrl: null
+                }));
+            flash("success", "Profile picture removed.");
+        } catch (err) {
+            flash("error", err.message);
+        } finally{
+            setImgLoading(false);
+        }
+    };
+    if (loading) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "space-y-4 animate-pulse",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex gap-5 items-center",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "w-20 h-20 rounded-full bg-gray-100"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                        lineNumber: 358,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "space-y-2 flex-1",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "h-3 bg-gray-100 rounded w-1/3"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                lineNumber: 360,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "h-8 bg-gray-100 rounded w-48"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                lineNumber: 361,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                        lineNumber: 359,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                lineNumber: 357,
+                columnNumber: 9
+            }, this),
+            [
+                1,
+                2,
+                3
+            ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "h-10 bg-gray-100 rounded"
+                }, i, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                    lineNumber: 365,
+                    columnNumber: 11
+                }, this))
+        ]
+    }, void 0, true, {
+        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+        lineNumber: 356,
+        columnNumber: 7
+    }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-6",
         children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Banner, {
+                type: "success",
+                message: success
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                lineNumber: 372,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Banner, {
+                type: "error",
+                message: error
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                lineNumber: 373,
+                columnNumber: 7
+            }, this),
+            isOwner && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-xs font-bold text-gray-800",
+                                children: "Ranch"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                lineNumber: 379,
+                                columnNumber: 13
+                            }, this),
+                            hasRanch ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-[11px] text-gray-500 mt-0.5",
+                                children: [
+                                    profile?.ranch?.ranchName ?? "Your ranch",
+                                    " ·",
+                                    " ",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-gray-400",
+                                        children: profile?.ranch?.ranchSlug
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                        lineNumber: 383,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                lineNumber: 381,
+                                columnNumber: 15
+                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-[11px] text-amber-500 mt-0.5",
+                                children: "You haven't created a ranch yet"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                lineNumber: 388,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                        lineNumber: 378,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        disabled: hasRanch,
+                        title: hasRanch ? "You already have a ranch" : "Create a new ranch",
+                        className: `flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg transition-colors ${hasRanch ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-[#4CAF50] hover:bg-[#43a047] text-white shadow-sm"}`,
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
+                                size: 13
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                lineNumber: 402,
+                                columnNumber: 13
+                            }, this),
+                            hasRanch ? "Ranch Created" : "Create Ranch"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                        lineNumber: 393,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                lineNumber: 377,
+                columnNumber: 9
+            }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex items-center gap-5",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-20 h-20 rounded-full bg-gray-200 overflow-hidden shrink-0",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "w-20 h-20 rounded-full bg-gray-100 overflow-hidden shrink-0 border border-gray-200",
+                        children: profile?.imageUrl ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                            src: profile.imageUrl,
+                            alt: "Profile",
+                            className: "w-full h-full object-cover"
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 412,
+                            columnNumber: 13
+                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "w-full h-full flex items-center justify-center text-gray-400 text-2xl",
                             children: "👤"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 133,
-                            columnNumber: 11
+                            lineNumber: 418,
+                            columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 132,
+                        lineNumber: 410,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5952,7 +7424,7 @@ function AccountTab() {
                                 children: "Profile Picture"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 138,
+                                lineNumber: 424,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5960,249 +7432,276 @@ function AccountTab() {
                                 children: "PNG, JPEG under 10mb"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 141,
+                                lineNumber: 427,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex gap-2",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "px-4 py-1.5 rounded-lg bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors",
-                                        children: "Change Picture"
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                        ref: fileInputRef,
+                                        type: "file",
+                                        accept: "image/*",
+                                        className: "hidden",
+                                        onChange: handleImageUpload
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 143,
+                                        lineNumber: 429,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "px-4 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-medium transition-colors",
+                                        onClick: ()=>fileInputRef.current?.click(),
+                                        disabled: imgLoading,
+                                        className: "px-4 py-1.5 rounded-lg bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors disabled:opacity-60 flex items-center gap-1.5",
+                                        children: [
+                                            imgLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                size: 11,
+                                                className: "animate-spin"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                                lineNumber: 442,
+                                                columnNumber: 17
+                                            }, this) : null,
+                                            "Change Picture"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                        lineNumber: 436,
+                                        columnNumber: 13
+                                    }, this),
+                                    profile?.imageUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        onClick: handleImageDelete,
+                                        disabled: imgLoading,
+                                        className: "px-4 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-medium transition-colors disabled:opacity-60",
                                         children: "Delete Picture"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 146,
-                                        columnNumber: 13
+                                        lineNumber: 447,
+                                        columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 142,
+                                lineNumber: 428,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 137,
+                        lineNumber: 423,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 131,
+                lineNumber: 409,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "border-t border-gray-100"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 153,
+                lineNumber: 459,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "grid xl:grid-cols-2 grid-cols-1 gap-6",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
-                        label: "Full Name",
-                        hint: "Edit your Full name",
+                        label: "First Name",
+                        hint: "Edit your first name",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TextInput, {
-                            value: form.name,
-                            onChange: set("name")
+                            value: form.firstName,
+                            onChange: set("firstName"),
+                            placeholder: "First name"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 158,
+                            lineNumber: 464,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 157,
+                        lineNumber: 463,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
-                        label: "Email Address",
-                        hint: "Manage your account email address",
+                        label: "Last Name",
+                        hint: "Edit your last name",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TextInput, {
-                            value: form.email,
-                            onChange: set("email"),
-                            type: "email"
+                            value: form.lastName,
+                            onChange: set("lastName"),
+                            placeholder: "Last name"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 164,
+                            lineNumber: 471,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 160,
+                        lineNumber: 470,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 156,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "grid grid-cols-2 gap-6",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
-                        label: "Ranch Information",
-                        hint: "Edit your ranch name",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TextInput, {
-                            value: form.ranch,
-                            onChange: set("ranch")
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 171,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 170,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
-                        label: "Ranch Location",
-                        hint: "Edit your ranch location",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TextInput, {
-                            value: form.location,
-                            onChange: set("location"),
-                            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
-                                size: 13
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 177,
-                                columnNumber: 19
-                            }, void 0)
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 174,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 173,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 169,
+                lineNumber: 462,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
-                label: "Ranch Unique ID",
+                label: "Email Address",
+                hint: "Manage your account email address",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TextInput, {
+                    value: form.email,
+                    onChange: set("email"),
+                    type: "email",
+                    placeholder: "Email address"
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                    lineNumber: 483,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                lineNumber: 479,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
+                label: "Phone Number",
+                hint: "Your contact phone number",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TextInput, {
+                    value: form.phone,
+                    onChange: set("phone"),
+                    type: "tel",
+                    placeholder: "+234 800 000 0000"
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                    lineNumber: 492,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                lineNumber: 491,
+                columnNumber: 7
+            }, this),
+            profile?.ranch?.ranchSlug && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
+                label: "Ranch ID",
                 hint: "Share this ID with your staff so they can register under your ranch",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TextInput, {
+                    value: profile.ranch.ranchSlug,
+                    readOnly: true,
+                    icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>navigator.clipboard.writeText(profile.ranch.ranchSlug),
+                        className: "hover:text-[#4CAF50] transition-colors",
+                        title: "Copy",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__["Copy"], {
+                            size: 13
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 517,
+                            columnNumber: 17
+                        }, void 0)
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                        lineNumber: 510,
+                        columnNumber: 15
+                    }, void 0)
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                    lineNumber: 506,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                lineNumber: 502,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
+                label: "New Password",
+                hint: "Leave blank to keep your current password",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex gap-3",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex-1",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TextInput, {
-                            value: form.ranchId,
-                            readOnly: true,
-                            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__["Copy"], {
-                                size: 13
+                        className: "flex-1 relative",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: showPassword ? "text" : "password",
+                                value: form.password,
+                                onChange: set("password"),
+                                placeholder: "Enter new password",
+                                className: "w-full text-xs border border-gray-200 rounded-lg px-3 py-2.5 pr-8 bg-white text-gray-800 focus:outline-none focus:border-[#4CAF50] transition-colors placeholder-gray-400"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 192,
-                                columnNumber: 21
-                            }, void 0)
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 189,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
+                                lineNumber: 531,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>setShowPassword(!showPassword),
+                                className: "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600",
+                                children: showPassword ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__EyeOff$3e$__["EyeOff"], {
+                                    size: 13
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 542,
+                                    columnNumber: 31
+                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
+                                    size: 13
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 542,
+                                    columnNumber: 54
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                lineNumber: 538,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 188,
+                        lineNumber: 530,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                    lineNumber: 187,
+                    lineNumber: 529,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 183,
+                lineNumber: 525,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
-                label: "Password",
-                hint: "Manage your account password",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "flex gap-3",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex justify-end pt-2",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    onClick: handleSave,
+                    disabled: saving,
+                    className: "flex items-center gap-1.5 px-6 py-2.5 rounded-lg bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors disabled:opacity-60",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex-1 relative",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                    type: showPassword ? "text" : "password",
-                                    value: form.password,
-                                    onChange: set("password"),
-                                    className: "w-full text-xs border border-gray-200 rounded-lg px-3 py-2.5 pr-8 bg-white text-gray-800 focus:outline-none focus:border-[#4CAF50] transition-colors"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 205,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>setShowPassword(!showPassword),
-                                    className: "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600",
-                                    children: showPassword ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__EyeOff$3e$__["EyeOff"], {
-                                        size: 13
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 215,
-                                        columnNumber: 31
-                                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
-                                        size: 13
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 215,
-                                        columnNumber: 54
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 211,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 204,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                            className: "px-4 py-2 rounded-lg bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors whitespace-nowrap",
-                            children: "Change Password"
+                        saving ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                            size: 12,
+                            className: "animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 218,
-                            columnNumber: 11
-                        }, this)
+                            lineNumber: 555,
+                            columnNumber: 21
+                        }, this) : null,
+                        saving ? "Saving..." : "Save Changes"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                    lineNumber: 203,
+                    lineNumber: 550,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 202,
+                lineNumber: 549,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 129,
+        lineNumber: 371,
         columnNumber: 5
     }, this);
 }
@@ -6275,7 +7774,7 @@ function UsersRolesTab() {
                         label: role
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 297,
+                        lineNumber: 633,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6291,7 +7790,7 @@ function UsersRolesTab() {
                                                 children: label
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                                lineNumber: 302,
+                                                lineNumber: 638,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -6299,13 +7798,13 @@ function UsersRolesTab() {
                                                 children: hint
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                                lineNumber: 305,
+                                                lineNumber: 641,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 301,
+                                        lineNumber: 637,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TogglePair, {
@@ -6320,36 +7819,36 @@ function UsersRolesTab() {
                                                 }))
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 307,
+                                        lineNumber: 643,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, key, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 300,
+                                lineNumber: 636,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 298,
+                        lineNumber: 634,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "border-t border-gray-100 mt-6"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 315,
+                        lineNumber: 651,
                         columnNumber: 11
                     }, this)
                 ]
             }, role, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 296,
+                lineNumber: 632,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 294,
+        lineNumber: 630,
         columnNumber: 5
     }, this);
 }
@@ -6370,7 +7869,7 @@ function ReportingTab() {
                         label: "Report Format & Frequency"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 336,
+                        lineNumber: 671,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6389,12 +7888,12 @@ function ReportingTab() {
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 342,
+                                    lineNumber: 677,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 338,
+                                lineNumber: 673,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -6410,24 +7909,24 @@ function ReportingTab() {
                                     onChange: setScheduleReport
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 352,
+                                    lineNumber: 687,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 348,
+                                lineNumber: 683,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 337,
+                        lineNumber: 672,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 335,
+                lineNumber: 670,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6436,7 +7935,7 @@ function ReportingTab() {
                         label: "Financial Preferences"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 363,
+                        lineNumber: 696,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6456,12 +7955,12 @@ function ReportingTab() {
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 369,
+                                    lineNumber: 702,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 365,
+                                lineNumber: 698,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -6476,24 +7975,24 @@ function ReportingTab() {
                                     onChange: setNumberFormat
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 379,
+                                    lineNumber: 712,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 375,
+                                lineNumber: 708,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 364,
+                        lineNumber: 697,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 362,
+                lineNumber: 695,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6502,7 +8001,7 @@ function ReportingTab() {
                         label: "Livestock Data Preferences"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 390,
+                        lineNumber: 721,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6520,12 +8019,12 @@ function ReportingTab() {
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 396,
+                                    lineNumber: 727,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 392,
+                                lineNumber: 723,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -6540,30 +8039,30 @@ function ReportingTab() {
                                     onChange: setAgeDisplay
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 406,
+                                    lineNumber: 737,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 402,
+                                lineNumber: 733,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 391,
+                        lineNumber: 722,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 389,
+                lineNumber: 720,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 333,
+        lineNumber: 669,
         columnNumber: 5
     }, this);
 }
@@ -6595,7 +8094,7 @@ function SettingsPage() {
                         children: "Settings"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 433,
+                        lineNumber: 763,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6606,18 +8105,18 @@ function SettingsPage() {
                                 children: label
                             }, key, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 436,
+                                lineNumber: 766,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 434,
+                        lineNumber: 764,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 432,
+                lineNumber: 762,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6625,29 +8124,29 @@ function SettingsPage() {
                 children: [
                     activeTab === "account" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(AccountTab, {}, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 453,
+                        lineNumber: 782,
                         columnNumber: 37
                     }, this),
                     activeTab === "roles" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(UsersRolesTab, {}, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 454,
+                        lineNumber: 783,
                         columnNumber: 35
                     }, this),
                     activeTab === "reporting" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ReportingTab, {}, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 455,
+                        lineNumber: 784,
                         columnNumber: 39
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 452,
+                lineNumber: 781,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 430,
+        lineNumber: 761,
         columnNumber: 5
     }, this);
 }
@@ -6674,6 +8173,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboa
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$pages$2f$owner$2f$NotificationsPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/dashboard/pages/owner/NotificationsPage.jsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$pages$2f$owner$2f$SettingsPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/dashboard/pages/owner/SettingsPage.jsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$context$2f$AuthContext$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/context/AuthContext.js [app-ssr] (ecmascript)");
 "use client";
 ;
 ;
@@ -6690,29 +8190,90 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$imag
 ;
 ;
 ;
-// ── Static data ───────────────────────────────────────────────────────────────
-const pendingRequests = [
-    {
-        id: "#REQ-1007",
-        date: "29 Aug 2025",
-        type: "Inventory Refill",
-        item: "Maize Feed",
-        qty: "2,000 kg",
-        cost: "₦250,000",
-        by: "Manager Amin"
-    },
-    {
-        id: "#REQ-1006",
-        date: "27 Aug 2025",
-        type: "Equipment Purchase",
-        item: "Ear Tags",
-        qty: "500 units",
-        cost: "₦45,000",
-        by: "Supervisor Kola"
-    }
-];
+;
+const API = ("TURBOPACK compile-time value", "https://smartruga-api-d11b7da5a7fa.herokuapp.com/api/v1");
+// Safe client-side only accessors
+function getSlug() {
+    if ("TURBOPACK compile-time truthy", 1) return "";
+    //TURBOPACK unreachable
+    ;
+}
+function getToken() {
+    if ("TURBOPACK compile-time truthy", 1) return "";
+    //TURBOPACK unreachable
+    ;
+}
 function OwnerDashboard() {
+    const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$context$2f$AuthContext$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
     const [activeItem, setActiveItem] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("Dashboard");
+    const [dashData, setDashData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [dashLoading, setDashLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const fetchDashboard = async ()=>{
+        setDashLoading(true);
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/dashboard`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error();
+            const json = await res.json();
+            console.log("✅ Dashboard data:", json);
+            setDashData(json?.data?.data ?? json?.data ?? json);
+        } catch  {
+        // keep dashData null → UI falls back to demo values
+        } finally{
+            setDashLoading(false);
+        }
+    };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (activeItem === "Dashboard") fetchDashboard();
+    }, [
+        activeItem
+    ]);
+    // ── Map API fields precisely from real response ───────────────────────────
+    const ranchName = getSlug() || "Your Ranch";
+    const ranchId = getSlug() || "—";
+    // Animals
+    const livestockCount = dashData?.animals?.total ?? "—";
+    const sickAnimals = dashData?.animals?.sick ?? 0;
+    const activeAnimals = dashData?.animals?.active ?? 0;
+    // Inventory
+    const inventoryTotal = dashData?.inventory?.totalItems ?? "—";
+    const lowStock = dashData?.inventory?.lowStockItems ?? 0;
+    const totalQty = dashData?.inventory?.totalQuantityOnHand ?? "—";
+    // Tasks
+    const tasksPending = dashData?.tasks?.pending ?? "—";
+    const tasksTotal = dashData?.tasks?.total ?? "—";
+    const tasksCompleted = dashData?.tasks?.completed ?? "—";
+    // Members
+    const membersTotal = dashData?.members?.total ?? "—";
+    // Concerns
+    const concernsOpen = dashData?.concerns?.open ?? "—";
+    const concernsUrgent = dashData?.concerns?.urgent ?? 0;
+    // Vaccination alerts
+    const vaxOverdue = dashData?.vaccinationAlerts?.overdue ?? 0;
+    const vaxDueToday = dashData?.vaccinationAlerts?.dueToday ?? 0;
+    // Pending requests from recentAssignedConcerns
+    const pendingRequests = (dashData?.recentAssignedConcerns ?? []).map((r)=>({
+            id: r.publicId ?? "—",
+            date: r.createdAt ? new Date(r.createdAt).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }) : "—",
+            type: r.category ?? "—",
+            item: r.title ?? "—",
+            qty: "—",
+            cost: "—",
+            by: r.priority ?? "—"
+        }));
+    // Top performers for worker performance section
+    const topPerformers = dashData?.topPerformers ?? [];
+    // Low stock items
+    const lowStockItems = dashData?.lowStockItemsList ?? [];
+    // Recent activity
+    const recentActivity = dashData?.recentActivity ?? [];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex h-screen bg-gray-50 font-sans overflow-hidden",
         children: [
@@ -6732,43 +8293,43 @@ function OwnerDashboard() {
                 }
             }, void 0, false, {
                 fileName: "[project]/app/dashboard/owner/page.js",
-                lineNumber: 47,
+                lineNumber: 119,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex-1 flex flex-col overflow-hidden",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$shared$2f$Topbar$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                        userInitials: "AH",
+                        userInitials: user?.initials ?? "AH",
                         notificationCount: 1
                     }, void 0, false, {
                         fileName: "[project]/app/dashboard/owner/page.js",
-                        lineNumber: 64,
+                        lineNumber: 136,
                         columnNumber: 9
                     }, this),
                     activeItem === "Analytics & Reports" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$pages$2f$owner$2f$Analyticspage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/dashboard/owner/page.js",
-                        lineNumber: 67,
+                        lineNumber: 139,
                         columnNumber: 11
                     }, this) : activeItem === "Livestock Overview" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$pages$2f$owner$2f$LivestckOverview$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/dashboard/owner/page.js",
-                        lineNumber: 69,
+                        lineNumber: 141,
                         columnNumber: 11
                     }, this) : activeItem === "Requests & Approvals" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$pages$2f$owner$2f$RequestAprrovalPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/dashboard/owner/page.js",
-                        lineNumber: 71,
+                        lineNumber: 143,
                         columnNumber: 11
                     }, this) : activeItem === "Staff Management" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$pages$2f$owner$2f$StaffManagementPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/dashboard/owner/page.js",
-                        lineNumber: 73,
+                        lineNumber: 145,
                         columnNumber: 11
                     }, this) : activeItem === "Notifications" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$pages$2f$owner$2f$NotificationsPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/dashboard/owner/page.js",
-                        lineNumber: 75,
+                        lineNumber: 147,
                         columnNumber: 11
                     }, this) : activeItem === "Settings" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$pages$2f$owner$2f$SettingsPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/dashboard/owner/page.js",
-                        lineNumber: 77,
+                        lineNumber: 149,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
                         className: "flex-1 overflow-y-auto px-6 py-5 space-y-5",
@@ -6778,10 +8339,13 @@ function OwnerDashboard() {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                                         className: "text-base font-bold text-gray-800",
-                                        children: "Welcome, Giwa Ranch"
-                                    }, void 0, false, {
+                                        children: [
+                                            "Welcome, ",
+                                            ranchName
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                        lineNumber: 82,
+                                        lineNumber: 154,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6791,40 +8355,43 @@ function OwnerDashboard() {
                                             " ",
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 className: "font-semibold text-gray-600",
-                                                children: "RAN-45821"
+                                                children: ranchId
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                lineNumber: 87,
+                                                lineNumber: 159,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: fetchDashboard,
                                                 className: "hover:text-[#4CAF50] transition-colors",
+                                                title: "Refresh",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$refresh$2d$cw$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__RefreshCw$3e$__["RefreshCw"], {
-                                                    size: 12
+                                                    size: 12,
+                                                    className: dashLoading ? "animate-spin" : ""
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/dashboard/owner/page.js",
-                                                    lineNumber: 89,
+                                                    lineNumber: 165,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                lineNumber: 88,
+                                                lineNumber: 160,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                        lineNumber: 85,
+                                        lineNumber: 157,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                lineNumber: 81,
+                                lineNumber: 153,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "lg:flex gap-4 ",
+                                className: "lg:flex gap-4",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "md:flex gap-4 w-full lg:w-1/2 mb-5 lg:mb-0",
@@ -6833,91 +8400,131 @@ function OwnerDashboard() {
                                                 className: "w-full md:w-1/2 mb-4 md:mb-0 relative",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$shared$2f$StatCard$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                                     title: "Livestock Population",
-                                                    badge: "7 days",
+                                                    badge: "Total",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "flex justify-between",
                                                         children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                className: "text-4xl font-bold text-gray-800 mb-2",
-                                                                children: "2,000"
-                                                            }, void 0, false, {
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                        className: "text-4xl font-bold text-gray-800 mb-1",
+                                                                        children: livestockCount
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                                                        lineNumber: 180,
+                                                                        columnNumber: 25
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                        className: "text-[10px] text-gray-400",
+                                                                        children: [
+                                                                            activeAnimals,
+                                                                            " active · ",
+                                                                            sickAnimals,
+                                                                            " sick"
+                                                                        ]
+                                                                    }, void 0, true, {
+                                                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                                                        lineNumber: 183,
+                                                                        columnNumber: 25
+                                                                    }, this)
+                                                                ]
+                                                            }, void 0, true, {
                                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                                lineNumber: 100,
+                                                                lineNumber: 179,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                                                 src: "/images/chat.png",
                                                                 width: 50,
                                                                 height: 50,
-                                                                alt: "chat"
+                                                                alt: "chart"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                                lineNumber: 103,
+                                                                lineNumber: 187,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                                        lineNumber: 99,
+                                                        lineNumber: 178,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/dashboard/owner/page.js",
-                                                    lineNumber: 98,
+                                                    lineNumber: 177,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                lineNumber: 97,
+                                                lineNumber: 176,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "w-full md:w-1/2",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$shared$2f$StatCard$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                                    title: "Feed Stock Avail.",
-                                                    badge: "18 days left",
+                                                    title: "Inventory",
+                                                    badge: "Stock",
                                                     badgeColor: "bg-amber-50 text-amber-500",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "flex justify-between",
                                                         children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                className: "text-4xl font-bold text-gray-800 mb-2",
-                                                                children: "5,200kg"
-                                                            }, void 0, false, {
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                        className: "text-4xl font-bold text-gray-800 mb-1",
+                                                                        children: inventoryTotal
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                                                        lineNumber: 204,
+                                                                        columnNumber: 25
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                        className: "text-[10px] text-red-400 font-medium",
+                                                                        children: [
+                                                                            lowStock,
+                                                                            " low stock"
+                                                                        ]
+                                                                    }, void 0, true, {
+                                                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                                                        lineNumber: 207,
+                                                                        columnNumber: 25
+                                                                    }, this)
+                                                                ]
+                                                            }, void 0, true, {
                                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                                lineNumber: 120,
+                                                                lineNumber: 203,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                                                 src: "/images/chat.png",
                                                                 width: 50,
                                                                 height: 50,
-                                                                alt: "chat"
+                                                                alt: "chart"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                                lineNumber: 123,
+                                                                lineNumber: 211,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                                        lineNumber: 119,
+                                                        lineNumber: 202,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/dashboard/owner/page.js",
-                                                    lineNumber: 114,
+                                                    lineNumber: 197,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                lineNumber: 113,
+                                                lineNumber: 196,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                        lineNumber: 96,
+                                        lineNumber: 175,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6926,18 +8533,18 @@ function OwnerDashboard() {
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "w-full md:w-1/2 mb-4 md:mb-0",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$shared$2f$StatCard$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                                    title: "Equipment & Supplies",
-                                                    badge: "30 days",
+                                                    title: "Tasks",
+                                                    badge: "Today",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "grid grid-cols-2 gap-2 mt-1",
                                                         children: [
                                                             {
-                                                                label: "Ear Tags",
-                                                                val: 25
+                                                                label: "Pending",
+                                                                val: tasksPending
                                                             },
                                                             {
-                                                                label: "Cleaning Sets",
-                                                                val: 12
+                                                                label: "Completed",
+                                                                val: tasksCompleted
                                                             }
                                                         ].map(({ label, val })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "nth-[1]:border-r-2 border-gray-400 mr-5",
@@ -6947,53 +8554,53 @@ function OwnerDashboard() {
                                                                         children: label
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                                                        lineNumber: 146,
+                                                                        lineNumber: 233,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                                         className: "text-3xl font-bold text-gray-800",
-                                                                        children: val
+                                                                        children: dashLoading ? "—" : val
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                                                        lineNumber: 147,
+                                                                        lineNumber: 234,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, label, true, {
                                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                                lineNumber: 142,
+                                                                lineNumber: 229,
                                                                 columnNumber: 25
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                                        lineNumber: 137,
+                                                        lineNumber: 224,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/dashboard/owner/page.js",
-                                                    lineNumber: 136,
+                                                    lineNumber: 223,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                lineNumber: 135,
+                                                lineNumber: 222,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "w-full md:w-1/2",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$shared$2f$StatCard$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                                    title: "Nutrition Stock",
-                                                    badge: "30 days",
+                                                    title: "Concerns",
+                                                    badge: "Open",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "grid grid-cols-2 gap-2 mt-1",
                                                         children: [
                                                             {
-                                                                label: "Vitamins",
-                                                                val: 8
+                                                                label: "Open",
+                                                                val: concernsOpen
                                                             },
                                                             {
-                                                                label: "Supplements",
-                                                                val: 6
+                                                                label: "Urgent",
+                                                                val: concernsUrgent
                                                             }
                                                         ].map(({ label, val })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "nth-[1]:border-r-2 border-gray-400 mr-5",
@@ -7003,49 +8610,156 @@ function OwnerDashboard() {
                                                                         children: label
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                                                        lineNumber: 166,
+                                                                        lineNumber: 253,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: "text-3xl font-bold text-gray-800",
-                                                                        children: val
+                                                                        className: `text-3xl font-bold ${label === "Urgent" && val > 0 ? "text-red-500" : "text-gray-800"}`,
+                                                                        children: dashLoading ? "—" : val
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                                                        lineNumber: 167,
+                                                                        lineNumber: 254,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, label, true, {
                                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                                lineNumber: 162,
+                                                                lineNumber: 249,
                                                                 columnNumber: 25
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                                        lineNumber: 157,
+                                                        lineNumber: 244,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/dashboard/owner/page.js",
-                                                    lineNumber: 156,
+                                                    lineNumber: 243,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                                lineNumber: 155,
+                                                lineNumber: 242,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                        lineNumber: 134,
+                                        lineNumber: 221,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                lineNumber: 95,
+                                lineNumber: 174,
                                 columnNumber: 13
+                            }, this),
+                            !dashLoading && vaxOverdue > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 flex items-center justify-between",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-center gap-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-base",
+                                                children: "💉"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/dashboard/owner/page.js",
+                                                lineNumber: 271,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-xs font-bold text-amber-700",
+                                                        children: [
+                                                            vaxOverdue,
+                                                            " vaccination",
+                                                            vaxOverdue !== 1 ? "s" : "",
+                                                            " ",
+                                                            "overdue"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                                        lineNumber: 273,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    vaxDueToday > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-[10px] text-amber-500",
+                                                        children: [
+                                                            vaxDueToday,
+                                                            " due today"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                                        lineNumber: 278,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/dashboard/owner/page.js",
+                                                lineNumber: 272,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                        lineNumber: 270,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        onClick: ()=>setActiveItem("Livestock Overview"),
+                                        className: "text-xs text-amber-600 font-semibold hover:underline",
+                                        children: "View →"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                        lineNumber: 284,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/dashboard/owner/page.js",
+                                lineNumber: 269,
+                                columnNumber: 15
+                            }, this),
+                            !dashLoading && lowStockItems.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "bg-red-50 border border-red-100 rounded-xl px-5 py-3",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-xs font-bold text-red-600 mb-1",
+                                        children: "⚠️ Low Stock Alert"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                        lineNumber: 296,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex flex-wrap gap-2",
+                                        children: lowStockItems.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-[11px] text-red-500 bg-red-100 px-2 py-0.5 rounded-full",
+                                                children: [
+                                                    item.name,
+                                                    ": ",
+                                                    item.quantityOnHand,
+                                                    " ",
+                                                    item.unit,
+                                                    " left"
+                                                ]
+                                            }, item.publicId, true, {
+                                                fileName: "[project]/app/dashboard/owner/page.js",
+                                                lineNumber: 301,
+                                                columnNumber: 21
+                                            }, this))
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/dashboard/owner/page.js",
+                                        lineNumber: 299,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/dashboard/owner/page.js",
+                                lineNumber: 295,
+                                columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex gap-4 flex-wrap-reverse",
@@ -7090,68 +8804,68 @@ function OwnerDashboard() {
                                         ]
                                     }, void 0, false, {
                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                        lineNumber: 180,
+                                        lineNumber: 314,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$shared$2f$Charts$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DonutChart"], {
-                                        title: "Reproduction Rate",
-                                        value: 73,
+                                        title: "Animals by Status",
+                                        value: dashData ? Math.round(activeAnimals / (livestockCount || 1) * 100) : 73,
                                         color: "#4CAF50",
                                         trackColor: "#f59e0b",
-                                        period: "30 days",
+                                        period: "Total",
                                         legend: [
                                             {
                                                 color: "#4CAF50",
-                                                label: "Bull Calves – 23%"
+                                                label: `Active – ${activeAnimals}`
                                             },
                                             {
                                                 color: "#f59e0b",
-                                                label: "Heifer Calves – 50%"
+                                                label: `Sick – ${sickAnimals}`
                                             }
                                         ]
                                     }, void 0, false, {
                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                        lineNumber: 193,
+                                        lineNumber: 327,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$shared$2f$Charts$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DonutChart"], {
-                                        title: "Mortality Rate",
-                                        value: 30,
-                                        label: "30%",
+                                        title: "Task Progress",
+                                        value: dashData ? Math.round(tasksCompleted / (tasksTotal || 1) * 100) : 30,
+                                        label: dashData ? `${Math.round(tasksCompleted / (tasksTotal || 1) * 100)}%` : "30%",
                                         color: "#4CAF50",
                                         trackColor: "#f59e0b",
-                                        period: "August",
+                                        period: "This Month",
                                         legend: [
                                             {
                                                 color: "#4CAF50",
-                                                label: "Pneumonia – 20"
+                                                label: `Completed – ${tasksCompleted}`
                                             },
                                             {
                                                 color: "#f59e0b",
-                                                label: "Injuries – 10 | Total – 30"
+                                                label: `Pending – ${tasksPending}`
                                             }
                                         ]
                                     }, void 0, false, {
                                         fileName: "[project]/app/dashboard/owner/page.js",
-                                        lineNumber: 205,
+                                        lineNumber: 342,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                lineNumber: 179,
+                                lineNumber: 313,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$shared$2f$DataTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                title: "Pending Request",
+                                title: "Recent Concerns",
                                 columns: [
-                                    "Request ID",
+                                    "ID",
                                     "Date",
-                                    "Request Type",
-                                    "Stock Item(s)",
-                                    "Units / Qty",
-                                    "Est. Cost",
-                                    "Requested By"
+                                    "Category",
+                                    "Title",
+                                    "Priority",
+                                    "Status",
+                                    "—"
                                 ],
                                 dataKeys: [
                                     "id",
@@ -7162,30 +8876,40 @@ function OwnerDashboard() {
                                     "cost",
                                     "by"
                                 ],
-                                rows: pendingRequests,
+                                rows: pendingRequests.length > 0 ? pendingRequests : [
+                                    {
+                                        id: "—",
+                                        date: "—",
+                                        type: "No concerns",
+                                        item: "All clear",
+                                        qty: "—",
+                                        cost: "—",
+                                        by: "—"
+                                    }
+                                ],
                                 onApprove: (row)=>console.log("Approved", row),
                                 onDecline: (row)=>console.log("Declined", row)
                             }, void 0, false, {
                                 fileName: "[project]/app/dashboard/owner/page.js",
-                                lineNumber: 222,
+                                lineNumber: 365,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/dashboard/owner/page.js",
-                        lineNumber: 79,
+                        lineNumber: 151,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/dashboard/owner/page.js",
-                lineNumber: 63,
+                lineNumber: 135,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/dashboard/owner/page.js",
-        lineNumber: 46,
+        lineNumber: 118,
         columnNumber: 5
     }, this);
 }

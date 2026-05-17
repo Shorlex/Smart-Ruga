@@ -1,202 +1,295 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { RefreshCw } from "lucide-react";
 
-// ── Placeholder data ──────────────────────────────────────────────────────────
+const API = process.env.NEXT_PUBLIC_API_URL;
+function getSlug() {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem("sr_slug") ?? "";
+}
+function getToken() {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem("sr_token") ?? "";
+}
 
-const allAlerts = [
-  {
-    type: "Critical Alert",
-    typeColor: "text-red-500",
-    icon: "⚠️",
-    title: "Cow #1144 – Suspected FMD Outbreak",
-    symptoms: "Drooling, blistered mouth",
-    status: "Untreated",
-    reportedBy: "Worker Sani",
-    herd: "Herd B",
-    datetime: "6:20 PM, 2 September",
-    notes: "5 other cows showing early signs",
-    action: { label: "Acknowledge", type: "green" },
-    severity: "Critical",
-  },
-  {
-    type: "Treatment Follow-Up",
-    typeColor: "text-amber-500",
-    icon: "🔔",
-    title: "Cow #0999 – Mastitis (Follow-Up Due)",
-    symptoms: "Drooling, blistered mouth",
-    status: "Improving",
-    nextCheckUp: "6 September",
-    herd: "Herd B",
-    action: { label: "View Record", type: "green" },
-    severity: "Medium",
-  },
-  {
-    type: "Emergency – Injury Case",
-    typeColor: "text-red-500",
-    icon: "⚠️",
-    title: "Cow #1050 – Leg Injury",
-    symptoms: "Limping, swollen joint",
-    status: "Untreated",
-    reportedBy: "Worker Musa",
-    herd: "Herd A",
-    datetime: "8:00 AM, 3 September",
-    notes: "Requires immediate attention",
-    action: { label: "Assign Treatment", type: "green" },
-    severity: "Critical",
-  },
-  {
-    type: "Treatment Follow-Up",
-    typeColor: "text-amber-500",
-    icon: "🔔",
-    title: "Cow #1022 – Deworming Due",
-    symptoms: "Weight loss, lethargy",
-    status: "Improving",
-    nextCheckUp: "10 September",
-    herd: "Herd C",
-    action: { label: "View Record", type: "green" },
-    severity: "Medium",
-  },
-];
+function formatDate(str) {
+  if (!str) return "—";
+  return new Date(str).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
 
-// ── Alert Card ────────────────────────────────────────────────────────────────
+// ── Alert badge ───────────────────────────────────────────────────────────────
 
-function AlertCard({ alert, onAction }) {
-  const [acknowledged, setAcknowledged] = useState(false);
-
-  const handleAction = () => {
-    setAcknowledged(true);
-    onAction?.(alert);
-  };
-
+function AlertBadge({ status, daysOverdue, daysUntilDue }) {
+  if (status === "overdue")
+    return (
+      <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-red-50 text-red-500 whitespace-nowrap">
+        🔴 Overdue {daysOverdue > 0 ? `${daysOverdue}d` : ""}
+      </span>
+    );
+  if (status === "due_today")
+    return (
+      <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-500 whitespace-nowrap">
+        🟡 Due Today
+      </span>
+    );
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 space-y-3">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <span
-          className={`flex items-center gap-1.5 text-xs font-bold ${alert.typeColor}`}
-        >
-          {alert.icon} {alert.type}
-        </span>
-        <button
-          onClick={handleAction}
-          className={`px-3 py-1.5 rounded-full text-white text-xs font-semibold transition-colors ${
-            acknowledged
-              ? "bg-gray-400 cursor-default"
-              : "bg-[#4CAF50] hover:bg-[#43a047]"
-          }`}
-          disabled={acknowledged}
-        >
-          {acknowledged ? "Done ✓" : alert.action.label}
-        </button>
-      </div>
+    <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-500 whitespace-nowrap">
+      🔵 Due in {daysUntilDue}d
+    </span>
+  );
+}
 
-      {/* Title */}
-      <p className="text-sm font-semibold text-gray-800">{alert.title}</p>
+// ── Vaccination Alert Card ────────────────────────────────────────────────────
 
-      {/* Fields */}
-      <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
-        {alert.symptoms && (
-          <>
-            <div>
-              <p className="text-gray-400">Symptoms:</p>
-              <p className="font-semibold text-gray-800">{alert.symptoms}</p>
-            </div>
-            <div>
-              <p className="text-gray-400">Status:</p>
-              <p className="font-semibold text-gray-800">{alert.status}</p>
-            </div>
-          </>
-        )}
-        {alert.reportedBy && (
-          <>
-            <div>
-              <p className="text-gray-400">Reported By:</p>
-              <p className="font-semibold text-gray-800">{alert.reportedBy}</p>
-            </div>
-            <div>
-              <p className="text-gray-400">Livestock Herd:</p>
-              <p className="font-semibold text-gray-800">{alert.herd}</p>
-            </div>
-          </>
-        )}
-        {alert.nextCheckUp && (
-          <>
-            <div>
-              <p className="text-gray-400">Next Check Up</p>
-              <p className="font-semibold text-gray-800">{alert.nextCheckUp}</p>
-            </div>
-            <div>
-              <p className="text-gray-400">Livestock Herd:</p>
-              <p className="font-semibold text-gray-800">{alert.herd}</p>
-            </div>
-          </>
-        )}
-        {alert.datetime && (
-          <div className="col-span-2">
-            <p className="text-gray-400">Date & Time</p>
-            <p className="font-semibold text-gray-800">{alert.datetime}</p>
-          </div>
-        )}
-      </div>
-
-      {/* Notes */}
-      {alert.notes && (
-        <div className="bg-[#f0fdf4] rounded-xl px-3 py-2">
-          <p className="text-[10px] text-gray-400 mb-0.5">Additional Notes:</p>
-          <p className="text-xs text-gray-600 italic">{alert.notes}</p>
+function VaxAlertCard({ item }) {
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 space-y-2.5">
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-bold text-gray-800">
+            💉 {item.vaccineName}
+          </p>
+          <p className="text-xs text-gray-400 mt-0.5 capitalize">
+            {item.animalTagNumber ?? "—"} · {item.animalBreed ?? "—"} ·{" "}
+            {item.animalSex ?? "—"}
+          </p>
         </div>
+        <AlertBadge
+          status={item.alertStatus}
+          daysOverdue={item.daysOverdue}
+          daysUntilDue={item.daysUntilDue}
+        />
+      </div>
+      <div className="grid grid-cols-3 gap-2 text-xs">
+        <div>
+          <p className="text-gray-400">Dose</p>
+          <p className="font-semibold text-gray-700">{item.dose ?? "—"}</p>
+        </div>
+        <div>
+          <p className="text-gray-400">Last Given</p>
+          <p className="font-semibold text-gray-700">
+            {formatDate(item.administeredAt)}
+          </p>
+        </div>
+        <div>
+          <p className="text-gray-400">Next Due</p>
+          <p className="font-semibold text-red-500">
+            {formatDate(item.nextDueAt)}
+          </p>
+        </div>
+      </div>
+      {item.notes && (
+        <p className="text-[11px] text-gray-400 italic">"{item.notes}"</p>
       )}
+    </div>
+  );
+}
+
+// ── Section ───────────────────────────────────────────────────────────────────
+
+function AlertSection({ title, icon, items, emptyMsg }) {
+  if (items.length === 0)
+    return (
+      <div className="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+        <p className="text-xs text-gray-400">{emptyMsg}</p>
+      </div>
+    );
+  return (
+    <div className="space-y-3">
+      {items.map((item, i) => (
+        <VaxAlertCard key={item.publicId ?? i} item={item} />
+      ))}
     </div>
   );
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-const TABS = ["All Alerts", "Critical", "Medium"];
-
 export default function AlertsCriticalCases() {
-  const [activeTab, setActiveTab] = useState("All Alerts");
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [activeTab, setActiveTab] = useState("overdue");
 
-  const filtered = allAlerts.filter((a) => {
-    if (activeTab === "All Alerts") return true;
-    return a.severity === activeTab;
-  });
+  const fetchAlerts = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(
+        `${API}/ranches/${getSlug()}/vaccinations/alerts`,
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        },
+      );
+      if (!res.ok) throw new Error(`Failed to fetch alerts (${res.status})`);
+      const json = await res.json();
+      console.log("✅ Vaccination alerts:", json);
+      setData(json?.data ?? json);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAlerts();
+  }, [fetchAlerts]);
+
+  const summary = data?.summary ?? {};
+  const overdue = data?.overdue ?? [];
+  const dueToday = data?.dueToday ?? [];
+  const dueSoon = data?.dueSoon ?? [];
+
+  const tabs = [
+    {
+      key: "overdue",
+      label: "Overdue",
+      count: summary.overdueCount ?? overdue.length,
+      color: "text-red-500",
+    },
+    {
+      key: "today",
+      label: "Due Today",
+      count: summary.dueTodayCount ?? dueToday.length,
+      color: "text-amber-500",
+    },
+    {
+      key: "soon",
+      label: "Due Soon",
+      count: summary.dueSoonCount ?? dueSoon.length,
+      color: "text-blue-500",
+    },
+  ];
 
   return (
     <div className="px-4 pb-8 space-y-4">
-      {/* Tab filter */}
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-base font-bold text-gray-800">
+            Vaccination Alerts
+          </p>
+          {!loading && data && (
+            <p className="text-xs text-gray-400 mt-0.5">
+              {summary.totalAlerts ??
+                overdue.length + dueToday.length + dueSoon.length}{" "}
+              total alerts
+            </p>
+          )}
+        </div>
+        <button
+          onClick={fetchAlerts}
+          className="p-2 rounded-lg border border-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
+        </button>
+      </div>
+
+      {/* Summary cards */}
+      {!loading && data && (
+        <div className="grid grid-cols-3 gap-3">
+          {tabs.map(({ key, label, count, color }) => (
+            <div
+              key={key}
+              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 text-center"
+            >
+              <p className={`text-2xl font-bold ${color}`}>{count}</p>
+              <p className="text-[10px] text-gray-400 mt-0.5">{label}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Tabs */}
       <div className="flex items-center bg-gray-100 rounded-full p-1 gap-1">
-        {TABS.map((tab) => (
+        {tabs.map(({ key, label, count }) => (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
+            key={key}
+            onClick={() => setActiveTab(key)}
             className={`flex-1 py-2 rounded-full text-xs font-semibold transition-all ${
-              activeTab === tab
+              activeTab === key
                 ? "bg-white text-gray-800 shadow-sm"
-                : "text-gray-400 hover:text-gray-600"
+                : "text-gray-400"
             }`}
           >
-            {tab}
+            {label}
+            {count > 0 && (
+              <span className="ml-1 text-[10px] font-bold">({count})</span>
+            )}
           </button>
         ))}
       </div>
 
-      {/* Alert cards */}
-      <div className="space-y-3">
-        {filtered.map((alert, i) => (
-          <AlertCard
-            key={i}
-            alert={alert}
-            onAction={(a) => console.log("Action taken:", a)}
-          />
-        ))}
-        {filtered.length === 0 && (
-          <p className="text-center text-sm text-gray-400 py-8">
-            No alerts in this category.
-          </p>
-        )}
-      </div>
+      {/* Loading */}
+      {loading && (
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="bg-white rounded-2xl border border-gray-100 p-4 animate-pulse space-y-2"
+            >
+              <div className="flex justify-between">
+                <div className="h-3 bg-gray-100 rounded w-1/3" />
+                <div className="h-5 bg-gray-100 rounded w-20" />
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {[1, 2, 3].map((j) => (
+                  <div key={j} className="h-8 bg-gray-100 rounded" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Error */}
+      {!loading && error && (
+        <div className="bg-white rounded-2xl border border-gray-100 p-6 text-center">
+          <p className="text-sm text-red-500 mb-2">{error}</p>
+          <button
+            onClick={fetchAlerts}
+            className="text-xs text-[#4CAF50] hover:underline"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
+      {/* Content */}
+      {!loading && !error && (
+        <>
+          {activeTab === "overdue" && (
+            <AlertSection
+              title="Overdue"
+              icon="🔴"
+              items={overdue}
+              emptyMsg="No overdue vaccinations 🎉"
+            />
+          )}
+          {activeTab === "today" && (
+            <AlertSection
+              title="Due Today"
+              icon="🟡"
+              items={dueToday}
+              emptyMsg="No vaccinations due today"
+            />
+          )}
+          {activeTab === "soon" && (
+            <AlertSection
+              title="Due Soon"
+              icon="🔵"
+              items={dueSoon}
+              emptyMsg="No vaccinations due soon"
+            />
+          )}
+        </>
+      )}
     </div>
   );
 }

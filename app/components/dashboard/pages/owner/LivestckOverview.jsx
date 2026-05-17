@@ -555,7 +555,7 @@ function Pagination({ page, totalPages, onPageChange }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-export default function LivestockPage() {
+export default function LivestockPage({ canAdd = true, mobileCols }) {
   const [animals, setAnimals] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -721,12 +721,14 @@ export default function LivestockPage() {
           <button className="flex items-center gap-1.5 text-xs font-medium px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
             Export as <ChevronDown size={13} />
           </button>
-          <button
-            onClick={() => setShowModal(true)}
-            className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors"
-          >
-            <Plus size={13} /> Add Animal
-          </button>
+          {canAdd && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors"
+            >
+              <Plus size={13} /> Add Animal
+            </button>
+          )}
         </div>
       </div>
 
@@ -787,12 +789,14 @@ export default function LivestockPage() {
               Clear filters
             </button>
           ) : (
-            <button
-              onClick={() => setShowModal(true)}
-              className="flex items-center gap-1.5 bg-[#4CAF50] text-white text-xs font-semibold px-4 py-2 rounded-lg"
-            >
-              <Plus size={13} /> Add First Animal
-            </button>
+            canAdd && (
+              <button
+                onClick={() => setShowModal(true)}
+                className="flex items-center gap-1.5 bg-[#4CAF50] text-white text-xs font-semibold px-4 py-2 rounded-lg"
+              >
+                <Plus size={13} /> Add First Animal
+              </button>
+            )
           )}
         </div>
       )}
@@ -800,7 +804,13 @@ export default function LivestockPage() {
       {/* Grid */}
       {!loading && !error && filteredAnimals.length > 0 && (
         <>
-          <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+          <div
+            className={
+              mobileCols
+                ? "grid grid-cols-1 gap-4"
+                : "grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4"
+            }
+          >
             {filteredAnimals.map((animal, i) => (
               <LivestockCard
                 key={animal.publicId ?? i}

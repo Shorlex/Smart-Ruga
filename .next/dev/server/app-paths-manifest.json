@@ -1,3 +1,8 @@
 {
-  "/dashboard/owner/page": "app/dashboard/owner/page.js"
+  "/dashboard/manager/page": "app/dashboard/manager/page.js",
+  "/dashboard/owner/page": "app/dashboard/owner/page.js",
+  "/dashboard/storekeeper/page": "app/dashboard/storekeeper/page.js",
+  "/dashboard/vet/page": "app/dashboard/vet/page.js",
+  "/dashboard/worker/page": "app/dashboard/worker/page.js",
+  "/page": "app/page.js"
 }
