@@ -460,7 +460,7 @@ export default function MobileShell({
 
   return (
     <div className="min-h-screen bg-gray-200 flex items-start justify-center">
-      <div className="relative w-full md:w-[480px] h-screen md:min-h-0 md:rounded-3xl md:shadow-2xl bg-[#f5f5f5] overflow-hidden flex flex-col md:max-h-[900px]">
+      <div className="relative w-full md:w-120 h-screen md:min-h-0 md:rounded-3xl md:shadow-2xl bg-[#f5f5f5] overflow-hidden flex flex-col md:max-h-225">
         {/* ── Top bar ─────────────────────────────────────── */}
         <div className="flex items-center justify-between px-5 pt-4 pb-3 bg-[#f5f5f5] shrink-0">
           <button
@@ -485,7 +485,7 @@ export default function MobileShell({
             >
               <Bell size={20} />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5">
+                <span className="absolute -top-1 -right-1 min-w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5">
                   {unreadCount > 99 ? "99+" : unreadCount}
                 </span>
               )}

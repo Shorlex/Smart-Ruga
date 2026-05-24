@@ -346,7 +346,7 @@ export default function ManagerDashboard() {
             {/* Alerts + Chart */}
             <div className="grid grid-cols-1 lg:flex gap-4">
               <QuickAlerts rows={quickAlerts} />
-              <div className="w-[380px] shrink-0">
+              <div className="w-96 shrink-0">
                 <LineChart
                   title="Feed Consumption Trend"
                   period="30 days"

@@ -1016,6 +1016,7 @@ function StatusBadge({ status }) {
         completed: "bg-[#f0fdf4] text-[#4CAF50]",
         pending: "bg-amber-50  text-amber-500",
         in_progress: "bg-blue-50   text-blue-500",
+        in_review: "bg-purple-50 text-purple-500",
         overdue: "bg-red-50    text-red-500",
         cancelled: "bg-gray-100  text-gray-400"
     };
@@ -1024,6 +1025,7 @@ function StatusBadge({ status }) {
         completed: "bg-[#4CAF50]",
         pending: "bg-amber-400",
         in_progress: "bg-blue-400",
+        in_review: "bg-purple-400",
         overdue: "bg-red-500",
         cancelled: "bg-gray-400"
     };
@@ -1034,14 +1036,14 @@ function StatusBadge({ status }) {
                 className: `w-1.5 h-1.5 rounded-full ${dots[s] ?? "bg-gray-400"}`
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                lineNumber: 54,
+                lineNumber: 56,
                 columnNumber: 7
             }, this),
             status?.replace(/_/g, " ") ?? "—"
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-        lineNumber: 51,
+        lineNumber: 53,
         columnNumber: 5
     }, this);
 }
@@ -1059,12 +1061,12 @@ function ProofCell({ proof }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                lineNumber: 68,
+                lineNumber: 70,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-            lineNumber: 67,
+            lineNumber: 69,
             columnNumber: 7
         }, this);
     }
@@ -1073,7 +1075,339 @@ function ProofCell({ proof }) {
         children: "🖼"
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-        lineNumber: 80,
+        lineNumber: 82,
+        columnNumber: 5
+    }, this);
+}
+// ── Review Modal ──────────────────────────────────────────────────────────────
+function ReviewModal({ task, onClose, onSuccess }) {
+    const [submissions, setSubmissions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [reviewing, setReviewing] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null); // submissionPublicId being reviewed
+    const [reviewNotes, setReviewNotes] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        const load = async ()=>{
+            try {
+                const res = await fetch(`${API}/ranches/${getSlug()}/tasks/${task.publicId}/submissions`, {
+                    headers: {
+                        Authorization: `Bearer ${getToken()}`
+                    }
+                });
+                if (!res.ok) throw new Error();
+                const json = await res.json();
+                console.log("✅ Submissions:", json);
+                const list = json?.data?.submissions ?? json?.submissions ?? json?.data ?? [];
+                setSubmissions(Array.isArray(list) ? list : []);
+            } catch  {
+                setSubmissions([]);
+            } finally{
+                setLoading(false);
+            }
+        };
+        load();
+    }, [
+        task.publicId
+    ]);
+    const handleReview = async (submission, status)=>{
+        setError("");
+        setReviewing(submission.publicId ?? submission.id);
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/tasks/${task.publicId}/submissions/${submission.publicId ?? submission.id}/review`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: JSON.stringify({
+                    status,
+                    reviewNotes: reviewNotes || undefined
+                })
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message ?? "Failed to review submission");
+            }
+            onSuccess(task.publicId, status);
+            onClose();
+        } catch (err) {
+            setError(err.message);
+        } finally{
+            setReviewing(null);
+        }
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "bg-white rounded-2xl w-full max-w-lg shadow-xl max-h-[90vh] overflow-y-auto",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-center justify-between px-6 py-4 border-b border-gray-100",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                    className: "text-sm font-bold text-gray-800",
+                                    children: "Review Submission"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                    lineNumber: 157,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-xs text-gray-400 mt-0.5 truncate",
+                                    children: task.title
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                    lineNumber: 160,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                            lineNumber: 156,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: onClose,
+                            className: "text-gray-400 hover:text-gray-600",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                size: 18
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                lineNumber: 168,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                            lineNumber: 164,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                    lineNumber: 155,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "px-6 py-5 space-y-4",
+                    children: [
+                        error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "px-4 py-3 rounded-xl bg-red-50 text-xs text-red-500",
+                            children: error
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                            lineNumber: 174,
+                            columnNumber: 13
+                        }, this),
+                        loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "space-y-3",
+                            children: [
+                                1,
+                                2
+                            ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "h-16 bg-gray-50 rounded-xl animate-pulse"
+                                }, i, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                    lineNumber: 182,
+                                    columnNumber: 17
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                            lineNumber: 180,
+                            columnNumber: 13
+                        }, this),
+                        !loading && submissions.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "text-center py-8 space-y-2",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-2xl",
+                                    children: "📋"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                    lineNumber: 192,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-sm font-semibold text-gray-600",
+                                    children: "No submissions yet"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                    lineNumber: 193,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-xs text-gray-400",
+                                    children: "The worker hasn't submitted this task yet."
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                    lineNumber: 196,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                            lineNumber: 191,
+                            columnNumber: 13
+                        }, this),
+                        !loading && submissions.map((sub, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "bg-gray-50 rounded-xl p-4 space-y-3 border border-gray-100",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-start justify-between gap-3",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-xs font-semibold text-gray-700",
+                                                        children: [
+                                                            "Submitted by",
+                                                            " ",
+                                                            [
+                                                                sub.submittedBy?.firstName,
+                                                                sub.submittedBy?.lastName
+                                                            ].filter(Boolean).join(" ") || sub.submittedBy?.email || "Worker"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                        lineNumber: 210,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-[10px] text-gray-400 mt-0.5",
+                                                        children: sub.createdAt ? new Date(sub.createdAt).toLocaleDateString("en-GB", {
+                                                            day: "2-digit",
+                                                            month: "short",
+                                                            year: "numeric",
+                                                            hour: "2-digit",
+                                                            minute: "2-digit"
+                                                        }) : "—"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                        lineNumber: 218,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                lineNumber: 209,
+                                                columnNumber: 19
+                                            }, this),
+                                            sub.status && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: `px-2.5 py-1 rounded-full text-[11px] font-semibold capitalize ${sub.status === "approved" ? "bg-[#f0fdf4] text-[#4CAF50]" : sub.status === "rejected" ? "bg-red-50 text-red-500" : "bg-amber-50 text-amber-500"}`,
+                                                children: sub.status
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                lineNumber: 231,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                        lineNumber: 208,
+                                        columnNumber: 17
+                                    }, this),
+                                    sub.notes && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-xs text-gray-600 italic",
+                                        children: [
+                                            '"',
+                                            sub.notes,
+                                            '"'
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                        lineNumber: 246,
+                                        columnNumber: 19
+                                    }, this),
+                                    sub.proofUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                        src: sub.proofUrl,
+                                        alt: "Proof",
+                                        className: "w-full h-32 object-cover rounded-xl border border-gray-200"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                        lineNumber: 250,
+                                        columnNumber: 19
+                                    }, this),
+                                    (!sub.status || sub.status === "pending") && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-2 pt-1",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                                value: reviewNotes,
+                                                onChange: (e)=>setReviewNotes(e.target.value),
+                                                placeholder: "Review notes (optional)...",
+                                                rows: 2,
+                                                className: "w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                lineNumber: 260,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex gap-2",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        onClick: ()=>handleReview(sub, "approved"),
+                                                        disabled: !!reviewing,
+                                                        className: "flex-1 py-2.5 rounded-xl bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-60",
+                                                        children: [
+                                                            reviewing === (sub.publicId ?? sub.id) ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                                size: 12,
+                                                                className: "animate-spin"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                                lineNumber: 274,
+                                                                columnNumber: 27
+                                                            }, this) : "✅",
+                                                            "Approve"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                        lineNumber: 268,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        onClick: ()=>handleReview(sub, "rejected"),
+                                                        disabled: !!reviewing,
+                                                        className: "flex-1 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-60",
+                                                        children: "❌ Reject"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                        lineNumber: 280,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                lineNumber: 267,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                        lineNumber: 259,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, sub.publicId ?? sub.id ?? i, true, {
+                                fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                lineNumber: 204,
+                                columnNumber: 15
+                            }, this))
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                    lineNumber: 172,
+                    columnNumber: 9
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+            lineNumber: 154,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+        lineNumber: 153,
         columnNumber: 5
     }, this);
 }
@@ -1179,7 +1513,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                             children: "Create New Task"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                            lineNumber: 194,
+                            lineNumber: 406,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1189,18 +1523,18 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                 size: 18
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 199,
+                                lineNumber: 411,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                            lineNumber: 195,
+                            lineNumber: 407,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                    lineNumber: 193,
+                    lineNumber: 405,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1212,7 +1546,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                             children: error
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                            lineNumber: 205,
+                            lineNumber: 417,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1226,13 +1560,13 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                             children: "*"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 213,
+                                            lineNumber: 425,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 212,
+                                    lineNumber: 424,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1242,13 +1576,13 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                     className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 215,
+                                    lineNumber: 427,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                            lineNumber: 211,
+                            lineNumber: 423,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1258,7 +1592,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                     children: "Description"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 225,
+                                    lineNumber: 437,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -1269,13 +1603,13 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                     className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors resize-none"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 228,
+                                    lineNumber: 440,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                            lineNumber: 224,
+                            lineNumber: 436,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1292,13 +1626,13 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                                     children: "*"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                    lineNumber: 241,
+                                                    lineNumber: 453,
                                                     columnNumber: 26
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 240,
+                                            lineNumber: 452,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1308,13 +1642,13 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 243,
+                                            lineNumber: 455,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 239,
+                                    lineNumber: 451,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1324,7 +1658,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                             children: "Category"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 251,
+                                            lineNumber: 463,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1337,7 +1671,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                                     children: "Select category"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                    lineNumber: 259,
+                                                    lineNumber: 471,
                                                     columnNumber: 17
                                                 }, this),
                                                 [
@@ -1353,25 +1687,25 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                                         children: c
                                                     }, c, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                        lineNumber: 268,
+                                                        lineNumber: 480,
                                                         columnNumber: 19
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 254,
+                                            lineNumber: 466,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 250,
+                                    lineNumber: 462,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                            lineNumber: 238,
+                            lineNumber: 450,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1384,7 +1718,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                             children: "Assign To"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 279,
+                                            lineNumber: 491,
                                             columnNumber: 15
                                         }, this),
                                         membersLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1392,7 +1726,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                             children: "Loading members..."
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 283,
+                                            lineNumber: 495,
                                             columnNumber: 17
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                                             value: form.assignedToUserPublicId,
@@ -1404,7 +1738,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                                     children: "Select member"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                    lineNumber: 292,
+                                                    lineNumber: 504,
                                                     columnNumber: 19
                                                 }, this),
                                                 members.map((m, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1412,7 +1746,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                                         children: getMemberLabel(m)
                                                     }, getMemberId(m) || i, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                        lineNumber: 294,
+                                                        lineNumber: 506,
                                                         columnNumber: 21
                                                     }, this)),
                                                 members.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1420,19 +1754,19 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                                     children: "No members found"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                    lineNumber: 299,
+                                                    lineNumber: 511,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 287,
+                                            lineNumber: 499,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 278,
+                                    lineNumber: 490,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1442,7 +1776,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                             children: "Priority"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 305,
+                                            lineNumber: 517,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1455,7 +1789,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                                     children: "Select priority"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                    lineNumber: 313,
+                                                    lineNumber: 525,
                                                     columnNumber: 17
                                                 }, this),
                                                 [
@@ -1469,25 +1803,25 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                                         children: p
                                                     }, p, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                        lineNumber: 315,
+                                                        lineNumber: 527,
                                                         columnNumber: 19
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 308,
+                                            lineNumber: 520,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 304,
+                                    lineNumber: 516,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                            lineNumber: 277,
+                            lineNumber: 489,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1500,7 +1834,7 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 325,
+                                    lineNumber: 537,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1513,37 +1847,37 @@ function CreateTaskModal({ onClose, onSuccess }) {
                                             className: "animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 341,
+                                            lineNumber: 553,
                                             columnNumber: 27
                                         }, this),
                                         loading ? "Creating..." : "Create Task"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 332,
+                                    lineNumber: 544,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                            lineNumber: 324,
+                            lineNumber: 536,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                    lineNumber: 203,
+                    lineNumber: 415,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-            lineNumber: 191,
+            lineNumber: 403,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-        lineNumber: 190,
+        lineNumber: 402,
         columnNumber: 5
     }, this);
 }
@@ -1552,6 +1886,7 @@ function TaskManagementPage() {
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [showModal, setShowModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [reviewingTask, setReviewingTask] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const fetchTasks = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
         setLoading(true);
         setError("");
@@ -1594,7 +1929,7 @@ function TaskManagementPage() {
                                 children: "Task Management"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 397,
+                                lineNumber: 610,
                                 columnNumber: 11
                             }, this),
                             !loading && !error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1606,13 +1941,13 @@ function TaskManagementPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 399,
+                                lineNumber: 612,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                        lineNumber: 396,
+                        lineNumber: 609,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1626,12 +1961,12 @@ function TaskManagementPage() {
                                     className: loading ? "animate-spin" : ""
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 409,
+                                    lineNumber: 622,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 405,
+                                lineNumber: 618,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1642,26 +1977,26 @@ function TaskManagementPage() {
                                         size: 13
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                        lineNumber: 415,
+                                        lineNumber: 628,
                                         columnNumber: 13
                                     }, this),
                                     " Create New Task"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 411,
+                                lineNumber: 624,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                        lineNumber: 404,
+                        lineNumber: 617,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                lineNumber: 395,
+                lineNumber: 608,
                 columnNumber: 7
             }, this),
             loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1678,39 +2013,39 @@ function TaskManagementPage() {
                                 className: "h-3 bg-gray-100 rounded w-16"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 425,
+                                lineNumber: 638,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-3 bg-gray-100 rounded w-24"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 426,
+                                lineNumber: 639,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-3 bg-gray-100 rounded flex-1"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 427,
+                                lineNumber: 640,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-3 bg-gray-100 rounded w-20"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 428,
+                                lineNumber: 641,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, i, true, {
                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                        lineNumber: 424,
+                        lineNumber: 637,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                lineNumber: 422,
+                lineNumber: 635,
                 columnNumber: 9
             }, this),
             !loading && error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1721,7 +2056,7 @@ function TaskManagementPage() {
                         children: error
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                        lineNumber: 437,
+                        lineNumber: 650,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1730,13 +2065,13 @@ function TaskManagementPage() {
                         children: "Try again"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                        lineNumber: 438,
+                        lineNumber: 651,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                lineNumber: 436,
+                lineNumber: 649,
                 columnNumber: 9
             }, this),
             !loading && !error && tasks.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1746,12 +2081,12 @@ function TaskManagementPage() {
                     children: "No tasks found. Create your first task!"
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                    lineNumber: 450,
+                    lineNumber: 663,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                lineNumber: 449,
+                lineNumber: 662,
                 columnNumber: 9
             }, this),
             !loading && !error && tasks.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1766,7 +2101,6 @@ function TaskManagementPage() {
                                     className: "border-b border-gray-100",
                                     children: [
                                         "Task ID",
-                                        "Task Type",
                                         "Task Description",
                                         "Assigned To",
                                         "Deadline",
@@ -1777,17 +2111,17 @@ function TaskManagementPage() {
                                             children: col
                                         }, col, false, {
                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                            lineNumber: 472,
+                                            lineNumber: 684,
                                             columnNumber: 21
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                    lineNumber: 462,
+                                    lineNumber: 675,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 461,
+                                lineNumber: 674,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -1799,26 +2133,18 @@ function TaskManagementPage() {
                                                 children: task.publicId?.slice(0, 8) ?? "—"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                lineNumber: 488,
+                                                lineNumber: 700,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                className: "py-3.5 px-5 text-gray-600 whitespace-nowrap capitalize",
-                                                children: task.category ?? task.type ?? "—"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                lineNumber: 492,
-                                                columnNumber: 21
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                className: "py-3.5 px-5 text-gray-600 max-w-[200px]",
+                                                className: "py-3.5 px-5 text-gray-600 max-w-50",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: "font-medium text-gray-700 truncate",
                                                         children: task.title ?? "—"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                        lineNumber: 497,
+                                                        lineNumber: 709,
                                                         columnNumber: 23
                                                     }, this),
                                                     task.description && task.description !== task.title && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1826,13 +2152,13 @@ function TaskManagementPage() {
                                                         children: task.description
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                        lineNumber: 501,
+                                                        lineNumber: 713,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                lineNumber: 496,
+                                                lineNumber: 708,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1840,7 +2166,7 @@ function TaskManagementPage() {
                                                 children: task.assignedTo?.name ?? "—"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                lineNumber: 507,
+                                                lineNumber: 719,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1856,18 +2182,18 @@ function TaskManagementPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                            lineNumber: 515,
+                                                            lineNumber: 727,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                    lineNumber: 512,
+                                                    lineNumber: 724,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                lineNumber: 511,
+                                                lineNumber: 723,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1876,53 +2202,65 @@ function TaskManagementPage() {
                                                     status: task.isOverdue && task.status === "pending" ? "overdue" : task.status
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                    lineNumber: 523,
+                                                    lineNumber: 735,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                lineNumber: 522,
+                                                lineNumber: 734,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                                 className: "py-3.5 px-5",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ProofCell, {
+                                                children: ![
+                                                    "completed",
+                                                    "done",
+                                                    "cancelled"
+                                                ].includes((task.status ?? "").toLowerCase()) ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                    onClick: ()=>setReviewingTask(task),
+                                                    className: "flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-600 text-xs font-semibold transition-colors whitespace-nowrap",
+                                                    children: "🔍 Review"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                                                    lineNumber: 748,
+                                                    columnNumber: 25
+                                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ProofCell, {
                                                     proof: task.imageUrl ?? task.submission?.imageUrl ?? null
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                    lineNumber: 533,
-                                                    columnNumber: 23
+                                                    lineNumber: 755,
+                                                    columnNumber: 25
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                                lineNumber: 532,
+                                                lineNumber: 744,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, task.publicId ?? i, true, {
                                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                        lineNumber: 483,
+                                        lineNumber: 695,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                                lineNumber: 481,
+                                lineNumber: 693,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                        lineNumber: 460,
+                        lineNumber: 673,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                    lineNumber: 459,
+                    lineNumber: 672,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                lineNumber: 458,
+                lineNumber: 671,
                 columnNumber: 9
             }, this),
             showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(CreateTaskModal, {
@@ -1932,13 +2270,28 @@ function TaskManagementPage() {
                 }
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-                lineNumber: 548,
+                lineNumber: 772,
+                columnNumber: 9
+            }, this),
+            reviewingTask && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ReviewModal, {
+                task: reviewingTask,
+                onClose: ()=>setReviewingTask(null),
+                onSuccess: (taskPublicId, status)=>{
+                    setTasks((prev)=>prev.map((t)=>t.publicId === taskPublicId ? {
+                                ...t,
+                                status: status === "approved" ? "completed" : "pending"
+                            } : t));
+                    setReviewingTask(null);
+                }
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
+                lineNumber: 782,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/manager/TaskManagement.jsx",
-        lineNumber: 393,
+        lineNumber: 606,
         columnNumber: 5
     }, this);
 }
@@ -4634,6 +4987,10 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UserPlus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/user-plus.js [app-ssr] (ecmascript) <export default as UserPlus>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-ssr] (ecmascript) <export default as X>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-ssr] (ecmascript) <export default as Loader2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/copy.js [app-ssr] (ecmascript) <export default as Copy>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/check.js [app-ssr] (ecmascript) <export default as Check>");
 "use client";
 ;
 ;
@@ -4667,6 +5024,346 @@ function actorName(actor) {
     ].filter(Boolean).join(" ");
     return name || actor.email || "Unknown";
 }
+// ── Invite Modal ──────────────────────────────────────────────────────────────
+const ROLES = [
+    "manager",
+    "vet",
+    "storekeeper",
+    "worker"
+];
+function InviteModal({ onClose }) {
+    const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
+        email: "",
+        ranchRole: "worker"
+    });
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [inviteLink, setInviteLink] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [copied, setCopied] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const set = (k)=>(e)=>setForm((f)=>({
+                    ...f,
+                    [k]: e.target.value
+                }));
+    const isValid = form.email && form.ranchRole;
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        setError("");
+        setLoading(true);
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/invites`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: JSON.stringify({
+                    email: form.email,
+                    ranchRole: form.ranchRole
+                })
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message ?? "Failed to send invite");
+            }
+            const json = await res.json();
+            const acceptUrl = json?.data?.acceptUrl ?? "";
+            // Extract token from acceptUrl query param
+            const urlToken = new URL(acceptUrl).searchParams.get("token") ?? "";
+            const slug = getSlug();
+            const base = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : "";
+            const link = `${base}/join?token=${urlToken}&slug=${slug}&role=${form.ranchRole}&email=${encodeURIComponent(form.email)}`;
+            setInviteLink(link);
+        } catch (err) {
+            setError(err.message);
+        } finally{
+            setLoading(false);
+        }
+    };
+    const copyLink = ()=>{
+        navigator.clipboard.writeText(inviteLink);
+        setCopied(true);
+        setTimeout(()=>setCopied(false), 2000);
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "bg-white rounded-2xl w-full max-w-md shadow-xl",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-center justify-between px-6 py-4 border-b border-gray-100",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                            className: "text-sm font-bold text-gray-800",
+                            children: "Invite New Staff"
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                            lineNumber: 96,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: onClose,
+                            className: "text-gray-400 hover:text-gray-600",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                size: 18
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                lineNumber: 101,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                            lineNumber: 97,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                    lineNumber: 95,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "px-6 py-5 space-y-4",
+                    children: [
+                        error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-xs text-red-500",
+                            children: error
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                            lineNumber: 107,
+                            columnNumber: 13
+                        }, this),
+                        inviteLink ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "space-y-4",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "bg-[#f0fdf4] border border-[#d1fae5] rounded-xl p-4",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-xs font-semibold text-[#4CAF50] mb-2",
+                                            children: "✅ Invite created! Share this link:"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 115,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-[11px] text-gray-600 break-all font-mono bg-white rounded-lg p-2 border border-gray-200",
+                                            children: inviteLink
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 118,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                    lineNumber: 114,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    onClick: copyLink,
+                                    className: `w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-semibold transition-colors ${copied ? "bg-[#f0fdf4] text-[#4CAF50] border border-[#4CAF50]" : "bg-[#4CAF50] hover:bg-[#43a047] text-white"}`,
+                                    children: copied ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__["Check"], {
+                                                size: 13
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                lineNumber: 132,
+                                                columnNumber: 21
+                                            }, this),
+                                            " Copied!"
+                                        ]
+                                    }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__["Copy"], {
+                                                size: 13
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                lineNumber: 136,
+                                                columnNumber: 21
+                                            }, this),
+                                            " Copy Invite Link"
+                                        ]
+                                    }, void 0, true)
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                    lineNumber: 122,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-[11px] text-gray-400 text-center",
+                                    children: [
+                                        "An invite email has also been sent to ",
+                                        form.email
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                    lineNumber: 140,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    onClick: onClose,
+                                    className: "w-full py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50",
+                                    children: "Done"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                    lineNumber: 143,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                            lineNumber: 113,
+                            columnNumber: 13
+                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                            onSubmit: handleSubmit,
+                            className: "space-y-4",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                            children: [
+                                                "Email Address ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-red-400",
+                                                    children: "*"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 154,
+                                                    columnNumber: 33
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 153,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            type: "email",
+                                            value: form.email,
+                                            onChange: set("email"),
+                                            placeholder: "staff@example.com",
+                                            className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 156,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                    lineNumber: 152,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                            children: [
+                                                "Assign Role ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-red-400",
+                                                    children: "*"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 166,
+                                                    columnNumber: 31
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 165,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                            value: form.ranchRole,
+                                            onChange: set("ranchRole"),
+                                            className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors appearance-none",
+                                            children: ROLES.map((r)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: r,
+                                                    className: "capitalize",
+                                                    children: r
+                                                }, r, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 174,
+                                                    columnNumber: 21
+                                                }, this))
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 168,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                    lineNumber: 164,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex gap-3 pt-1",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            type: "button",
+                                            onClick: onClose,
+                                            className: "flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50",
+                                            children: "Cancel"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 181,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            type: "submit",
+                                            disabled: !isValid || loading,
+                                            className: `flex-1 py-2.5 rounded-xl text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-colors ${isValid && !loading ? "bg-[#4CAF50] hover:bg-[#43a047]" : "bg-[#a5d6a7] cursor-not-allowed"}`,
+                                            children: [
+                                                loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                    size: 12,
+                                                    className: "animate-spin"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                    lineNumber: 197,
+                                                    columnNumber: 31
+                                                }, this),
+                                                loading ? "Sending..." : "Send Invite"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 188,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                    lineNumber: 180,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                            lineNumber: 151,
+                            columnNumber: 13
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                    lineNumber: 105,
+                    columnNumber: 9
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+            lineNumber: 94,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 93,
+        columnNumber: 5
+    }, this);
+}
 // ── Status Badge ──────────────────────────────────────────────────────────────
 function StaffStatusBadge({ status }) {
     const s = (status ?? "").toLowerCase();
@@ -4690,7 +5387,7 @@ function StaffStatusBadge({ status }) {
                 children: icons[s] ?? "⚪"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 60,
+                lineNumber: 229,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4698,20 +5395,19 @@ function StaffStatusBadge({ status }) {
                 children: status ?? "—"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 61,
+                lineNumber: 230,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 57,
+        lineNumber: 226,
         columnNumber: 5
     }, this);
 }
 // ── Members Table ─────────────────────────────────────────────────────────────
 function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
-    const userRole = getRole();
-    const isManager = userRole === "manager";
+    const isManager = getRole() === "manager";
     if (loading) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-3",
         children: [
@@ -4726,32 +5422,32 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                         className: "h-3 bg-gray-100 rounded flex-1"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 77,
+                        lineNumber: 245,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-3 bg-gray-100 rounded w-24"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 78,
+                        lineNumber: 246,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-3 bg-gray-100 rounded w-16"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 79,
+                        lineNumber: 247,
                         columnNumber: 13
                     }, this)
                 ]
             }, i, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 76,
+                lineNumber: 244,
                 columnNumber: 11
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 74,
+        lineNumber: 242,
         columnNumber: 7
     }, this);
     if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4761,12 +5457,12 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
             children: error
         }, void 0, false, {
             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-            lineNumber: 88,
+            lineNumber: 256,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 87,
+        lineNumber: 255,
         columnNumber: 7
     }, this);
     if (rows.length === 0) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4776,12 +5472,12 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
             children: "No staff members found."
         }, void 0, false, {
             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-            lineNumber: 95,
+            lineNumber: 263,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 94,
+        lineNumber: 262,
         columnNumber: 7
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4799,24 +5495,23 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                                 "Role",
                                 "Email",
                                 "Status",
-                                "Joined",
                                 "Actions"
                             ].map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
                                     className: "text-left py-3 px-5 text-gray-500 font-medium whitespace-nowrap",
                                     children: col
                                 }, col, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                    lineNumber: 107,
+                                    lineNumber: 275,
                                     columnNumber: 19
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                            lineNumber: 104,
+                            lineNumber: 272,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 103,
+                        lineNumber: 271,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -4828,9 +5523,9 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                                 lastName
                             ].filter(Boolean).join(" ") || "—";
                             const email = row.user?.email ?? row.email ?? "—";
-                            const role = row.role ?? row.ranchRole ?? "—";
+                            const role = row.ranchRole ?? row.role ?? "—";
                             const status = row.status ?? row.user?.status ?? "—";
-                            const joined = row.createdAt ?? row.joinedAt ?? row.created_at ?? row.joined_at ?? row.user?.createdAt ?? row.user?.created_at;
+                            const joined = row.createdAt ?? row.joinedAt ?? row.user?.createdAt;
                             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                 className: "border-b border-gray-50 hover:bg-gray-50 transition-colors",
                                 children: [
@@ -4839,7 +5534,7 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                                         children: fullName
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 139,
+                                        lineNumber: 301,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4847,7 +5542,7 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                                         children: role
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 142,
+                                        lineNumber: 304,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4855,7 +5550,7 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                                         children: email
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 145,
+                                        lineNumber: 307,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4864,20 +5559,12 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                                             status: status
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 149,
+                                            lineNumber: 311,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 148,
-                                        columnNumber: 19
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        className: "py-4 px-5 text-gray-400 whitespace-nowrap",
-                                        children: formatDate(joined)
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 151,
+                                        lineNumber: 310,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -4901,12 +5588,12 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                                                             children: r
                                                         }, r, false, {
                                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                            lineNumber: 169,
+                                                            lineNumber: 331,
                                                             columnNumber: 29
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 157,
+                                                    lineNumber: 319,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4915,53 +5602,53 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                                                     children: "Remove"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 174,
+                                                    lineNumber: 336,
                                                     columnNumber: 25
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 156,
+                                            lineNumber: 318,
                                             columnNumber: 23
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             className: "text-[11px] text-gray-400 italic",
                                             children: "View only"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 182,
+                                            lineNumber: 344,
                                             columnNumber: 23
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 154,
+                                        lineNumber: 316,
                                         columnNumber: 19
                                     }, this)
                                 ]
-                            }, row.id ?? i, true, {
+                            }, row.memberId ?? i, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 135,
+                                lineNumber: 297,
                                 columnNumber: 17
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 117,
+                        lineNumber: 285,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 102,
+                lineNumber: 270,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-            lineNumber: 101,
+            lineNumber: 269,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 100,
+        lineNumber: 268,
         columnNumber: 5
     }, this);
 }
@@ -5002,7 +5689,7 @@ function ActivityLog({ events, loading, error }) {
                         className: "w-7 h-7 rounded-full bg-gray-100 shrink-0"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 224,
+                        lineNumber: 386,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5012,31 +5699,31 @@ function ActivityLog({ events, loading, error }) {
                                 className: "h-2.5 bg-gray-100 rounded w-1/3"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 226,
+                                lineNumber: 388,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-2 bg-gray-100 rounded w-2/3"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 227,
+                                lineNumber: 389,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 225,
+                        lineNumber: 387,
                         columnNumber: 13
                     }, this)
                 ]
             }, i, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 223,
+                lineNumber: 385,
                 columnNumber: 11
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 221,
+        lineNumber: 383,
         columnNumber: 7
     }, this);
     if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5046,12 +5733,12 @@ function ActivityLog({ events, loading, error }) {
             children: error
         }, void 0, false, {
             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-            lineNumber: 237,
+            lineNumber: 399,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 236,
+        lineNumber: 398,
         columnNumber: 7
     }, this);
     if (events.length === 0) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5061,12 +5748,12 @@ function ActivityLog({ events, loading, error }) {
             children: "No ranch activity recorded yet."
         }, void 0, false, {
             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-            lineNumber: 244,
+            lineNumber: 406,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 243,
+        lineNumber: 405,
         columnNumber: 7
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5078,7 +5765,7 @@ function ActivityLog({ events, loading, error }) {
                     className: "absolute left-3 top-0 bottom-0 w-px bg-gray-100"
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                    lineNumber: 251,
+                    lineNumber: 413,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5094,12 +5781,12 @@ function ActivityLog({ events, loading, error }) {
                                         className: `w-2 h-2 rounded-full ${colors.dot}`
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                        lineNumber: 261,
+                                        lineNumber: 423,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                    lineNumber: 258,
+                                    lineNumber: 420,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5113,7 +5800,7 @@ function ActivityLog({ events, loading, error }) {
                                                     children: event.eventType?.replace(/_/g, " ") ?? "Event"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 265,
+                                                    lineNumber: 427,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5121,13 +5808,13 @@ function ActivityLog({ events, loading, error }) {
                                                     children: formatDate(event.createdAt)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 268,
+                                                    lineNumber: 430,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 264,
+                                            lineNumber: 426,
                                             columnNumber: 19
                                         }, this),
                                         event.animal?.tagNumber && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5140,13 +5827,13 @@ function ActivityLog({ events, loading, error }) {
                                                     children: event.animal.tagNumber
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 275,
+                                                    lineNumber: 437,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 273,
+                                            lineNumber: 435,
                                             columnNumber: 21
                                         }, this),
                                         event.field && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5157,7 +5844,7 @@ function ActivityLog({ events, loading, error }) {
                                                     children: event.field
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 282,
+                                                    lineNumber: 444,
                                                     columnNumber: 23
                                                 }, this),
                                                 " changed from ",
@@ -5166,7 +5853,7 @@ function ActivityLog({ events, loading, error }) {
                                                     children: event.fromValue ?? "—"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 286,
+                                                    lineNumber: 448,
                                                     columnNumber: 23
                                                 }, this),
                                                 " → ",
@@ -5175,13 +5862,13 @@ function ActivityLog({ events, loading, error }) {
                                                     children: event.toValue ?? "—"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 290,
+                                                    lineNumber: 452,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 281,
+                                            lineNumber: 443,
                                             columnNumber: 21
                                         }, this),
                                         event.notes && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5193,7 +5880,7 @@ function ActivityLog({ events, loading, error }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 296,
+                                            lineNumber: 458,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5206,42 +5893,277 @@ function ActivityLog({ events, loading, error }) {
                                                     children: actorName(event.actor)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                                    lineNumber: 302,
+                                                    lineNumber: 464,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                            lineNumber: 300,
+                                            lineNumber: 462,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                    lineNumber: 263,
+                                    lineNumber: 425,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, event.id ?? i, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                            lineNumber: 257,
+                            lineNumber: 419,
                             columnNumber: 15
                         }, this);
                     })
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                    lineNumber: 252,
+                    lineNumber: 414,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-            lineNumber: 250,
+            lineNumber: 412,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 249,
+        lineNumber: 411,
+        columnNumber: 5
+    }, this);
+}
+// ── Invites Table ─────────────────────────────────────────────────────────────
+function InvitesTable({ invites, loading, onDelete, onResend }) {
+    const [resending, setResending] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const handleResend = async (invite)=>{
+        setResending(invite.publicId); // ← publicId
+        await onResend(invite);
+        setResending(null);
+    };
+    if (loading) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-3",
+        children: [
+            1,
+            2,
+            3
+        ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex gap-4 animate-pulse",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-3 bg-gray-100 rounded flex-1"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 494,
+                        columnNumber: 13
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-3 bg-gray-100 rounded w-24"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 495,
+                        columnNumber: 13
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-3 bg-gray-100 rounded w-20"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 496,
+                        columnNumber: 13
+                    }, this)
+                ]
+            }, i, true, {
+                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                lineNumber: 493,
+                columnNumber: 11
+            }, this))
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 491,
+        columnNumber: 7
+    }, this);
+    const pendingInvites = invites.filter((invite)=>!invite.usedAt);
+    if (pendingInvites.length === 0) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm p-8 text-center",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+            className: "text-sm text-gray-400",
+            children: "No pending invites."
+        }, void 0, false, {
+            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+            lineNumber: 507,
+            columnNumber: 9
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 506,
+        columnNumber: 7
+    }, this);
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "overflow-x-auto",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                className: "w-full text-xs",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                            className: "border-b border-gray-100",
+                            children: [
+                                "Email",
+                                "Role",
+                                "Expires At",
+                                "Status",
+                                "Actions"
+                            ].map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                    className: "text-left py-3 px-5 text-gray-500 font-medium whitespace-nowrap",
+                                    children: col
+                                }, col, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                    lineNumber: 519,
+                                    columnNumber: 19
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                            lineNumber: 516,
+                            columnNumber: 13
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 515,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                        children: pendingInvites.map((invite, i)=>{
+                            const isUsed = !!invite.usedAt;
+                            const isExpired = !isUsed && new Date(invite.expiresAt) < new Date();
+                            const status = isUsed ? "accepted" : isExpired ? "expired" : "pending";
+                            const statusCls = {
+                                accepted: "bg-[#f0fdf4] text-[#4CAF50]",
+                                expired: "bg-red-50 text-red-500",
+                                pending: "bg-amber-50 text-amber-500"
+                            }[status];
+                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                className: "border-b border-gray-50 hover:bg-gray-50 transition-colors",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                        className: "py-4 px-5 font-medium text-gray-700",
+                                        children: invite.email
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                        lineNumber: 550,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                        className: "py-4 px-5 text-gray-500 capitalize",
+                                        children: invite.role
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                        lineNumber: 553,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                        className: "py-4 px-5 text-gray-400 whitespace-nowrap",
+                                        children: formatDate(invite.expiresAt)
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                        lineNumber: 556,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                        className: "py-4 px-5",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: `px-2.5 py-1 rounded-full text-[11px] font-semibold capitalize ${statusCls}`,
+                                            children: status
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                            lineNumber: 560,
+                                            columnNumber: 21
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                        lineNumber: 559,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                        className: "py-4 px-5",
+                                        children: [
+                                            !isUsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-3",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        onClick: ()=>handleResend(invite),
+                                                        disabled: resending === invite.publicId,
+                                                        className: "text-[#4CAF50] hover:text-[#43a047] font-semibold text-xs flex items-center gap-1 transition-colors disabled:opacity-50",
+                                                        children: [
+                                                            resending === invite.publicId ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                                size: 11,
+                                                                className: "animate-spin"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                                lineNumber: 575,
+                                                                columnNumber: 29
+                                                            }, this) : null,
+                                                            "Resend"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                        lineNumber: 569,
+                                                        columnNumber: 25
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        onClick: ()=>onDelete(invite),
+                                                        className: "text-red-400 hover:text-red-600 font-semibold text-xs transition-colors",
+                                                        children: "Cancel"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                        lineNumber: 579,
+                                                        columnNumber: 25
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                lineNumber: 568,
+                                                columnNumber: 23
+                                            }, this),
+                                            isUsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-gray-300 text-xs",
+                                                children: "—"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                                lineNumber: 587,
+                                                columnNumber: 32
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                        lineNumber: 566,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, invite.publicId ?? i, true, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                lineNumber: 546,
+                                columnNumber: 17
+                            }, this);
+                        })
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                        lineNumber: 529,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                lineNumber: 514,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+            lineNumber: 513,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+        lineNumber: 512,
         columnNumber: 5
     }, this);
 }
@@ -5253,6 +6175,9 @@ function StaffManagementPage() {
     const [events, setEvents] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [eventsLoading, setEventsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
     const [eventsError, setEventsError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [invites, setInvites] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [invitesLoading, setInvitesLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [showInvite, setShowInvite] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const fetchMembers = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
         setMembersLoading(true);
         setMembersError("");
@@ -5264,7 +6189,6 @@ function StaffManagementPage() {
             });
             if (!res.ok) throw new Error("Failed to fetch members");
             const json = await res.json();
-            console.log("✅ Members response:", json);
             const list = json?.data?.data?.members ?? json?.data?.members ?? json?.members ?? (Array.isArray(json?.data) ? json.data : []);
             setMembers(list);
         } catch (err) {
@@ -5284,13 +6208,29 @@ function StaffManagementPage() {
             });
             if (!res.ok) throw new Error("Failed to fetch activity");
             const json = await res.json();
-            console.log("✅ Activity response:", json);
             const list = json?.data?.events ?? json?.events ?? (Array.isArray(json?.data) ? json.data : []);
             setEvents(list);
         } catch (err) {
             setEventsError(err.message);
         } finally{
             setEventsLoading(false);
+        }
+    }, []);
+    const fetchInvites = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
+        setInvitesLoading(true);
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/invites`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error();
+            const json = await res.json();
+            setInvites(json?.data?.invites ?? json?.invites ?? []);
+        } catch  {
+            setInvites([]);
+        } finally{
+            setInvitesLoading(false);
         }
     }, []);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
@@ -5303,9 +6243,14 @@ function StaffManagementPage() {
     }, [
         fetchActivity
     ]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        fetchInvites();
+    }, [
+        fetchInvites
+    ]);
     const handleRoleChange = async (member, newRole)=>{
         try {
-            const res = await fetch(`${API}/ranches/${getSlug()}/members/${member.id}/role`, {
+            const res = await fetch(`${API}/ranches/${getSlug()}/members/${member.memberId}/role`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -5316,9 +6261,9 @@ function StaffManagementPage() {
                 })
             });
             if (!res.ok) throw new Error("Failed to update role");
-            setMembers((prev)=>prev.map((m)=>m.id === member.id ? {
+            setMembers((prev)=>prev.map((m)=>m.memberId === member.memberId ? {
                         ...m,
-                        role: newRole
+                        ranchRole: newRole
                     } : m));
         } catch (err) {
             alert(err.message);
@@ -5331,16 +6276,46 @@ function StaffManagementPage() {
         ].filter(Boolean).join(" ") || "this member";
         if (!confirm(`Remove ${name} from the ranch?`)) return;
         try {
-            const res = await fetch(`${API}/ranches/${getSlug()}/members/${member.id}`, {
+            const res = await fetch(`${API}/ranches/${getSlug()}/members/${member.memberId}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${getToken()}`
                 }
             });
             if (!res.ok) throw new Error("Failed to remove member");
-            setMembers((prev)=>prev.filter((m)=>m.id !== member.id));
+            setMembers((prev)=>prev.filter((m)=>m.memberId !== member.memberId));
         } catch (err) {
             alert(err.message);
+        }
+    };
+    // Uses publicId — the actual field name returned by the API
+    const handleDeleteInvite = async (invite)=>{
+        if (!confirm(`Cancel invite for ${invite.email}?`)) return;
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/invites/${invite.publicId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error("Failed to cancel invite");
+            fetchInvites(); // refetch from server instead of local filter
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+    const handleResendInvite = async (invite)=>{
+        try {
+            const res = await fetch(`${API}/ranches/${getSlug()}/invites/${invite.publicId}/resend`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            if (!res.ok) throw new Error();
+            alert(`Invite resent to ${invite.email}`);
+        } catch  {
+            alert("Failed to resend invite");
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -5352,46 +6327,67 @@ function StaffManagementPage() {
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex items-center bg-gray-100 rounded-full p-1 gap-1",
                         children: [
-                            "staff",
-                            "worklog"
-                        ].map((tab)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                onClick: ()=>setActiveTab(tab),
-                                className: `px-5 py-2 rounded-full text-xs font-semibold transition-all ${activeTab === tab ? "bg-white text-gray-800 shadow-sm" : "text-gray-400 hover:text-gray-600"}`,
-                                children: tab === "staff" ? "All Staffs List" : "Daily Work Log"
-                            }, tab, false, {
+                            {
+                                key: "staff",
+                                label: "All Staff"
+                            },
+                            {
+                                key: "invites",
+                                label: "Invites"
+                            },
+                            {
+                                key: "worklog",
+                                label: "Work Log"
+                            }
+                        ].map(({ key, label })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>setActiveTab(key),
+                                className: `px-5 py-2 rounded-full text-xs font-semibold transition-all ${activeTab === key ? "bg-white text-gray-800 shadow-sm" : "text-gray-400 hover:text-gray-600"}`,
+                                children: [
+                                    label,
+                                    key === "invites" && invites.filter((i)=>!i.usedAt).length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-600",
+                                        children: invites.filter((i)=>!i.usedAt).length
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                                        lineNumber: 782,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, key, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 427,
+                                lineNumber: 770,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 425,
+                        lineNumber: 764,
                         columnNumber: 9
                     }, this),
-                    getRole() === "manager" && activeTab === "staff" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    (activeTab === "staff" || activeTab === "invites") && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setShowInvite(true),
                         className: "flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UserPlus$3e$__["UserPlus"], {
                                 size: 13
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                                lineNumber: 442,
+                                lineNumber: 795,
                                 columnNumber: 13
                             }, this),
                             " Invite New Staff"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 441,
+                        lineNumber: 791,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 424,
+                lineNumber: 763,
                 columnNumber: 7
             }, this),
-            activeTab === "staff" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+            activeTab === "staff" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                 children: [
                     !membersLoading && !membersError && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-xs text-gray-400",
@@ -5402,7 +6398,7 @@ function StaffManagementPage() {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 450,
+                        lineNumber: 803,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StaffListTable, {
@@ -5413,23 +6409,41 @@ function StaffManagementPage() {
                         onDelete: handleDelete
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                        lineNumber: 454,
+                        lineNumber: 807,
                         columnNumber: 11
                     }, this)
                 ]
-            }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ActivityLog, {
+            }, void 0, true),
+            activeTab === "invites" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(InvitesTable, {
+                invites: invites,
+                loading: invitesLoading,
+                onDelete: handleDeleteInvite,
+                onResend: handleResendInvite
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                lineNumber: 818,
+                columnNumber: 9
+            }, this),
+            activeTab === "worklog" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ActivityLog, {
                 events: events,
                 loading: eventsLoading,
                 error: eventsError
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-                lineNumber: 463,
+                lineNumber: 827,
                 columnNumber: 9
+            }, this),
+            showInvite && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(InviteModal, {
+                onClose: ()=>setShowInvite(false)
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
+                lineNumber: 834,
+                columnNumber: 22
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/StaffManagementPage.jsx",
-        lineNumber: 423,
+        lineNumber: 762,
         columnNumber: 5
     }, this);
 }
@@ -9827,7 +10841,7 @@ function ManagerDashboard() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "w-[380px] shrink-0",
+                                        className: "w-96 shrink-0",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$shared$2f$Charts$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["LineChart"], {
                                             title: "Feed Consumption Trend",
                                             period: "30 days",

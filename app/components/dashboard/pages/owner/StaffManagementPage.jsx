@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { UserPlus } from "lucide-react";
+import { UserPlus, X, Loader2, Copy, Check } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -37,6 +37,175 @@ function actorName(actor) {
   return name || actor.email || "Unknown";
 }
 
+// ── Invite Modal ──────────────────────────────────────────────────────────────
+
+const ROLES = ["manager", "vet", "storekeeper", "worker"];
+
+function InviteModal({ onClose }) {
+  const [form, setForm] = useState({ email: "", ranchRole: "worker" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [inviteLink, setInviteLink] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const isValid = form.email && form.ranchRole;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch(`${API}/ranches/${getSlug()}/invites`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify({ email: form.email, ranchRole: form.ranchRole }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message ?? "Failed to send invite");
+      }
+      const json = await res.json();
+      const acceptUrl = json?.data?.acceptUrl ?? "";
+      // Extract token from acceptUrl query param
+      const urlToken = new URL(acceptUrl).searchParams.get("token") ?? "";
+      const slug = getSlug();
+      const base = typeof window !== "undefined" ? window.location.origin : "";
+      const link = `${base}/join?token=${urlToken}&slug=${slug}&role=${form.ranchRole}&email=${encodeURIComponent(form.email)}`;
+      setInviteLink(link);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(inviteLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+      <div className="bg-white rounded-2xl w-full max-w-md shadow-xl">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h3 className="text-sm font-bold text-gray-800">Invite New Staff</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="px-6 py-5 space-y-4">
+          {error && (
+            <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-xs text-red-500">
+              {error}
+            </div>
+          )}
+
+          {inviteLink ? (
+            <div className="space-y-4">
+              <div className="bg-[#f0fdf4] border border-[#d1fae5] rounded-xl p-4">
+                <p className="text-xs font-semibold text-[#4CAF50] mb-2">
+                  ✅ Invite created! Share this link:
+                </p>
+                <p className="text-[11px] text-gray-600 break-all font-mono bg-white rounded-lg p-2 border border-gray-200">
+                  {inviteLink}
+                </p>
+              </div>
+              <button
+                onClick={copyLink}
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-semibold transition-colors ${
+                  copied
+                    ? "bg-[#f0fdf4] text-[#4CAF50] border border-[#4CAF50]"
+                    : "bg-[#4CAF50] hover:bg-[#43a047] text-white"
+                }`}
+              >
+                {copied ? (
+                  <>
+                    <Check size={13} /> Copied!
+                  </>
+                ) : (
+                  <>
+                    <Copy size={13} /> Copy Invite Link
+                  </>
+                )}
+              </button>
+              <p className="text-[11px] text-gray-400 text-center">
+                An invite email has also been sent to {form.email}
+              </p>
+              <button
+                onClick={onClose}
+                className="w-full py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+              >
+                Done
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                  Email Address <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={set("email")}
+                  placeholder="staff@example.com"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                  Assign Role <span className="text-red-400">*</span>
+                </label>
+                <select
+                  value={form.ranchRole}
+                  onChange={set("ranchRole")}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors appearance-none"
+                >
+                  {ROLES.map((r) => (
+                    <option key={r} value={r} className="capitalize">
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={!isValid || loading}
+                  className={`flex-1 py-2.5 rounded-xl text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-colors ${
+                    isValid && !loading
+                      ? "bg-[#4CAF50] hover:bg-[#43a047]"
+                      : "bg-[#a5d6a7] cursor-not-allowed"
+                  }`}
+                >
+                  {loading && <Loader2 size={12} className="animate-spin" />}
+                  {loading ? "Sending..." : "Send Invite"}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Status Badge ──────────────────────────────────────────────────────────────
 
 function StaffStatusBadge({ status }) {
@@ -66,8 +235,7 @@ function StaffStatusBadge({ status }) {
 // ── Members Table ─────────────────────────────────────────────────────────────
 
 function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
-  const userRole = getRole();
-  const isManager = userRole === "manager";
+  const isManager = getRole() === "manager";
 
   if (loading)
     return (
@@ -102,7 +270,7 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
         <table className="w-full text-xs">
           <thead>
             <tr className="border-b border-gray-100">
-              {["Name", "Role", "Email", "Status", "Joined", "Actions"].map(
+              {["Name", "Role", "Email", "Status", "Actions"].map(
                 (col) => (
                   <th
                     key={col}
@@ -121,19 +289,13 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
               const fullName =
                 [firstName, lastName].filter(Boolean).join(" ") || "—";
               const email = row.user?.email ?? row.email ?? "—";
-              const role = row.role ?? row.ranchRole ?? "—";
+              const role = row.ranchRole ?? row.role ?? "—";
               const status = row.status ?? row.user?.status ?? "—";
               const joined =
-                row.createdAt ??
-                row.joinedAt ??
-                row.created_at ??
-                row.joined_at ??
-                row.user?.createdAt ??
-                row.user?.created_at;
-
+                row.createdAt ?? row.joinedAt ?? row.user?.createdAt;
               return (
                 <tr
-                  key={row.id ?? i}
+                  key={row.memberId ?? i}
                   className="border-b border-gray-50 hover:bg-gray-50 transition-colors"
                 >
                   <td className="py-4 px-5 font-medium text-gray-800 whitespace-nowrap">
@@ -148,9 +310,9 @@ function StaffListTable({ rows, loading, error, onRoleChange, onDelete }) {
                   <td className="py-4 px-5">
                     <StaffStatusBadge status={status} />
                   </td>
-                  <td className="py-4 px-5 text-gray-400 whitespace-nowrap">
+                  {/* <td className="py-4 px-5 text-gray-400 whitespace-nowrap">
                     {formatDate(joined)}
-                  </td>
+                  </td> */}
                   <td className="py-4 px-5">
                     {isManager ? (
                       <div className="flex items-center gap-2">
@@ -313,6 +475,127 @@ function ActivityLog({ events, loading, error }) {
   );
 }
 
+// ── Invites Table ─────────────────────────────────────────────────────────────
+
+function InvitesTable({ invites, loading, onDelete, onResend }) {
+  const [resending, setResending] = useState(null);
+
+  const handleResend = async (invite) => {
+    setResending(invite.publicId); // ← publicId
+    await onResend(invite);
+    setResending(null);
+  };
+
+  if (loading)
+    return (
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-3">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="flex gap-4 animate-pulse">
+            <div className="h-3 bg-gray-100 rounded flex-1" />
+            <div className="h-3 bg-gray-100 rounded w-24" />
+            <div className="h-3 bg-gray-100 rounded w-20" />
+          </div>
+        ))}
+      </div>
+    );
+
+  const pendingInvites = invites.filter((invite) => !invite.usedAt);
+
+  if (pendingInvites.length === 0)
+    return (
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-8 text-center">
+        <p className="text-sm text-gray-400">No pending invites.</p>
+      </div>
+    );
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="border-b border-gray-100">
+              {["Email", "Role", "Expires At", "Status", "Actions"].map(
+                (col) => (
+                  <th
+                    key={col}
+                    className="text-left py-3 px-5 text-gray-500 font-medium whitespace-nowrap"
+                  >
+                    {col}
+                  </th>
+                ),
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {pendingInvites.map((invite, i) => {
+              const isUsed = !!invite.usedAt;
+              const isExpired =
+                !isUsed && new Date(invite.expiresAt) < new Date();
+              const status = isUsed
+                ? "accepted"
+                : isExpired
+                  ? "expired"
+                  : "pending";
+              const statusCls = {
+                accepted: "bg-[#f0fdf4] text-[#4CAF50]",
+                expired: "bg-red-50 text-red-500",
+                pending: "bg-amber-50 text-amber-500",
+              }[status];
+
+              return (
+                <tr
+                  key={invite.publicId ?? i}
+                  className="border-b border-gray-50 hover:bg-gray-50 transition-colors"
+                >
+                  <td className="py-4 px-5 font-medium text-gray-700">
+                    {invite.email}
+                  </td>
+                  <td className="py-4 px-5 text-gray-500 capitalize">
+                    {invite.role}
+                  </td>
+                  <td className="py-4 px-5 text-gray-400 whitespace-nowrap">
+                    {formatDate(invite.expiresAt)}
+                  </td>
+                  <td className="py-4 px-5">
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-[11px] font-semibold capitalize ${statusCls}`}
+                    >
+                      {status}
+                    </span>
+                  </td>
+                  <td className="py-4 px-5">
+                    {!isUsed && (
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => handleResend(invite)}
+                          disabled={resending === invite.publicId} // ← publicId
+                          className="text-[#4CAF50] hover:text-[#43a047] font-semibold text-xs flex items-center gap-1 transition-colors disabled:opacity-50"
+                        >
+                          {resending === invite.publicId ? ( // ← publicId
+                            <Loader2 size={11} className="animate-spin" />
+                          ) : null}
+                          Resend
+                        </button>
+                        <button
+                          onClick={() => onDelete(invite)}
+                          className="text-red-400 hover:text-red-600 font-semibold text-xs transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+                    {isUsed && <span className="text-gray-300 text-xs">—</span>}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function StaffManagementPage() {
@@ -323,6 +606,9 @@ export default function StaffManagementPage() {
   const [events, setEvents] = useState([]);
   const [eventsLoading, setEventsLoading] = useState(true);
   const [eventsError, setEventsError] = useState("");
+  const [invites, setInvites] = useState([]);
+  const [invitesLoading, setInvitesLoading] = useState(true);
+  const [showInvite, setShowInvite] = useState(false);
 
   const fetchMembers = useCallback(async () => {
     setMembersLoading(true);
@@ -333,7 +619,6 @@ export default function StaffManagementPage() {
       });
       if (!res.ok) throw new Error("Failed to fetch members");
       const json = await res.json();
-      console.log("✅ Members response:", json);
       const list =
         json?.data?.data?.members ??
         json?.data?.members ??
@@ -356,7 +641,6 @@ export default function StaffManagementPage() {
       });
       if (!res.ok) throw new Error("Failed to fetch activity");
       const json = await res.json();
-      console.log("✅ Activity response:", json);
       const list =
         json?.data?.events ??
         json?.events ??
@@ -369,17 +653,36 @@ export default function StaffManagementPage() {
     }
   }, []);
 
+  const fetchInvites = useCallback(async () => {
+    setInvitesLoading(true);
+    try {
+      const res = await fetch(`${API}/ranches/${getSlug()}/invites`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      if (!res.ok) throw new Error();
+      const json = await res.json();
+      setInvites(json?.data?.invites ?? json?.invites ?? []);
+    } catch {
+      setInvites([]);
+    } finally {
+      setInvitesLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchMembers();
   }, [fetchMembers]);
   useEffect(() => {
     fetchActivity();
   }, [fetchActivity]);
+  useEffect(() => {
+    fetchInvites();
+  }, [fetchInvites]);
 
   const handleRoleChange = async (member, newRole) => {
     try {
       const res = await fetch(
-        `${API}/ranches/${getSlug()}/members/${member.id}/role`,
+        `${API}/ranches/${getSlug()}/members/${member.memberId}/role`,
         {
           method: "PATCH",
           headers: {
@@ -391,7 +694,9 @@ export default function StaffManagementPage() {
       );
       if (!res.ok) throw new Error("Failed to update role");
       setMembers((prev) =>
-        prev.map((m) => (m.id === member.id ? { ...m, role: newRole } : m)),
+        prev.map((m) =>
+          m.memberId === member.memberId ? { ...m, ranchRole: newRole } : m,
+        ),
       );
     } catch (err) {
       alert(err.message);
@@ -406,16 +711,50 @@ export default function StaffManagementPage() {
     if (!confirm(`Remove ${name} from the ranch?`)) return;
     try {
       const res = await fetch(
-        `${API}/ranches/${getSlug()}/members/${member.id}`,
+        `${API}/ranches/${getSlug()}/members/${member.memberId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${getToken()}` },
         },
       );
       if (!res.ok) throw new Error("Failed to remove member");
-      setMembers((prev) => prev.filter((m) => m.id !== member.id));
+      setMembers((prev) => prev.filter((m) => m.memberId !== member.memberId));
     } catch (err) {
       alert(err.message);
+    }
+  };
+
+  // Uses publicId — the actual field name returned by the API
+  const handleDeleteInvite = async (invite) => {
+    if (!confirm(`Cancel invite for ${invite.email}?`)) return;
+    try {
+      const res = await fetch(
+        `${API}/ranches/${getSlug()}/invites/${invite.publicId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${getToken()}` },
+        },
+      );
+      if (!res.ok) throw new Error("Failed to cancel invite");
+      fetchInvites(); // refetch from server instead of local filter
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleResendInvite = async (invite) => {
+    try {
+      const res = await fetch(
+        `${API}/ranches/${getSlug()}/invites/${invite.publicId}/resend`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${getToken()}` },
+        },
+      );
+      if (!res.ok) throw new Error();
+      alert(`Invite resent to ${invite.email}`);
+    } catch {
+      alert("Failed to resend invite");
     }
   };
 
@@ -423,28 +762,42 @@ export default function StaffManagementPage() {
     <main className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center bg-gray-100 rounded-full p-1 gap-1">
-          {["staff", "worklog"].map((tab) => (
+          {[
+            { key: "staff", label: "All Staff" },
+            { key: "invites", label: "Invites" },
+            { key: "worklog", label: "Work Log" },
+          ].map(({ key, label }) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
+              key={key}
+              onClick={() => setActiveTab(key)}
               className={`px-5 py-2 rounded-full text-xs font-semibold transition-all ${
-                activeTab === tab
+                activeTab === key
                   ? "bg-white text-gray-800 shadow-sm"
                   : "text-gray-400 hover:text-gray-600"
               }`}
             >
-              {tab === "staff" ? "All Staffs List" : "Daily Work Log"}
+              {label}
+              {key === "invites" &&
+                invites.filter((i) => !i.usedAt).length > 0 && (
+                  <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-600">
+                    {invites.filter((i) => !i.usedAt).length}
+                  </span>
+                )}
             </button>
           ))}
         </div>
-        {getRole() === "manager" && activeTab === "staff" && (
-          <button className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors">
+
+        {(activeTab === "staff" || activeTab === "invites") && (
+          <button
+            onClick={() => setShowInvite(true)}
+            className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors"
+          >
             <UserPlus size={13} /> Invite New Staff
           </button>
         )}
       </div>
 
-      {activeTab === "staff" ? (
+      {activeTab === "staff" && (
         <>
           {!membersLoading && !membersError && (
             <p className="text-xs text-gray-400">
@@ -459,13 +812,26 @@ export default function StaffManagementPage() {
             onDelete={handleDelete}
           />
         </>
-      ) : (
+      )}
+
+      {activeTab === "invites" && (
+        <InvitesTable
+          invites={invites}
+          loading={invitesLoading}
+          onDelete={handleDeleteInvite}
+          onResend={handleResendInvite}
+        />
+      )}
+
+      {activeTab === "worklog" && (
         <ActivityLog
           events={events}
           loading={eventsLoading}
           error={eventsError}
         />
       )}
+
+      {showInvite && <InviteModal onClose={() => setShowInvite(false)} />}
     </main>
   );
 }

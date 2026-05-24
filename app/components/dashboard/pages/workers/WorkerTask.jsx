@@ -43,6 +43,7 @@ function StatusBadge({ status, isOverdue }) {
   const map = {
     pending: { cls: "bg-amber-50  text-amber-500", icon: "⏳" },
     in_progress: { cls: "bg-blue-50   text-blue-500", icon: "🔄" },
+    in_review: { cls: "bg-purple-50 text-purple-500", icon: "🔍" },
     completed: { cls: "bg-[#f0fdf4] text-[#4CAF50]", icon: "✅" },
     cancelled: { cls: "bg-gray-100  text-gray-400", icon: "❌" },
   };
@@ -79,47 +80,26 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
     setError("");
     setLoading(true);
     try {
-      // PATCH task status to completed
+      const formData = new FormData();
+      formData.append("proofType", "image");
+      if (form.notes) formData.append("notes", form.notes);
+
       const res = await fetch(
-        `${API}/ranches/${getSlug()}/tasks/${task.publicId}/complete`,
+        `${API}/ranches/${getSlug()}/tasks/${task.publicId}/submissions`,
         {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getToken()}`,
-          },
-          body: JSON.stringify({
-            status: "completed",
-            notes: form.notes || undefined,
-          }),
+          method: "POST",
+          headers: { Authorization: `Bearer ${getToken()}` },
+          body: formData,
         },
       );
 
-      // If no /complete endpoint, fall back to general PATCH
-      if (res.status === 404) {
-        const res2 = await fetch(
-          `${API}/ranches/${getSlug()}/tasks/${task.publicId}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${getToken()}`,
-            },
-            body: JSON.stringify({
-              status: "completed",
-              notes: form.notes || undefined,
-            }),
-          },
-        );
-        if (!res2.ok) {
-          const err = await res2.json();
-          console.error("❌ Mark done error:", JSON.stringify(err, null, 2));
-          throw new Error(err.message ?? "Failed to mark task as done");
-        }
-      } else if (!res.ok) {
+      if (!res.ok) {
         const err = await res.json();
-        console.error("❌ Mark done error:", JSON.stringify(err, null, 2));
-        throw new Error(err.message ?? "Failed to mark task as done");
+        console.error(
+          "❌ Task submission error:",
+          JSON.stringify(err, null, 2),
+        );
+        throw new Error(err.message ?? "Failed to submit task");
       }
 
       onSuccess(task.publicId);
@@ -264,6 +244,7 @@ function TaskCard({ task, onMarkDone }) {
     (task.status ?? "").toLowerCase(),
   );
   const isCancelled = task.status?.toLowerCase() === "cancelled";
+  const isInReview = task.status?.toLowerCase() === "in_review";
 
   return (
     <div
@@ -324,13 +305,18 @@ function TaskCard({ task, onMarkDone }) {
       )}
 
       {/* Mark as done button */}
-      {!isDone && !isCancelled && (
+      {!isDone && !isCancelled && !isInReview && (
         <button
           onClick={() => onMarkDone(task)}
           className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors"
         >
           <Check size={13} /> Mark As Done
         </button>
+      )}
+      {isInReview && (
+        <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-purple-500 bg-purple-50 py-2 rounded-full">
+          🔍 Submitted · Pending Review
+        </div>
       )}
 
       {/* Verified badge */}
@@ -348,6 +334,7 @@ function TaskCard({ task, onMarkDone }) {
 const FILTERS = [
   { key: "all", label: "All" },
   { key: "pending", label: "Pending" },
+  { key: "in_review", label: "In Review" },
   { key: "completed", label: "Completed" },
   { key: "overdue", label: "Overdue" },
 ];
@@ -389,7 +376,7 @@ export default function WorkerTaskHistoryPage() {
   const handleMarkDone = (taskPublicId) => {
     setTasks((prev) =>
       prev.map((t) =>
-        t.publicId === taskPublicId ? { ...t, status: "completed" } : t,
+        t.publicId === taskPublicId ? { ...t, status: "in_review" } : t,
       ),
     );
   };
@@ -397,11 +384,17 @@ export default function WorkerTaskHistoryPage() {
   // Filter tasks
   const filtered = tasks.filter((t) => {
     if (filter === "all") return true;
-    if (filter === "overdue") return t.isOverdue && t.status !== "completed";
-    if (filter === "pending")
-      return ["pending", "in_progress"].includes(
-        (t.status ?? "").toLowerCase(),
+    if (filter === "overdue")
+      return (
+        t.isOverdue &&
+        !["completed", "done", "in_review"].includes(
+          (t.status ?? "").toLowerCase(),
+        )
       );
+    if (filter === "pending")
+      return (t.status ?? "").toLowerCase() === "pending";
+    if (filter === "in_review")
+      return (t.status ?? "").toLowerCase() === "in_review";
     if (filter === "completed")
       return ["completed", "done"].includes((t.status ?? "").toLowerCase());
     return true;
@@ -409,14 +402,21 @@ export default function WorkerTaskHistoryPage() {
 
   const counts = {
     all: tasks.length,
-    pending: tasks.filter((t) =>
-      ["pending", "in_progress"].includes((t.status ?? "").toLowerCase()),
+    pending: tasks.filter((t) => (t.status ?? "").toLowerCase() === "pending")
+      .length,
+    in_review: tasks.filter(
+      (t) => (t.status ?? "").toLowerCase() === "in_review",
     ).length,
     completed: tasks.filter((t) =>
       ["completed", "done"].includes((t.status ?? "").toLowerCase()),
     ).length,
-    overdue: tasks.filter((t) => t.isOverdue && t.status !== "completed")
-      .length,
+    overdue: tasks.filter(
+      (t) =>
+        t.isOverdue &&
+        !["completed", "done", "in_review"].includes(
+          (t.status ?? "").toLowerCase(),
+        ),
+    ).length,
   };
 
   return (

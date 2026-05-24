@@ -36,6 +36,7 @@ function StatusBadge({ status }) {
     completed: "bg-[#f0fdf4] text-[#4CAF50]",
     pending: "bg-amber-50  text-amber-500",
     in_progress: "bg-blue-50   text-blue-500",
+    in_review: "bg-purple-50 text-purple-500",
     overdue: "bg-red-50    text-red-500",
     cancelled: "bg-gray-100  text-gray-400",
   };
@@ -44,6 +45,7 @@ function StatusBadge({ status }) {
     completed: "bg-[#4CAF50]",
     pending: "bg-amber-400",
     in_progress: "bg-blue-400",
+    in_review: "bg-purple-400",
     overdue: "bg-red-500",
     cancelled: "bg-gray-400",
   };
@@ -79,6 +81,216 @@ function ProofCell({ proof }) {
   return (
     <div className="w-10 h-10 rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center text-gray-300 text-base">
       🖼
+    </div>
+  );
+}
+
+// ── Review Modal ──────────────────────────────────────────────────────────────
+
+function ReviewModal({ task, onClose, onSuccess }) {
+  const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [reviewing, setReviewing] = useState(null); // submissionPublicId being reviewed
+  const [reviewNotes, setReviewNotes] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch(
+          `${API}/ranches/${getSlug()}/tasks/${task.publicId}/submissions`,
+          {
+            headers: { Authorization: `Bearer ${getToken()}` },
+          },
+        );
+        if (!res.ok) throw new Error();
+        const json = await res.json();
+        console.log("✅ Submissions:", json);
+        const list =
+          json?.data?.submissions ?? json?.submissions ?? json?.data ?? [];
+        setSubmissions(Array.isArray(list) ? list : []);
+      } catch {
+        setSubmissions([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, [task.publicId]);
+
+  const handleReview = async (submission, status) => {
+    setError("");
+    setReviewing(submission.publicId ?? submission.id);
+    try {
+      const res = await fetch(
+        `${API}/ranches/${getSlug()}/tasks/${task.publicId}/submissions/${submission.publicId ?? submission.id}/review`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getToken()}`,
+          },
+          body: JSON.stringify({
+            status,
+            reviewNotes: reviewNotes || undefined,
+          }),
+        },
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message ?? "Failed to review submission");
+      }
+      onSuccess(task.publicId, status);
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setReviewing(null);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+      <div className="bg-white rounded-2xl w-full max-w-lg shadow-xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <div>
+            <h3 className="text-sm font-bold text-gray-800">
+              Review Submission
+            </h3>
+            <p className="text-xs text-gray-400 mt-0.5 truncate">
+              {task.title}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="px-6 py-5 space-y-4">
+          {error && (
+            <div className="px-4 py-3 rounded-xl bg-red-50 text-xs text-red-500">
+              {error}
+            </div>
+          )}
+
+          {loading && (
+            <div className="space-y-3">
+              {[1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="h-16 bg-gray-50 rounded-xl animate-pulse"
+                />
+              ))}
+            </div>
+          )}
+
+          {!loading && submissions.length === 0 && (
+            <div className="text-center py-8 space-y-2">
+              <p className="text-2xl">📋</p>
+              <p className="text-sm font-semibold text-gray-600">
+                No submissions yet
+              </p>
+              <p className="text-xs text-gray-400">
+                The worker hasn't submitted this task yet.
+              </p>
+            </div>
+          )}
+
+          {!loading &&
+            submissions.map((sub, i) => (
+              <div
+                key={sub.publicId ?? sub.id ?? i}
+                className="bg-gray-50 rounded-xl p-4 space-y-3 border border-gray-100"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold text-gray-700">
+                      Submitted by{" "}
+                      {[sub.submittedBy?.firstName, sub.submittedBy?.lastName]
+                        .filter(Boolean)
+                        .join(" ") ||
+                        sub.submittedBy?.email ||
+                        "Worker"}
+                    </p>
+                    <p className="text-[10px] text-gray-400 mt-0.5">
+                      {sub.createdAt
+                        ? new Date(sub.createdAt).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        : "—"}
+                    </p>
+                  </div>
+                  {sub.status && (
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-[11px] font-semibold capitalize ${
+                        sub.status === "approved"
+                          ? "bg-[#f0fdf4] text-[#4CAF50]"
+                          : sub.status === "rejected"
+                            ? "bg-red-50 text-red-500"
+                            : "bg-amber-50 text-amber-500"
+                      }`}
+                    >
+                      {sub.status}
+                    </span>
+                  )}
+                </div>
+
+                {sub.notes && (
+                  <p className="text-xs text-gray-600 italic">"{sub.notes}"</p>
+                )}
+
+                {sub.proofUrl && (
+                  <img
+                    src={sub.proofUrl}
+                    alt="Proof"
+                    className="w-full h-32 object-cover rounded-xl border border-gray-200"
+                  />
+                )}
+
+                {/* Review form — only for pending submissions */}
+                {(!sub.status || sub.status === "pending") && (
+                  <div className="space-y-2 pt-1">
+                    <textarea
+                      value={reviewNotes}
+                      onChange={(e) => setReviewNotes(e.target.value)}
+                      placeholder="Review notes (optional)..."
+                      rows={2}
+                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleReview(sub, "approved")}
+                        disabled={!!reviewing}
+                        className="flex-1 py-2.5 rounded-xl bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-60"
+                      >
+                        {reviewing === (sub.publicId ?? sub.id) ? (
+                          <Loader2 size={12} className="animate-spin" />
+                        ) : (
+                          "✅"
+                        )}
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => handleReview(sub, "rejected")}
+                        disabled={!!reviewing}
+                        className="flex-1 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-60"
+                      >
+                        ❌ Reject
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -355,6 +567,7 @@ export default function TaskManagementPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [reviewingTask, setReviewingTask] = useState(null);
 
   const fetchTasks = useCallback(async () => {
     setLoading(true);
@@ -462,7 +675,6 @@ export default function TaskManagementPage() {
                 <tr className="border-b border-gray-100">
                   {[
                     "Task ID",
-                    "Task Type",
                     "Task Description",
                     "Assigned To",
                     "Deadline",
@@ -489,11 +701,11 @@ export default function TaskManagementPage() {
                       {task.publicId?.slice(0, 8) ?? "—"}
                     </td>
                     {/* Task Type — API uses title, no separate type field */}
-                    <td className="py-3.5 px-5 text-gray-600 whitespace-nowrap capitalize">
+                    {/* <td className="py-3.5 px-5 text-gray-600 whitespace-nowrap capitalize">
                       {task.category ?? task.type ?? "—"}
-                    </td>
+                    </td> */}
                     {/* Description / Title */}
-                    <td className="py-3.5 px-5 text-gray-600 max-w-[200px]">
+                    <td className="py-3.5 px-5 text-gray-600 max-w-50">
                       <p className="font-medium text-gray-700 truncate">
                         {task.title ?? "—"}
                       </p>
@@ -528,13 +740,24 @@ export default function TaskManagementPage() {
                         }
                       />
                     </td>
-                    {/* Proof */}
+                    {/* Proof / Review */}
                     <td className="py-3.5 px-5">
-                      <ProofCell
-                        proof={
-                          task.imageUrl ?? task.submission?.imageUrl ?? null
-                        }
-                      />
+                      {!["completed", "done", "cancelled"].includes(
+                        (task.status ?? "").toLowerCase(),
+                      ) ? (
+                        <button
+                          onClick={() => setReviewingTask(task)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-600 text-xs font-semibold transition-colors whitespace-nowrap"
+                        >
+                          🔍 Review
+                        </button>
+                      ) : (
+                        <ProofCell
+                          proof={
+                            task.imageUrl ?? task.submission?.imageUrl ?? null
+                          }
+                        />
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -543,12 +766,34 @@ export default function TaskManagementPage() {
           </div>
         </div>
       )}
+
       {/* Create Task Modal */}
       {showModal && (
         <CreateTaskModal
           onClose={() => setShowModal(false)}
           onSuccess={() => {
             fetchTasks();
+          }}
+        />
+      )}
+
+      {/* Review Modal */}
+      {reviewingTask && (
+        <ReviewModal
+          task={reviewingTask}
+          onClose={() => setReviewingTask(null)}
+          onSuccess={(taskPublicId, status) => {
+            setTasks((prev) =>
+              prev.map((t) =>
+                t.publicId === taskPublicId
+                  ? {
+                      ...t,
+                      status: status === "approved" ? "completed" : "pending",
+                    }
+                  : t,
+              ),
+            );
+            setReviewingTask(null);
           }}
         />
       )}

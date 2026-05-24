@@ -4621,7 +4621,7 @@ function MobileShell({ navItems = [], pageMap = {}, defaultPage = "", user: user
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen bg-gray-200 flex items-start justify-center",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "relative w-full md:w-[480px] h-screen md:min-h-0 md:rounded-3xl md:shadow-2xl bg-[#f5f5f5] overflow-hidden flex flex-col md:max-h-[900px]",
+            className: "relative w-full md:w-120 h-screen md:min-h-0 md:rounded-3xl md:shadow-2xl bg-[#f5f5f5] overflow-hidden flex flex-col md:max-h-225",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex items-center justify-between px-5 pt-4 pb-3 bg-[#f5f5f5] shrink-0",
@@ -4671,7 +4671,7 @@ function MobileShell({ navItems = [], pageMap = {}, defaultPage = "", user: user
                                             columnNumber: 15
                                         }, this),
                                         unreadCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: "absolute -top-1 -right-1 min-w-[16px] h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5",
+                                            className: "absolute -top-1 -right-1 min-w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5",
                                             children: unreadCount > 99 ? "99+" : unreadCount
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/shared/MobileShell.jsx",

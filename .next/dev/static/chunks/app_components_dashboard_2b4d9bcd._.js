@@ -1100,7 +1100,7 @@ function MobileShell({ navItems = [], pageMap = {}, defaultPage = "", user: user
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen bg-gray-200 flex items-start justify-center",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "relative w-full md:w-[480px] h-screen md:min-h-0 md:rounded-3xl md:shadow-2xl bg-[#f5f5f5] overflow-hidden flex flex-col md:max-h-[900px]",
+            className: "relative w-full md:w-120 h-screen md:min-h-0 md:rounded-3xl md:shadow-2xl bg-[#f5f5f5] overflow-hidden flex flex-col md:max-h-225",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex items-center justify-between px-5 pt-4 pb-3 bg-[#f5f5f5] shrink-0",
@@ -1150,7 +1150,7 @@ function MobileShell({ navItems = [], pageMap = {}, defaultPage = "", user: user
                                             columnNumber: 15
                                         }, this),
                                         unreadCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: "absolute -top-1 -right-1 min-w-[16px] h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5",
+                                            className: "absolute -top-1 -right-1 min-w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5",
                                             children: unreadCount > 99 ? "99+" : unreadCount
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/shared/MobileShell.jsx",
@@ -1271,62 +1271,79 @@ __turbopack_context__.s([
     "default",
     ()=>WorkerDashboardHome
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-client] (ecmascript) <export default as X>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$scan$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Scan$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/scan.js [app-client] (ecmascript) <export default as Scan>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/plus.js [app-client] (ecmascript) <export default as Plus>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-client] (ecmascript) <export default as Loader2>");
 ;
 var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
-;
-// ── Placeholder data ──────────────────────────────────────────────────────────
-const initialTasks = [
-    {
-        id: "#TN210",
-        title: "Feed Herd A With 20 Kg Soybeans",
-        deadline: "8:30 AM, 20 Sept",
-        assignedBy: "Manager Aminu",
-        done: false
-    },
-    {
-        id: "#TN210",
-        title: "Clean and Wash Lot 3",
-        deadline: "8:30 AM, 20 Sept",
-        assignedBy: "Manager Aminu",
-        done: false
-    },
-    {
-        id: "#TN210",
-        title: "Tag The 3 New Calves In Lot 3",
-        deadline: "8:30 AM, 20 Sept",
-        assignedBy: "Manager Aminu",
-        done: false
-    },
-    {
-        id: "#TN210",
-        title: "Feed Herd B With 20 Kg Soybeans",
-        deadline: "8:30 AM, 20 Sept",
-        assignedBy: "Manager Aminu",
-        done: false
-    }
-];
+const API = ("TURBOPACK compile-time value", "https://smartruga-api-d11b7da5a7fa.herokuapp.com/api/v1");
+function getSlug() {
+    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+    ;
+    return localStorage.getItem("sr_slug") ?? "";
+}
+function getToken() {
+    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+    ;
+    return localStorage.getItem("sr_token") ?? "";
+}
+function formatDate(str) {
+    if (!str) return "—";
+    return new Date(str).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
 // ── Mark As Done Modal ────────────────────────────────────────────────────────
-function MarkAsDoneModal({ task, onClose, onSubmit }) {
+function MarkAsDoneModal({ task, onClose, onSuccess }) {
     _s();
     const [proofMode, setProofMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("Scan Tag");
     const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
-        timeCompleted: "7:15 AM",
-        feedUsed: "120 Kg",
+        timeCompleted: "",
+        feedUsed: "",
         notes: ""
     });
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const set = (k)=>(e)=>setForm((f)=>({
                     ...f,
                     [k]: e.target.value
                 }));
+    const handleSubmit = async ()=>{
+        setError("");
+        setLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append("proofType", proofMode === "Scan Tag" ? "scan" : "image");
+            if (form.notes) formData.append("notes", form.notes);
+            const res = await fetch(`${API}/ranches/${getSlug()}/tasks/${task.publicId}/submissions`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: formData
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                console.error("❌ Task submission error:", JSON.stringify(err, null, 2));
+                throw new Error(err.message ?? "Failed to submit task");
+            }
+            onSuccess(task.publicId);
+            onClose();
+        } catch (err) {
+            setError(err.message);
+        } finally{
+            setLoading(false);
+        }
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "absolute inset-0 z-40 flex flex-col justify-end bg-black/40",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1337,35 +1354,48 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "text-sm font-bold text-gray-800",
-                            children: [
-                                "Complete Task – ",
-                                task.id
-                            ]
-                        }, void 0, true, {
+                            children: "Complete Task"
+                        }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 56,
+                            lineNumber: 75,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: onClose,
-                            className: "text-gray-400 hover:text-gray-600",
+                            className: "text-gray-400",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
                                 size: 18
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                lineNumber: 63,
+                                lineNumber: 77,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 59,
+                            lineNumber: 76,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                    lineNumber: 55,
+                    lineNumber: 74,
                     columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                    className: "text-xs text-gray-500 -mt-2 truncate",
+                    children: task.title
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                    lineNumber: 80,
+                    columnNumber: 9
+                }, this),
+                error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "px-4 py-2.5 rounded-xl bg-red-50 text-xs text-red-500",
+                    children: error
+                }, void 0, false, {
+                    fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                    lineNumber: 83,
+                    columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     children: [
@@ -1374,47 +1404,49 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
                             children: "Time Completed"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 69,
+                            lineNumber: 89,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                            type: "datetime-local",
                             value: form.timeCompleted,
                             onChange: set("timeCompleted"),
                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:border-[#4CAF50]"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 72,
+                            lineNumber: 92,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                    lineNumber: 68,
+                    lineNumber: 88,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "text-xs font-semibold text-gray-700 mb-1.5",
-                            children: "Feed Used"
+                            children: "Feed Used (optional)"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 81,
+                            lineNumber: 101,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                             value: form.feedUsed,
                             onChange: set("feedUsed"),
-                            className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:border-[#4CAF50]"
+                            placeholder: "e.g. 120 Kg Maize",
+                            className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50]"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 84,
+                            lineNumber: 104,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                    lineNumber: 80,
+                    lineNumber: 100,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1424,7 +1456,7 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
                             children: "Completion Proof"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 93,
+                            lineNumber: 113,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1433,27 +1465,28 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
                                 "Scan Tag",
                                 "Take Photo"
                             ].map((opt)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    type: "button",
                                     onClick: ()=>setProofMode(opt),
                                     className: `px-4 py-1.5 text-xs font-semibold transition-all ${proofMode === opt ? "bg-[#4CAF50] text-white" : "text-gray-500 hover:bg-gray-50"}`,
                                     children: opt
                                 }, opt, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                    lineNumber: 98,
+                                    lineNumber: 118,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 96,
+                            lineNumber: 116,
                             columnNumber: 11
                         }, this),
                         proofMode === "Scan Tag" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                            className: "w-full border-2 border-dashed border-gray-300 rounded-xl py-5 flex flex-col items-center gap-1 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] transition-colors bg-gray-50",
+                            className: "w-full border-2 border-dashed border-gray-300 rounded-xl py-5 flex flex-col items-center gap-1 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] bg-gray-50",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$scan$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Scan$3e$__["Scan"], {
                                     size: 22
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                    lineNumber: 114,
+                                    lineNumber: 134,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1461,23 +1494,23 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
                                     children: "Scan Livestock Tag"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                    lineNumber: 115,
+                                    lineNumber: 135,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 113,
+                            lineNumber: 133,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                            className: "w-full border-2 border-dashed border-gray-300 rounded-xl py-5 flex flex-col items-center gap-1 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] transition-colors bg-gray-50",
+                            className: "w-full border-2 border-dashed border-gray-300 rounded-xl py-5 flex flex-col items-center gap-1 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] bg-gray-50",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                     className: "text-2xl",
                                     children: "📷"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                    lineNumber: 119,
+                                    lineNumber: 139,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1485,19 +1518,19 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
                                     children: "Take or Upload Photo"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                    lineNumber: 120,
+                                    lineNumber: 140,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 118,
+                            lineNumber: 138,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                    lineNumber: 92,
+                    lineNumber: 112,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1507,7 +1540,7 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
                             children: "Notes (Optional)"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 127,
+                            lineNumber: 146,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -1518,101 +1551,141 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 130,
+                            lineNumber: 149,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                    lineNumber: 126,
+                    lineNumber: 145,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex gap-3",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                            onClick: ()=>onSubmit(form),
-                            className: "flex-1 py-3.5 rounded-2xl bg-[#4CAF50] hover:bg-[#43a047] text-white font-semibold text-sm transition-colors",
-                            children: "Submit"
-                        }, void 0, false, {
+                            onClick: handleSubmit,
+                            disabled: loading,
+                            className: "flex-1 py-3.5 rounded-2xl bg-[#4CAF50] hover:bg-[#43a047] text-white font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-60",
+                            children: [
+                                loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                    size: 13,
+                                    className: "animate-spin"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                                    lineNumber: 164,
+                                    columnNumber: 25
+                                }, this),
+                                loading ? "Submitting..." : "Submit"
+                            ]
+                        }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 141,
+                            lineNumber: 159,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: onClose,
-                            className: "flex-1 py-3.5 rounded-2xl border border-gray-200 text-gray-600 font-semibold text-sm hover:bg-gray-50 transition-colors",
+                            className: "flex-1 py-3.5 rounded-2xl border border-gray-200 text-gray-600 font-semibold text-sm hover:bg-gray-50",
                             children: "Cancel"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 147,
+                            lineNumber: 167,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                    lineNumber: 140,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                    className: "text-center text-[10px] text-gray-400",
-                    children: [
-                        "Task ID: ",
-                        task.id
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                    lineNumber: 156,
+                    lineNumber: 158,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-            lineNumber: 53,
+            lineNumber: 73,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-        lineNumber: 52,
+        lineNumber: 72,
         columnNumber: 5
     }, this);
 }
-_s(MarkAsDoneModal, "LKErP8XLNR+H7nXjXRWHSVYcxaw=");
+_s(MarkAsDoneModal, "zbg42sV7v3XenLh9hk4qZ70WYYs=");
 _c = MarkAsDoneModal;
 function WorkerDashboardHome({ greeting, onNavigate }) {
     _s1();
-    const [tasks, setTasks] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(initialTasks);
+    const [tasks, setTasks] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [selectedTask, setSelectedTask] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const fetchTasks = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
+        "WorkerDashboardHome.useCallback[fetchTasks]": async ()=>{
+            setLoading(true);
+            try {
+                const res = await fetch(`${API}/ranches/${getSlug()}/tasks`, {
+                    headers: {
+                        Authorization: `Bearer ${getToken()}`
+                    }
+                });
+                if (!res.ok) throw new Error();
+                const json = await res.json();
+                const list = json?.data?.tasks ?? json?.tasks ?? (Array.isArray(json?.data) ? json.data : []);
+                setTasks(list);
+            } catch  {
+                setTasks([]);
+            } finally{
+                setLoading(false);
+            }
+        }
+    }["WorkerDashboardHome.useCallback[fetchTasks]"], []);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "WorkerDashboardHome.useEffect": ()=>{
+            fetchTasks();
+        }
+    }["WorkerDashboardHome.useEffect"], [
+        fetchTasks
+    ]);
+    // Mark task as in_review after submission (pending manager approval)
+    const handleMarkDone = (publicId)=>{
+        setTasks((prev)=>prev.map((t)=>t.publicId === publicId ? {
+                    ...t,
+                    status: "in_review"
+                } : t));
+    };
+    const completed = tasks.filter((t)=>[
+            "completed",
+            "done"
+        ].includes((t.status ?? "").toLowerCase())).length;
+    const pending = tasks.filter((t)=>(t.status ?? "").toLowerCase() === "pending").length;
+    const inReview = tasks.filter((t)=>(t.status ?? "").toLowerCase() === "in_review").length;
+    const overdue = tasks.filter((t)=>t.isOverdue && ![
+            "completed",
+            "done",
+            "in_review"
+        ].includes((t.status ?? "").toLowerCase())).length;
     const stats = [
         {
-            label: "Completed Tasks",
-            value: 15,
-            icon: "/images/task-frame-1.png"
+            label: "Completed",
+            value: completed,
+            icon: "✅"
         },
         {
-            label: "Pending Tasks",
-            value: tasks.filter((t)=>!t.done).length,
-            icon: "/images/task-frame-2.png"
+            label: "Pending",
+            value: pending,
+            icon: "⏳"
         },
         {
             label: "In Review",
-            value: 3,
-            icon: "/images/task-frame-3.png"
+            value: inReview,
+            icon: "🔍"
         },
         {
-            label: "Cancelled Tasks",
-            value: 15,
-            icon: "/images/task-frame-4.png"
+            label: "Overdue",
+            value: overdue,
+            icon: "🔴"
         }
     ];
-    const handleSubmit = (form)=>{
-        setTasks((prev)=>prev.map((t)=>t === selectedTask ? {
-                    ...t,
-                    done: true
-                } : t));
-        setSelectedTask(null);
-    };
-    const pendingTasks = tasks.filter((t)=>!t.done);
+    // Show only pending tasks on dashboard (in_review removed from pending list)
+    const pendingTasks = tasks.filter((t)=>(t.status ?? "").toLowerCase() === "pending").slice(0, 5);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "relative flex flex-col min-h-full",
         children: [
@@ -1624,10 +1697,44 @@ function WorkerDashboardHome({ greeting, onNavigate }) {
                         children: greeting
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                        lineNumber: 194,
+                        lineNumber: 252,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-2 gap-3",
+                        children: [
+                            1,
+                            2,
+                            3,
+                            4
+                        ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "bg-white rounded-2xl p-4 border border-gray-100 shadow-sm animate-pulse",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "h-3 bg-gray-100 rounded w-2/3 mb-3"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                                        lineNumber: 262,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "h-7 bg-gray-100 rounded w-1/3"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                                        lineNumber: 263,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, i, true, {
+                                fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                                lineNumber: 258,
+                                columnNumber: 15
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                        lineNumber: 256,
+                        columnNumber: 11
+                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "grid grid-cols-2 gap-3",
                         children: stats.map(({ label, value, icon })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "bg-white rounded-2xl p-4 border border-gray-100 shadow-sm",
@@ -1637,8 +1744,8 @@ function WorkerDashboardHome({ greeting, onNavigate }) {
                                         children: label
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                        lineNumber: 203,
-                                        columnNumber: 15
+                                        lineNumber: 274,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex items-end justify-between",
@@ -1648,35 +1755,33 @@ function WorkerDashboardHome({ greeting, onNavigate }) {
                                                 children: value
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                                lineNumber: 205,
-                                                columnNumber: 17
+                                                lineNumber: 276,
+                                                columnNumber: 19
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                src: icon,
-                                                alt: label,
-                                                width: 50,
-                                                height: 50
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-2xl opacity-20",
+                                                children: icon
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                                lineNumber: 206,
-                                                columnNumber: 17
+                                                lineNumber: 277,
+                                                columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                        lineNumber: 204,
-                                        columnNumber: 15
+                                        lineNumber: 275,
+                                        columnNumber: 17
                                     }, this)
                                 ]
                             }, label, true, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                lineNumber: 199,
-                                columnNumber: 13
+                                lineNumber: 270,
+                                columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                        lineNumber: 197,
-                        columnNumber: 9
+                        lineNumber: 268,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
@@ -1688,7 +1793,7 @@ function WorkerDashboardHome({ greeting, onNavigate }) {
                                         children: "Pending Tasks"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                        lineNumber: 215,
+                                        lineNumber: 287,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1697,27 +1802,60 @@ function WorkerDashboardHome({ greeting, onNavigate }) {
                                         children: "See All"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                        lineNumber: 216,
+                                        lineNumber: 288,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                lineNumber: 214,
+                                lineNumber: 286,
                                 columnNumber: 11
                             }, this),
-                            pendingTasks.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "bg-white rounded-2xl p-6 text-center text-gray-400 text-sm border border-gray-100",
-                                children: "🎉 All tasks completed!"
+                            loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "space-y-3",
+                                children: [
+                                    1,
+                                    2
+                                ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "bg-white rounded-2xl p-4 border border-gray-100 animate-pulse space-y-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-3 bg-gray-100 rounded w-3/4"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                                                lineNumber: 303,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-2.5 bg-gray-100 rounded w-1/2"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                                                lineNumber: 304,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, i, true, {
+                                        fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                                        lineNumber: 299,
+                                        columnNumber: 17
+                                    }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                lineNumber: 225,
+                                lineNumber: 297,
+                                columnNumber: 13
+                            }, this),
+                            !loading && pendingTasks.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "bg-white rounded-2xl p-6 text-center text-gray-400 text-sm border border-gray-100",
+                                children: "🎉 No pending tasks!"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
+                                lineNumber: 311,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "space-y-3",
-                                children: pendingTasks.map((task, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-white rounded-2xl p-4 border border-gray-100 shadow-sm",
+                                children: !loading && pendingTasks.map((task, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: `bg-white rounded-2xl p-4 border shadow-sm ${task.isOverdue ? "border-l-4 border-l-red-400 border-gray-100" : "border-gray-100"}`,
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex items-start justify-between gap-3",
                                             children: [
@@ -1729,50 +1867,53 @@ function WorkerDashboardHome({ greeting, onNavigate }) {
                                                             children: task.title
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                                            lineNumber: 238,
-                                                            columnNumber: 21
+                                                            lineNumber: 329,
+                                                            columnNumber: 23
                                                         }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        task.assignedBy && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             className: "text-[10px] text-gray-400",
                                                             children: [
-                                                                "Task ID: ",
-                                                                task.id
+                                                                "By:",
+                                                                " ",
+                                                                [
+                                                                    task.assignedBy.firstName,
+                                                                    task.assignedBy.lastName
+                                                                ].filter(Boolean).join(" ") || task.assignedBy.email || "—"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                                            lineNumber: 241,
-                                                            columnNumber: 21
+                                                            lineNumber: 333,
+                                                            columnNumber: 25
                                                         }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[10px] text-gray-400",
+                                                        task.isOverdue && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-[10px] text-red-400 font-semibold mt-0.5",
                                                             children: [
-                                                                "Assigned By: ",
-                                                                task.assignedBy
+                                                                "⚠️ Overdue by ",
+                                                                task.daysOverdue,
+                                                                " day",
+                                                                task.daysOverdue !== 1 ? "s" : ""
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                                            lineNumber: 244,
-                                                            columnNumber: 21
+                                                            lineNumber: 343,
+                                                            columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                                    lineNumber: 237,
-                                                    columnNumber: 19
+                                                    lineNumber: 328,
+                                                    columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex flex-col items-end gap-2 shrink-0",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        task.dueDate && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             className: "text-[10px] text-gray-400 whitespace-nowrap",
-                                                            children: [
-                                                                "Deadline: ",
-                                                                task.deadline
-                                                            ]
-                                                        }, void 0, true, {
+                                                            children: formatDate(task.dueDate)
+                                                        }, void 0, false, {
                                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                                            lineNumber: 249,
-                                                            columnNumber: 21
+                                                            lineNumber: 351,
+                                                            columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                             onClick: ()=>setSelectedTask(task),
@@ -1780,41 +1921,41 @@ function WorkerDashboardHome({ greeting, onNavigate }) {
                                                             children: "✓ Mark As Done"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                                            lineNumber: 252,
-                                                            columnNumber: 21
+                                                            lineNumber: 355,
+                                                            columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                                    lineNumber: 248,
-                                                    columnNumber: 19
+                                                    lineNumber: 349,
+                                                    columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                            lineNumber: 236,
-                                            columnNumber: 17
+                                            lineNumber: 327,
+                                            columnNumber: 19
                                         }, this)
-                                    }, i, false, {
+                                    }, task.publicId ?? i, false, {
                                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                        lineNumber: 232,
-                                        columnNumber: 15
+                                        lineNumber: 319,
+                                        columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                                lineNumber: 230,
+                                lineNumber: 316,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                        lineNumber: 213,
+                        lineNumber: 285,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                lineNumber: 192,
+                lineNumber: 250,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1827,38 +1968,41 @@ function WorkerDashboardHome({ greeting, onNavigate }) {
                             size: 16
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                            lineNumber: 272,
+                            lineNumber: 375,
                             columnNumber: 11
                         }, this),
                         " Report New Issue"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                    lineNumber: 268,
+                    lineNumber: 371,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                lineNumber: 267,
+                lineNumber: 370,
                 columnNumber: 7
             }, this),
             selectedTask && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MarkAsDoneModal, {
                 task: selectedTask,
                 onClose: ()=>setSelectedTask(null),
-                onSubmit: handleSubmit
+                onSuccess: (publicId)=>{
+                    handleMarkDone(publicId);
+                    setSelectedTask(null);
+                }
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-                lineNumber: 278,
+                lineNumber: 381,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/workers/WorkerDashboardHome.jsx",
-        lineNumber: 191,
+        lineNumber: 249,
         columnNumber: 5
     }, this);
 }
-_s1(WorkerDashboardHome, "y704j0fKhzI8+oMXPLavl6bOrW4=");
+_s1(WorkerDashboardHome, "Yfp9OdORUbIB+++mp5a0/EFM3Ds=");
 _c1 = WorkerDashboardHome;
 var _c, _c1;
 __turbopack_context__.k.register(_c, "MarkAsDoneModal");
@@ -1932,6 +2076,10 @@ function StatusBadge({ status, isOverdue }) {
             cls: "bg-blue-50   text-blue-500",
             icon: "🔄"
         },
+        in_review: {
+            cls: "bg-purple-50 text-purple-500",
+            icon: "🔍"
+        },
         completed: {
             cls: "bg-[#f0fdf4] text-[#4CAF50]",
             icon: "✅"
@@ -1954,7 +2102,7 @@ function StatusBadge({ status, isOverdue }) {
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-        lineNumber: 54,
+        lineNumber: 55,
         columnNumber: 5
     }, this);
 }
@@ -1980,40 +2128,20 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
         setError("");
         setLoading(true);
         try {
-            // PATCH task status to completed
-            const res = await fetch(`${API}/ranches/${getSlug()}/tasks/${task.publicId}/complete`, {
-                method: "PATCH",
+            const formData = new FormData();
+            formData.append("proofType", "image");
+            if (form.notes) formData.append("notes", form.notes);
+            const res = await fetch(`${API}/ranches/${getSlug()}/tasks/${task.publicId}/submissions`, {
+                method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
                     Authorization: `Bearer ${getToken()}`
                 },
-                body: JSON.stringify({
-                    status: "completed",
-                    notes: form.notes || undefined
-                })
+                body: formData
             });
-            // If no /complete endpoint, fall back to general PATCH
-            if (res.status === 404) {
-                const res2 = await fetch(`${API}/ranches/${getSlug()}/tasks/${task.publicId}`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${getToken()}`
-                    },
-                    body: JSON.stringify({
-                        status: "completed",
-                        notes: form.notes || undefined
-                    })
-                });
-                if (!res2.ok) {
-                    const err = await res2.json();
-                    console.error("❌ Mark done error:", JSON.stringify(err, null, 2));
-                    throw new Error(err.message ?? "Failed to mark task as done");
-                }
-            } else if (!res.ok) {
+            if (!res.ok) {
                 const err = await res.json();
-                console.error("❌ Mark done error:", JSON.stringify(err, null, 2));
-                throw new Error(err.message ?? "Failed to mark task as done");
+                console.error("❌ Task submission error:", JSON.stringify(err, null, 2));
+                throw new Error(err.message ?? "Failed to submit task");
             }
             onSuccess(task.publicId);
             onClose();
@@ -2036,7 +2164,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                             children: "Complete Task"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                            lineNumber: 138,
+                            lineNumber: 118,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2046,18 +2174,18 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                 size: 18
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                lineNumber: 140,
+                                lineNumber: 120,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                            lineNumber: 139,
+                            lineNumber: 119,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                    lineNumber: 137,
+                    lineNumber: 117,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2065,7 +2193,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                     children: task.title
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                    lineNumber: 143,
+                    lineNumber: 123,
                     columnNumber: 9
                 }, this),
                 error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2073,7 +2201,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                     children: error
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                    lineNumber: 146,
+                    lineNumber: 126,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -2087,7 +2215,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                     children: "Time Completed"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 154,
+                                    lineNumber: 134,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2097,13 +2225,13 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                     className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50]"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 157,
+                                    lineNumber: 137,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                            lineNumber: 153,
+                            lineNumber: 133,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2113,7 +2241,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                     children: "Feed Used (optional)"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 167,
+                                    lineNumber: 147,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2123,13 +2251,13 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                     className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50]"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 170,
+                                    lineNumber: 150,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                            lineNumber: 166,
+                            lineNumber: 146,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2139,7 +2267,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                     children: "Completion Proof"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 180,
+                                    lineNumber: 160,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2154,12 +2282,12 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                             children: opt
                                         }, opt, false, {
                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                            lineNumber: 185,
+                                            lineNumber: 165,
                                             columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 183,
+                                    lineNumber: 163,
                                     columnNumber: 13
                                 }, this),
                                 proofMode === "Scan Tag" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2170,7 +2298,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                             size: 22
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                            lineNumber: 204,
+                                            lineNumber: 184,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2178,13 +2306,13 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                             children: "Scan Livestock Tag"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                            lineNumber: 205,
+                                            lineNumber: 185,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 200,
+                                    lineNumber: 180,
                                     columnNumber: 15
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                                     className: "w-full border-2 border-dashed border-gray-300 rounded-xl py-5 flex flex-col items-center gap-1 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] bg-gray-50 cursor-pointer",
@@ -2193,7 +2321,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                             size: 22
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                            lineNumber: 209,
+                                            lineNumber: 189,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2201,7 +2329,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                             children: image ? image.name : "Upload proof photo"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                            lineNumber: 210,
+                                            lineNumber: 190,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2211,19 +2339,19 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                             onChange: (e)=>setImage(e.target.files?.[0] ?? null)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                            lineNumber: 213,
+                                            lineNumber: 193,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 208,
+                                    lineNumber: 188,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                            lineNumber: 179,
+                            lineNumber: 159,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2233,7 +2361,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                     children: "Notes (Optional)"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 225,
+                                    lineNumber: 205,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -2244,13 +2372,13 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                     className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 228,
+                                    lineNumber: 208,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                            lineNumber: 224,
+                            lineNumber: 204,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2263,7 +2391,7 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 238,
+                                    lineNumber: 218,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2276,37 +2404,37 @@ function MarkAsDoneModal({ task, onClose, onSuccess }) {
                                             className: "animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                            lineNumber: 250,
+                                            lineNumber: 230,
                                             columnNumber: 27
                                         }, this),
                                         loading ? "Submitting..." : "Submit"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                    lineNumber: 245,
+                                    lineNumber: 225,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                            lineNumber: 237,
+                            lineNumber: 217,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                    lineNumber: 151,
+                    lineNumber: 131,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-            lineNumber: 136,
+            lineNumber: 116,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-        lineNumber: 135,
+        lineNumber: 115,
         columnNumber: 5
     }, this);
 }
@@ -2319,6 +2447,7 @@ function TaskCard({ task, onMarkDone }) {
         "done"
     ].includes((task.status ?? "").toLowerCase());
     const isCancelled = task.status?.toLowerCase() === "cancelled";
+    const isInReview = task.status?.toLowerCase() === "in_review";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: `bg-white rounded-2xl border shadow-sm p-4 space-y-3 ${isDone ? "border-gray-100 opacity-75" : "border-gray-100"}`,
         children: [
@@ -2333,7 +2462,7 @@ function TaskCard({ task, onMarkDone }) {
                                 children: task.title ?? "—"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                lineNumber: 277,
+                                lineNumber: 258,
                                 columnNumber: 11
                             }, this),
                             task.description && task.title !== task.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2341,13 +2470,13 @@ function TaskCard({ task, onMarkDone }) {
                                 children: task.description
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                lineNumber: 281,
+                                lineNumber: 262,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                        lineNumber: 276,
+                        lineNumber: 257,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatusBadge, {
@@ -2355,13 +2484,13 @@ function TaskCard({ task, onMarkDone }) {
                         isOverdue: task.isOverdue
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                        lineNumber: 286,
+                        lineNumber: 267,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                lineNumber: 275,
+                lineNumber: 256,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2374,7 +2503,7 @@ function TaskCard({ task, onMarkDone }) {
                                 children: "Assigned By"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                lineNumber: 292,
+                                lineNumber: 273,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2382,13 +2511,13 @@ function TaskCard({ task, onMarkDone }) {
                                 children: task.assignedBy?.name ?? task.assignedBy?.email ?? "—"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                lineNumber: 293,
+                                lineNumber: 274,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                        lineNumber: 291,
+                        lineNumber: 272,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2398,7 +2527,7 @@ function TaskCard({ task, onMarkDone }) {
                                 children: "Deadline"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                lineNumber: 298,
+                                lineNumber: 279,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2413,19 +2542,19 @@ function TaskCard({ task, onMarkDone }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                                lineNumber: 299,
+                                lineNumber: 280,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                        lineNumber: 297,
+                        lineNumber: 278,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                lineNumber: 290,
+                lineNumber: 271,
                 columnNumber: 7
             }, this),
             isDone && task.imageUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2435,7 +2564,7 @@ function TaskCard({ task, onMarkDone }) {
                         children: "Proof of Work"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                        lineNumber: 317,
+                        lineNumber: 298,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
@@ -2444,16 +2573,16 @@ function TaskCard({ task, onMarkDone }) {
                         className: "h-20 w-auto rounded-xl object-cover border border-gray-100"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                        lineNumber: 318,
+                        lineNumber: 299,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                lineNumber: 316,
+                lineNumber: 297,
                 columnNumber: 9
             }, this),
-            !isDone && !isCancelled && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+            !isDone && !isCancelled && !isInReview && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                 onClick: ()=>onMarkDone(task),
                 className: "w-full flex items-center justify-center gap-2 py-2.5 rounded-full bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors",
                 children: [
@@ -2461,14 +2590,22 @@ function TaskCard({ task, onMarkDone }) {
                         size: 13
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                        lineNumber: 332,
+                        lineNumber: 313,
                         columnNumber: 11
                     }, this),
                     " Mark As Done"
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                lineNumber: 328,
+                lineNumber: 309,
+                columnNumber: 9
+            }, this),
+            isInReview && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-center gap-1.5 text-xs font-semibold text-purple-500 bg-purple-50 py-2 rounded-full",
+                children: "🔍 Submitted · Pending Review"
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
+                lineNumber: 317,
                 columnNumber: 9
             }, this),
             isDone && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2476,13 +2613,13 @@ function TaskCard({ task, onMarkDone }) {
                 children: "✅ Completed"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-                lineNumber: 338,
+                lineNumber: 324,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/workers/WorkerTask.jsx",
-        lineNumber: 269,
+        lineNumber: 250,
         columnNumber: 5
     }, this);
 }
@@ -2496,6 +2633,10 @@ const FILTERS = [
     {
         key: "pending",
         label: "Pending"
+    },
+    {
+        key: "in_review",
+        label: "In Review"
     },
     {
         key: "completed",
@@ -2546,17 +2687,19 @@ function WorkerTaskHistoryPage() {
     const handleMarkDone = (taskPublicId)=>{
         setTasks((prev)=>prev.map((t)=>t.publicId === taskPublicId ? {
                     ...t,
-                    status: "completed"
+                    status: "in_review"
                 } : t));
     };
     // Filter tasks
     const filtered = tasks.filter((t)=>{
         if (filter === "all") return true;
-        if (filter === "overdue") return t.isOverdue && t.status !== "completed";
-        if (filter === "pending") return [
-            "pending",
-            "in_progress"
+        if (filter === "overdue") return t.isOverdue && ![
+            "completed",
+            "done",
+            "in_review"
         ].includes((t.status ?? "").toLowerCase());
+        if (filter === "pending") return (t.status ?? "").toLowerCase() === "pending";
+        if (filter === "in_review") return (t.status ?? "").toLowerCase() === "in_review";
         if (filter === "completed") return [
             "completed",
             "done"
@@ -2565,15 +2708,17 @@ function WorkerTaskHistoryPage() {
     });
     const counts = {
         all: tasks.length,
-        pending: tasks.filter((t)=>[
-                "pending",
-                "in_progress"
-            ].includes((t.status ?? "").toLowerCase())).length,
+        pending: tasks.filter((t)=>(t.status ?? "").toLowerCase() === "pending").length,
+        in_review: tasks.filter((t)=>(t.status ?? "").toLowerCase() === "in_review").length,
         completed: tasks.filter((t)=>[
                 "completed",
                 "done"
             ].includes((t.status ?? "").toLowerCase())).length,
-        overdue: tasks.filter((t)=>t.isOverdue && t.status !== "completed").length
+        overdue: tasks.filter((t)=>t.isOverdue && ![
+                "completed",
+                "done",
+                "in_review"
+            ].includes((t.status ?? "").toLowerCase())).length
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "relative flex flex-col min-h-full",

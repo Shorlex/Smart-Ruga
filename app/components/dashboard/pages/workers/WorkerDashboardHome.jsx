@@ -1,94 +1,114 @@
 "use client";
 
-import { useState } from "react";
-import { X, Scan, Plus } from "lucide-react";
-import Image from "next/image";
+import { useState, useEffect, useCallback } from "react";
+import { X, Scan, Plus, Loader2 } from "lucide-react";
 
-// ── Placeholder data ──────────────────────────────────────────────────────────
+const API = process.env.NEXT_PUBLIC_API_URL;
+function getSlug() {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem("sr_slug") ?? "";
+}
+function getToken() {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem("sr_token") ?? "";
+}
 
-const initialTasks = [
-  {
-    id: "#TN210",
-    title: "Feed Herd A With 20 Kg Soybeans",
-    deadline: "8:30 AM, 20 Sept",
-    assignedBy: "Manager Aminu",
-    done: false,
-  },
-  {
-    id: "#TN210",
-    title: "Clean and Wash Lot 3",
-    deadline: "8:30 AM, 20 Sept",
-    assignedBy: "Manager Aminu",
-    done: false,
-  },
-  {
-    id: "#TN210",
-    title: "Tag The 3 New Calves In Lot 3",
-    deadline: "8:30 AM, 20 Sept",
-    assignedBy: "Manager Aminu",
-    done: false,
-  },
-  {
-    id: "#TN210",
-    title: "Feed Herd B With 20 Kg Soybeans",
-    deadline: "8:30 AM, 20 Sept",
-    assignedBy: "Manager Aminu",
-    done: false,
-  },
-];
+function formatDate(str) {
+  if (!str) return "—";
+  return new Date(str).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
 
 // ── Mark As Done Modal ────────────────────────────────────────────────────────
 
-function MarkAsDoneModal({ task, onClose, onSubmit }) {
+function MarkAsDoneModal({ task, onClose, onSuccess }) {
   const [proofMode, setProofMode] = useState("Scan Tag");
   const [form, setForm] = useState({
-    timeCompleted: "7:15 AM",
-    feedUsed: "120 Kg",
+    timeCompleted: "",
+    feedUsed: "",
     notes: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const handleSubmit = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("proofType", proofMode === "Scan Tag" ? "scan" : "image");
+      if (form.notes) formData.append("notes", form.notes);
+
+      const res = await fetch(
+        `${API}/ranches/${getSlug()}/tasks/${task.publicId}/submissions`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${getToken()}` },
+          body: formData,
+        },
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        console.error(
+          "❌ Task submission error:",
+          JSON.stringify(err, null, 2),
+        );
+        throw new Error(err.message ?? "Failed to submit task");
+      }
+      onSuccess(task.publicId);
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="absolute inset-0 z-40 flex flex-col justify-end bg-black/40">
       <div className="bg-white rounded-t-3xl p-5 space-y-4 max-h-[90%] overflow-y-auto">
-        {/* Header */}
         <div className="flex items-center justify-between">
-          <p className="text-sm font-bold text-gray-800">
-            Complete Task – {task.id}
-          </p>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
-          >
+          <p className="text-sm font-bold text-gray-800">Complete Task</p>
+          <button onClick={onClose} className="text-gray-400">
             <X size={18} />
           </button>
         </div>
+        <p className="text-xs text-gray-500 -mt-2 truncate">{task.title}</p>
 
-        {/* Time Completed */}
+        {error && (
+          <div className="px-4 py-2.5 rounded-xl bg-red-50 text-xs text-red-500">
+            {error}
+          </div>
+        )}
+
         <div>
           <p className="text-xs font-semibold text-gray-700 mb-1.5">
             Time Completed
           </p>
           <input
+            type="datetime-local"
             value={form.timeCompleted}
             onChange={set("timeCompleted")}
             className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:border-[#4CAF50]"
           />
         </div>
 
-        {/* Feed Used */}
         <div>
           <p className="text-xs font-semibold text-gray-700 mb-1.5">
-            Feed Used
+            Feed Used (optional)
           </p>
           <input
             value={form.feedUsed}
             onChange={set("feedUsed")}
-            className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:border-[#4CAF50]"
+            placeholder="e.g. 120 Kg Maize"
+            className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50]"
           />
         </div>
 
-        {/* Completion Proof toggle */}
         <div>
           <p className="text-xs font-semibold text-gray-700 mb-2">
             Completion Proof
@@ -97,6 +117,7 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
             {["Scan Tag", "Take Photo"].map((opt) => (
               <button
                 key={opt}
+                type="button"
                 onClick={() => setProofMode(opt)}
                 className={`px-4 py-1.5 text-xs font-semibold transition-all ${
                   proofMode === opt
@@ -108,21 +129,19 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
               </button>
             ))}
           </div>
-
           {proofMode === "Scan Tag" ? (
-            <button className="w-full border-2 border-dashed border-gray-300 rounded-xl py-5 flex flex-col items-center gap-1 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] transition-colors bg-gray-50">
+            <button className="w-full border-2 border-dashed border-gray-300 rounded-xl py-5 flex flex-col items-center gap-1 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] bg-gray-50">
               <Scan size={22} />
               <span className="text-xs font-medium">Scan Livestock Tag</span>
             </button>
           ) : (
-            <button className="w-full border-2 border-dashed border-gray-300 rounded-xl py-5 flex flex-col items-center gap-1 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] transition-colors bg-gray-50">
+            <button className="w-full border-2 border-dashed border-gray-300 rounded-xl py-5 flex flex-col items-center gap-1 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] bg-gray-50">
               <span className="text-2xl">📷</span>
               <span className="text-xs font-medium">Take or Upload Photo</span>
             </button>
           )}
         </div>
 
-        {/* Notes */}
         <div>
           <p className="text-xs font-semibold text-gray-700 mb-1.5">
             Notes (Optional)
@@ -136,56 +155,95 @@ function MarkAsDoneModal({ task, onClose, onSubmit }) {
           />
         </div>
 
-        {/* Actions */}
         <div className="flex gap-3">
           <button
-            onClick={() => onSubmit(form)}
-            className="flex-1 py-3.5 rounded-2xl bg-[#4CAF50] hover:bg-[#43a047] text-white font-semibold text-sm transition-colors"
+            onClick={handleSubmit}
+            disabled={loading}
+            className="flex-1 py-3.5 rounded-2xl bg-[#4CAF50] hover:bg-[#43a047] text-white font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-60"
           >
-            Submit
+            {loading && <Loader2 size={13} className="animate-spin" />}
+            {loading ? "Submitting..." : "Submit"}
           </button>
           <button
             onClick={onClose}
-            className="flex-1 py-3.5 rounded-2xl border border-gray-200 text-gray-600 font-semibold text-sm hover:bg-gray-50 transition-colors"
+            className="flex-1 py-3.5 rounded-2xl border border-gray-200 text-gray-600 font-semibold text-sm hover:bg-gray-50"
           >
             Cancel
           </button>
         </div>
-
-        {/* Task ID footer */}
-        <p className="text-center text-[10px] text-gray-400">
-          Task ID: {task.id}
-        </p>
       </div>
     </div>
   );
 }
 
-// ── Dashboard Homepage ────────────────────────────────────────────────────────
+// ── Dashboard Home ────────────────────────────────────────────────────────────
 
 export default function WorkerDashboardHome({ greeting, onNavigate }) {
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  const stats = [
-    { label: "Completed Tasks", value: 15, icon: "/images/task-frame-1.png" },
-    {
-      label: "Pending Tasks",
-      value: tasks.filter((t) => !t.done).length,
-      icon: "/images/task-frame-2.png",
-    },
-    { label: "In Review", value: 3, icon: "/images/task-frame-3.png" },
-    { label: "Cancelled Tasks", value: 15, icon: "/images/task-frame-4.png" },
-  ];
+  const fetchTasks = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API}/ranches/${getSlug()}/tasks`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      if (!res.ok) throw new Error();
+      const json = await res.json();
+      const list =
+        json?.data?.tasks ??
+        json?.tasks ??
+        (Array.isArray(json?.data) ? json.data : []);
+      setTasks(list);
+    } catch {
+      setTasks([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  const handleSubmit = (form) => {
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
+
+  // Mark task as in_review after submission (pending manager approval)
+  const handleMarkDone = (publicId) => {
     setTasks((prev) =>
-      prev.map((t) => (t === selectedTask ? { ...t, done: true } : t)),
+      prev.map((t) =>
+        t.publicId === publicId ? { ...t, status: "in_review" } : t,
+      ),
     );
-    setSelectedTask(null);
   };
 
-  const pendingTasks = tasks.filter((t) => !t.done);
+  const completed = tasks.filter((t) =>
+    ["completed", "done"].includes((t.status ?? "").toLowerCase()),
+  ).length;
+  const pending = tasks.filter(
+    (t) => (t.status ?? "").toLowerCase() === "pending",
+  ).length;
+  const inReview = tasks.filter(
+    (t) => (t.status ?? "").toLowerCase() === "in_review",
+  ).length;
+  const overdue = tasks.filter(
+    (t) =>
+      t.isOverdue &&
+      !["completed", "done", "in_review"].includes(
+        (t.status ?? "").toLowerCase(),
+      ),
+  ).length;
+
+  const stats = [
+    { label: "Completed", value: completed, icon: "✅" },
+    { label: "Pending", value: pending, icon: "⏳" },
+    { label: "In Review", value: inReview, icon: "🔍" },
+    { label: "Overdue", value: overdue, icon: "🔴" },
+  ];
+
+  // Show only pending tasks on dashboard (in_review removed from pending list)
+  const pendingTasks = tasks
+    .filter((t) => (t.status ?? "").toLowerCase() === "pending")
+    .slice(0, 5);
 
   return (
     <div className="relative flex flex-col min-h-full">
@@ -193,21 +251,35 @@ export default function WorkerDashboardHome({ greeting, onNavigate }) {
         {/* Greeting */}
         <h1 className="text-lg font-bold text-gray-800 mt-1">{greeting}</h1>
 
-        {/* Stat cards 2x2 */}
-        <div className="grid grid-cols-2 gap-3">
-          {stats.map(({ label, value, icon }) => (
-            <div
-              key={label}
-              className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm"
-            >
-              <p className="text-xs text-gray-400 mb-1">{label}</p>
-              <div className="flex items-end justify-between">
-                <p className="text-2xl font-bold text-gray-800">{value}</p>
-                <Image src={icon} alt={label} width={50} height={50} />
+        {/* Stat cards */}
+        {loading ? (
+          <div className="grid grid-cols-2 gap-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm animate-pulse"
+              >
+                <div className="h-3 bg-gray-100 rounded w-2/3 mb-3" />
+                <div className="h-7 bg-gray-100 rounded w-1/3" />
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3">
+            {stats.map(({ label, value, icon }) => (
+              <div
+                key={label}
+                className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm"
+              >
+                <p className="text-xs text-gray-400 mb-1">{label}</p>
+                <div className="flex items-end justify-between">
+                  <p className="text-2xl font-bold text-gray-800">{value}</p>
+                  <span className="text-2xl opacity-20">{icon}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Pending Tasks */}
         <div>
@@ -221,44 +293,75 @@ export default function WorkerDashboardHome({ greeting, onNavigate }) {
             </button>
           </div>
 
-          {pendingTasks.length === 0 && (
+          {loading && (
+            <div className="space-y-3">
+              {[1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-2xl p-4 border border-gray-100 animate-pulse space-y-2"
+                >
+                  <div className="h-3 bg-gray-100 rounded w-3/4" />
+                  <div className="h-2.5 bg-gray-100 rounded w-1/2" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {!loading && pendingTasks.length === 0 && (
             <div className="bg-white rounded-2xl p-6 text-center text-gray-400 text-sm border border-gray-100">
-              🎉 All tasks completed!
+              🎉 No pending tasks!
             </div>
           )}
 
           <div className="space-y-3">
-            {pendingTasks.map((task, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-800 leading-snug mb-1">
-                      {task.title}
-                    </p>
-                    <p className="text-[10px] text-gray-400">
-                      Task ID: {task.id}
-                    </p>
-                    <p className="text-[10px] text-gray-400">
-                      Assigned By: {task.assignedBy}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-end gap-2 shrink-0">
-                    <p className="text-[10px] text-gray-400 whitespace-nowrap">
-                      Deadline: {task.deadline}
-                    </p>
-                    <button
-                      onClick={() => setSelectedTask(task)}
-                      className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-3 py-2 rounded-full transition-colors whitespace-nowrap"
-                    >
-                      ✓ Mark As Done
-                    </button>
+            {!loading &&
+              pendingTasks.map((task, i) => (
+                <div
+                  key={task.publicId ?? i}
+                  className={`bg-white rounded-2xl p-4 border shadow-sm ${
+                    task.isOverdue
+                      ? "border-l-4 border-l-red-400 border-gray-100"
+                      : "border-gray-100"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-800 leading-snug mb-1">
+                        {task.title}
+                      </p>
+                      {task.assignedBy && (
+                        <p className="text-[10px] text-gray-400">
+                          By:{" "}
+                          {[task.assignedBy.firstName, task.assignedBy.lastName]
+                            .filter(Boolean)
+                            .join(" ") ||
+                            task.assignedBy.email ||
+                            "—"}
+                        </p>
+                      )}
+                      {task.isOverdue && (
+                        <p className="text-[10px] text-red-400 font-semibold mt-0.5">
+                          ⚠️ Overdue by {task.daysOverdue} day
+                          {task.daysOverdue !== 1 ? "s" : ""}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex flex-col items-end gap-2 shrink-0">
+                      {task.dueDate && (
+                        <p className="text-[10px] text-gray-400 whitespace-nowrap">
+                          {formatDate(task.dueDate)}
+                        </p>
+                      )}
+                      <button
+                        onClick={() => setSelectedTask(task)}
+                        className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-3 py-2 rounded-full transition-colors whitespace-nowrap"
+                      >
+                        ✓ Mark As Done
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>
@@ -278,7 +381,10 @@ export default function WorkerDashboardHome({ greeting, onNavigate }) {
         <MarkAsDoneModal
           task={selectedTask}
           onClose={() => setSelectedTask(null)}
-          onSubmit={handleSubmit}
+          onSuccess={(publicId) => {
+            handleMarkDone(publicId);
+            setSelectedTask(null);
+          }}
         />
       )}
     </div>
