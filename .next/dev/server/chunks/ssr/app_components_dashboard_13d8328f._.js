@@ -3623,6 +3623,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-right.js [app-ssr] (ecmascript) <export default as ChevronRight>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$close$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftClose$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-close.js [app-ssr] (ecmascript) <export default as PanelLeftClose>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-open.js [app-ssr] (ecmascript) <export default as PanelLeftOpen>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-ssr] (ecmascript) <export default as Package>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$context$2f$AuthContext$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/context/AuthContext.js [app-ssr] (ecmascript)");
 "use client";
@@ -3658,6 +3659,11 @@ const defaultNavItems = [
         href: "/staff"
     },
     {
+        label: "Inventory",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
+        href: "/inventory"
+    },
+    {
         label: "Notifications",
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"],
         href: "/notifications"
@@ -3681,7 +3687,15 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
             onLogout();
             return;
         }
-        auth?.logout?.(); // clears localStorage + redirects to /login
+        if (auth?.logout) {
+            auth.logout();
+        } else {
+            localStorage.removeItem("sr_user");
+            localStorage.removeItem("sr_role");
+            localStorage.removeItem("sr_token");
+            localStorage.removeItem("sr_slug");
+            window.location.href = "/login";
+        }
     };
     const isMobile = ()=>("TURBOPACK compile-time value", "undefined") !== "undefined" && window.innerWidth < 768;
     const [collapsed, setCollapsed] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(()=>isMobile());
@@ -3715,7 +3729,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 alt: "icon"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 63,
+                                lineNumber: 92,
                                 columnNumber: 11
                             }, this),
                             !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3726,13 +3740,13 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 className: "mt-3 -ml-2"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 65,
+                                lineNumber: 94,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 62,
+                        lineNumber: 91,
                         columnNumber: 9
                     }, this),
                     !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3743,18 +3757,18 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                             size: 15
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                            lineNumber: 71,
+                            lineNumber: 109,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 69,
+                        lineNumber: 104,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 61,
+                lineNumber: 88,
                 columnNumber: 7
             }, this),
             collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3767,17 +3781,17 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                         size: 15
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 80,
+                        lineNumber: 121,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 78,
+                    lineNumber: 116,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 77,
+                lineNumber: 115,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -3792,19 +3806,19 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 className: "shrink-0"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 96,
+                                lineNumber: 141,
                                 columnNumber: 13
                             }, this),
                             !collapsed && label
                         ]
                     }, label, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 88,
+                        lineNumber: 129,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 86,
+                lineNumber: 127,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3818,7 +3832,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 children: user.initials
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 105,
+                                lineNumber: 152,
                                 columnNumber: 11
                             }, this),
                             !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -3831,7 +3845,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                                 children: user.name
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                                lineNumber: 111,
+                                                lineNumber: 158,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3839,13 +3853,13 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                                 children: user.email
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                                lineNumber: 112,
+                                                lineNumber: 161,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                        lineNumber: 110,
+                                        lineNumber: 157,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
@@ -3853,7 +3867,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                         className: "text-gray-300"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                        lineNumber: 114,
+                                        lineNumber: 165,
                                         columnNumber: 15
                                     }, this)
                                 ]
@@ -3861,7 +3875,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 104,
+                        lineNumber: 149,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3873,26 +3887,26 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 size: 12
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 123,
+                                lineNumber: 176,
                                 columnNumber: 11
                             }, this),
                             !collapsed && "Log Out"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 118,
+                        lineNumber: 169,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 103,
+                lineNumber: 148,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-        lineNumber: 59,
+        lineNumber: 84,
         columnNumber: 5
     }, this);
     // Mobile overlay drawer
@@ -3904,7 +3918,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
         children: panel
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-        lineNumber: 148,
+        lineNumber: 205,
         columnNumber: 5
     }, this);
 }

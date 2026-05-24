@@ -16,8 +16,10 @@ import RequestsApprovalsPage from "../../components/dashboard/pages/owner/Reques
 import StaffManagementPage from "../../components/dashboard/pages/owner/StaffManagementPage";
 import NotificationsPage from "../../components/dashboard/pages/owner/NotificationsPage";
 import SettingsPage from "../../components/dashboard/pages/owner/SettingsPage";
+import InventoryPage from "../../components/dashboard/pages/storekeeper/InventoryPage";
+import StockLedgerPage from "../../components/dashboard/pages/storekeeper/StockLedgerPage";
 import Image from "next/image";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -36,6 +38,7 @@ export default function OwnerDashboard() {
   const [activeItem, setActiveItem] = useState("Dashboard");
   const [dashData, setDashData] = useState(null);
   const [dashLoading, setDashLoading] = useState(true);
+  const [invTab, setInvTab] = useState("Items");
 
   const fetchDashboard = async () => {
     setDashLoading(true);
@@ -88,23 +91,6 @@ export default function OwnerDashboard() {
   const vaxOverdue = dashData?.vaccinationAlerts?.overdue ?? 0;
   const vaxDueToday = dashData?.vaccinationAlerts?.dueToday ?? 0;
 
-  // Pending requests from recentAssignedConcerns
-  const pendingRequests = (dashData?.recentAssignedConcerns ?? []).map((r) => ({
-    id: r.publicId ?? "—",
-    date: r.createdAt
-      ? new Date(r.createdAt).toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        })
-      : "—",
-    type: r.category ?? "—",
-    item: r.title ?? "—",
-    qty: "—",
-    cost: "—",
-    by: r.priority ?? "—",
-  }));
-
   // Top performers for worker performance section
   const topPerformers = dashData?.topPerformers ?? [];
 
@@ -127,6 +113,7 @@ export default function OwnerDashboard() {
             "/staff": "Staff Management",
             "/notifications": "Notifications",
             "/settings": "Settings",
+            "/inventory": "Inventory",
           };
           if (map[href]) setActiveItem(map[href]);
         }}
@@ -147,6 +134,37 @@ export default function OwnerDashboard() {
           <NotificationsPage />
         ) : activeItem === "Settings" ? (
           <SettingsPage />
+        ) : activeItem === "Inventory" ? (
+          <main className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-base font-bold text-gray-800">Inventory</h1>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Read-only view — managed by storekeeper
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-1 bg-gray-100 rounded-full p-1 w-fit mb-2">
+              {["Items", "Stock Ledger"].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setInvTab(tab)}
+                  className={`px-5 py-2 rounded-full text-xs font-semibold transition-all ${
+                    invTab === tab
+                      ? "bg-white text-gray-800 shadow-sm"
+                      : "text-gray-400 hover:text-gray-600"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+            {invTab === "Items" ? (
+              <InventoryPage isReadOnly />
+            ) : (
+              <StockLedgerPage isReadOnly />
+            )}
+          </main>
         ) : (
           <main className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
             {/* Welcome */}
@@ -361,37 +379,95 @@ export default function OwnerDashboard() {
               />
             </div>
 
-            {/* Pending Requests Table */}
-            <DataTable
-              title="Recent Concerns"
-              columns={[
-                "ID",
-                "Date",
-                "Category",
-                "Title",
-                "Priority",
-                "Status",
-                "—",
-              ]}
-              dataKeys={["id", "date", "type", "item", "qty", "cost", "by"]}
-              rows={
-                pendingRequests.length > 0
-                  ? pendingRequests
-                  : [
-                      {
-                        id: "—",
-                        date: "—",
-                        type: "No concerns",
-                        item: "All clear",
-                        qty: "—",
-                        cost: "—",
-                        by: "—",
-                      },
-                    ]
-              }
-              onApprove={(row) => console.log("Approved", row)}
-              onDecline={(row) => console.log("Declined", row)}
-            />
+            {/* Recent Concerns */}
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                <div>
+                  <h3 className="text-sm font-bold text-gray-800">
+                    Recent Concerns
+                  </h3>
+                  <p className="text-[11px] text-gray-400 mt-0.5">
+                    Latest issues raised by staff
+                  </p>
+                </div>
+                <button
+                  onClick={() => setActiveItem("Requests & Approvals")}
+                  className="text-xs text-[#4CAF50] font-semibold hover:underline flex items-center gap-1"
+                >
+                  See All →
+                </button>
+              </div>
+
+              {(dashData?.recentAssignedConcerns ?? []).length === 0 ? (
+                <div className="px-5 py-8 text-center">
+                  <p className="text-sm text-gray-400">No recent concerns 🎉</p>
+                </div>
+              ) : (
+                <div className="divide-y divide-gray-50">
+                  {(dashData?.recentAssignedConcerns ?? [])
+                    .slice(0, 5)
+                    .map((r, i) => {
+                      const statusCls =
+                        {
+                          open: "bg-amber-50  text-amber-500",
+                          in_review: "bg-blue-50   text-blue-500",
+                          resolved: "bg-[#f0fdf4] text-[#4CAF50]",
+                          dismissed: "bg-gray-100  text-gray-400",
+                        }[(r.status ?? "open").toLowerCase()] ??
+                        "bg-gray-100 text-gray-500";
+
+                      const priorityCls =
+                        {
+                          low: "bg-gray-100  text-gray-500",
+                          medium: "bg-amber-50  text-amber-500",
+                          high: "bg-orange-50 text-orange-500",
+                          urgent: "bg-red-50    text-red-500",
+                        }[(r.priority ?? "low").toLowerCase()] ??
+                        "bg-gray-100 text-gray-500";
+
+                      const raisedBy =
+                        r.raisedBy?.name || r.raisedBy?.email || "—";
+
+                      return (
+                        <div
+                          key={r.publicId ?? i}
+                          className="flex items-center justify-between px-5 py-3.5 hover:bg-gray-50 transition-colors cursor-pointer"
+                          onClick={() => setActiveItem("Requests & Approvals")}
+                        >
+                          <div className="flex-1 min-w-0 pr-4">
+                            <p className="text-sm font-medium text-gray-800 truncate">
+                              {r.title ?? "—"}
+                            </p>
+                            <p className="text-[11px] text-gray-400 mt-0.5 capitalize">
+                              {r.category ?? "—"} · By {raisedBy}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <span
+                              className={`px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${priorityCls}`}
+                            >
+                              {r.priority ?? "—"}
+                            </span>
+                            <span
+                              className={`px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${statusCls}`}
+                            >
+                              {(r.status ?? "open").replace(/_/g, " ")}
+                            </span>
+                            <span className="text-[10px] text-gray-400 whitespace-nowrap">
+                              {r.createdAt
+                                ? new Date(r.createdAt).toLocaleDateString(
+                                    "en-GB",
+                                    { day: "2-digit", month: "short" },
+                                  )
+                                : "—"}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
+            </div>
           </main>
         )}
       </div>

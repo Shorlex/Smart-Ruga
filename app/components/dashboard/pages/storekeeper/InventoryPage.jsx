@@ -46,7 +46,7 @@ function AlertBadge({ level }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-export default function InventoryPage() {
+export default function InventoryPage({ isReadOnly = false }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -148,12 +148,14 @@ export default function InventoryPage() {
           >
             <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
           </button>
-          <button
-            onClick={() => setShowModal(true)}
-            className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors"
-          >
-            <Plus size={13} /> Add New Item
-          </button>
+          {!isReadOnly && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors"
+            >
+              <Plus size={13} /> Add New Item
+            </button>
+          )}
         </div>
       </div>
 
@@ -284,15 +286,20 @@ export default function InventoryPage() {
                       )}
                     </td>
                     <td className="py-4 px-5">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setEditingItem(item);
-                        }}
-                        className="flex items-center gap-1 text-[#4CAF50] hover:text-[#43a047] font-semibold text-xs transition-colors"
-                      >
-                        Edit <Edit size={11} />
-                      </button>
+                      {!isReadOnly && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingItem(item);
+                          }}
+                          className="flex items-center gap-1 text-[#4CAF50] hover:text-[#43a047] font-semibold text-xs transition-colors"
+                        >
+                          Edit <Edit size={11} />
+                        </button>
+                      )}
+                      {isReadOnly && (
+                        <span className="text-xs text-gray-300">—</span>
+                      )}
                     </td>
                   </tr>
                 ))}

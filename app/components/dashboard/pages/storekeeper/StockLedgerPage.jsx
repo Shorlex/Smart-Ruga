@@ -420,7 +420,7 @@ const emptyMap = {
   adjustment: "No adjustments recorded yet.",
 };
 
-export default function StockLedgerPage() {
+export default function StockLedgerPage({ isReadOnly = false }) {
   const [activeTab, setActiveTab] = useState("stock_out");
   const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -495,7 +495,7 @@ export default function StockLedgerPage() {
           >
             <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
           </button>
-          {activeTab === "stock_out" && (
+          {!isReadOnly && activeTab === "stock_out" && (
             <button
               onClick={() => setModalType("stock_out")}
               className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors"
@@ -503,7 +503,7 @@ export default function StockLedgerPage() {
               <Plus size={13} /> Issue Out Stock
             </button>
           )}
-          {activeTab === "stock_in" && (
+          {!isReadOnly && activeTab === "stock_in" && (
             <button
               onClick={() => setModalType("stock_in")}
               className="flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors"
@@ -511,7 +511,7 @@ export default function StockLedgerPage() {
               <Plus size={13} /> Receive In Stock
             </button>
           )}
-          {activeTab === "adjustment" && (
+          {!isReadOnly && activeTab === "adjustment" && (
             <button
               onClick={() => setModalType("adjustment")}
               className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors"

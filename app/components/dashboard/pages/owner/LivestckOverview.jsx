@@ -9,6 +9,7 @@ import {
   Upload,
   ChevronLeft,
   ChevronRight as ChevronRightIcon,
+  Loader2,
 } from "lucide-react";
 import Image from "next/image";
 import CowDetailPage from "./CowDetailsPage";
@@ -437,6 +438,206 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
   );
 }
 
+// ── Report Issue Modal ────────────────────────────────────────────────────────
+
+function ReportIssueModal({ animal, onClose, onSuccess }) {
+  const [form, setForm] = useState({
+    title: `Health concern — ${animal.tagNumber ?? animal.publicId?.slice(0, 8)}`,
+    description: "",
+    priority: "medium",
+  });
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const isValid = form.title && form.description;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const data = new FormData();
+      data.append("title", form.title);
+      data.append("description", form.description);
+      data.append("category", "health");
+      data.append("priority", form.priority);
+      data.append("entityType", "animal");
+      data.append("entityPublicId", animal.publicId ?? "");
+      if (image) data.append("image", image);
+
+      const res = await fetch(`${API}/ranches/${getSlug()}/concerns`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${getToken()}` },
+        body: data,
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message ?? "Failed to report issue");
+      }
+      onSuccess?.();
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <div>
+            <h3 className="text-sm font-bold text-gray-800">
+              Report Animal Issue
+            </h3>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {animal.tagNumber ?? "—"} · {animal.species?.name ?? "—"} ·{" "}
+              {animal.healthStatus ?? "—"}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+          {error && (
+            <div className="px-4 py-3 rounded-xl bg-red-50 text-xs text-red-500">
+              {error}
+            </div>
+          )}
+
+          {/* Animal info card */}
+          <div className="bg-[#f0fdf4] border border-[#d1fae5] rounded-xl px-4 py-3 text-xs">
+            <p className="font-semibold text-[#4CAF50] mb-1">Reporting for:</p>
+            <div className="grid grid-cols-3 gap-2 text-gray-700">
+              <div>
+                <p className="text-gray-400">Tag</p>
+                <p className="font-medium">{animal.tagNumber ?? "—"}</p>
+              </div>
+              <div>
+                <p className="text-gray-400">Species</p>
+                <p className="font-medium capitalize">
+                  {animal.species?.name ?? "—"}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-400">Health</p>
+                <p className="font-medium capitalize">
+                  {animal.healthStatus ?? "—"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Title */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Title <span className="text-red-400">*</span>
+            </label>
+            <input
+              value={form.title}
+              onChange={set("title")}
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50]"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Description <span className="text-red-400">*</span>
+            </label>
+            <textarea
+              value={form.description}
+              onChange={set("description")}
+              rows={3}
+              placeholder="Describe the issue in detail — symptoms, behaviour, anything unusual..."
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none"
+            />
+          </div>
+
+          {/* Priority */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-2">
+              Priority
+            </label>
+            <div className="flex gap-2">
+              {["low", "medium", "high", "urgent"].map((p) => {
+                const cls = {
+                  low: "text-gray-500 border-gray-200",
+                  medium: "text-amber-500 border-amber-200",
+                  high: "text-orange-500 border-orange-200",
+                  urgent: "text-red-500 border-red-200",
+                }[p];
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setForm((f) => ({ ...f, priority: p }))}
+                    className={`flex-1 py-2 rounded-xl border text-xs font-semibold capitalize transition-all ${
+                      form.priority === p
+                        ? `${cls} bg-opacity-10 ring-2 ring-current`
+                        : "border-gray-200 text-gray-400"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Photo */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Attach Photo (optional)
+            </label>
+            <label className="w-full border-2 border-dashed border-gray-200 rounded-xl py-3 flex items-center justify-center gap-2 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] cursor-pointer bg-gray-50 text-xs font-medium">
+              📷 {image ? image.name : "Click to attach photo"}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+              />
+            </label>
+          </div>
+
+          <div className="flex gap-3 pt-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={!isValid || loading}
+              className={`flex-1 py-2.5 rounded-xl text-xs font-semibold text-white flex items-center justify-center gap-1.5 ${
+                isValid && !loading
+                  ? "bg-[#4CAF50] hover:bg-[#43a047]"
+                  : "bg-[#a5d6a7] cursor-not-allowed"
+              }`}
+            >
+              {loading && <Loader2 size={12} className="animate-spin" />}
+              {loading ? "Submitting..." : "Submit Report"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ── Livestock Card ────────────────────────────────────────────────────────────
+
 function LivestockCard({ animal, onClick, onReportIssue }) {
   return (
     <div
@@ -555,7 +756,7 @@ function Pagination({ page, totalPages, onPageChange }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-export default function LivestockPage({ canAdd = true, mobileCols }) {
+export default function LivestockPage({ canAdd = true, mobileCols = false }) {
   const [animals, setAnimals] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -567,6 +768,7 @@ export default function LivestockPage({ canAdd = true, mobileCols }) {
   const [error, setError] = useState("");
   const [selectedCow, setSelectedCow] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [reportAnimal, setReportAnimal] = useState(null);
   const [page, setPage] = useState(1);
   const [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
@@ -614,25 +816,59 @@ export default function LivestockPage({ canAdd = true, mobileCols }) {
       );
       if (!res.ok) throw new Error("Failed to fetch animals");
       const json = await res.json();
-      console.log("✅ Animals API raw response:", json);
+      console.log("✅ Animals API raw response keys:", Object.keys(json));
+      console.log(
+        "✅ Animals data keys:",
+        json?.data ? Object.keys(json.data) : "no data key",
+      );
+      console.log(
+        "✅ Animals pagination:",
+        json?.data?.pagination ??
+          json?.data?.meta ??
+          json?.pagination ??
+          json?.meta ??
+          "NOT FOUND",
+      );
 
-      // Handle all common response shapes
-      // Could be: { animals: [] } or { data: { animals: [] } } or { data: [] }
       let list = [];
       let meta = { page: p, limit: 50, total: 0, totalPages: 1 };
 
       if (Array.isArray(json?.data?.animals)) {
         list = json.data.animals;
-        meta = json.data?.pagination ?? json.data?.meta ?? meta;
+        // Actual shape: { data: { animals: [] }, meta: { pagination: {}, filters: {} } }
+        meta = json?.meta?.pagination ??
+          json.data?.pagination ??
+          json.data?.meta ??
+          json?.pagination ?? { ...meta, total: list.length };
       } else if (Array.isArray(json?.animals)) {
         list = json.animals;
-        meta = json?.pagination ?? meta;
+        meta = json?.meta?.pagination ??
+          json?.pagination ?? { ...meta, total: list.length };
       } else if (Array.isArray(json?.data)) {
         list = json.data;
-        meta = json?.pagination ?? meta;
+        meta = json?.meta?.pagination ??
+          json?.pagination ?? { ...meta, total: list.length };
       }
 
-      console.log("✅ Animals parsed:", list.length, "animals");
+      // Normalise field names — API may use totalCount, count, etc.
+      meta = {
+        page: meta.page ?? meta.currentPage ?? p,
+        limit: meta.limit ?? meta.pageSize ?? 50,
+        total: meta.total ?? meta.totalCount ?? meta.count ?? list.length,
+        totalPages:
+          meta.totalPages ??
+          meta.pages ??
+          Math.ceil((meta.total ?? list.length) / (meta.limit ?? 50)),
+      };
+
+      console.log(
+        "✅ Animals parsed:",
+        list.length,
+        "| total:",
+        meta.total,
+        "| pages:",
+        meta.totalPages,
+      );
       setAnimals(list);
       setPagination(meta);
     } catch (err) {
@@ -667,7 +903,9 @@ export default function LivestockPage({ canAdd = true, mobileCols }) {
           </h1>
           {!loading && (
             <p className="text-xs text-gray-400 mt-0.5">
-              {filteredAnimals.length} of {pagination.total} animals
+              {activeFilterCount > 0
+                ? `${filteredAnimals.length} filtered`
+                : `${animals.length} of ${pagination.total > 0 ? pagination.total : animals.length} animals`}
               {activeFilterCount > 0 && (
                 <span className="text-[#4CAF50] font-medium">
                   {" "}
@@ -807,8 +1045,8 @@ export default function LivestockPage({ canAdd = true, mobileCols }) {
           <div
             className={
               mobileCols
-                ? "grid grid-cols-1 gap-4"
-                : "grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4"
+                ? "grid grid-cols-1 gap-5"
+                : "grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5"
             }
           >
             {filteredAnimals.map((animal, i) => (
@@ -816,7 +1054,7 @@ export default function LivestockPage({ canAdd = true, mobileCols }) {
                 key={animal.publicId ?? i}
                 animal={animal}
                 onClick={() => setSelectedCow(animal)}
-                onReportIssue={(a) => console.log("Report issue:", a)}
+                onReportIssue={(a) => setReportAnimal(a)}
               />
             ))}
           </div>
@@ -833,6 +1071,14 @@ export default function LivestockPage({ canAdd = true, mobileCols }) {
         <AddAnimalModal
           onClose={() => setShowModal(false)}
           onSuccess={() => fetchAnimals(page)}
+        />
+      )}
+
+      {reportAnimal && (
+        <ReportIssueModal
+          animal={reportAnimal}
+          onClose={() => setReportAnimal(null)}
+          onSuccess={() => setReportAnimal(null)}
         />
       )}
     </main>

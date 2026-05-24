@@ -19,6 +19,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-right.js [app-client] (ecmascript) <export default as ChevronRight>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$close$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftClose$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-close.js [app-client] (ecmascript) <export default as PanelLeftClose>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$open$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-open.js [app-client] (ecmascript) <export default as PanelLeftOpen>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-client] (ecmascript) <export default as Package>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$context$2f$AuthContext$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/context/AuthContext.js [app-client] (ecmascript)");
 ;
@@ -55,6 +56,11 @@ const defaultNavItems = [
         href: "/staff"
     },
     {
+        label: "Inventory",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
+        href: "/inventory"
+    },
+    {
         label: "Notifications",
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"],
         href: "/notifications"
@@ -79,7 +85,15 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
             onLogout();
             return;
         }
-        auth?.logout?.(); // clears localStorage + redirects to /login
+        if (auth?.logout) {
+            auth.logout();
+        } else {
+            localStorage.removeItem("sr_user");
+            localStorage.removeItem("sr_role");
+            localStorage.removeItem("sr_token");
+            localStorage.removeItem("sr_slug");
+            window.location.href = "/login";
+        }
     };
     const isMobile = ()=>("TURBOPACK compile-time value", "object") !== "undefined" && window.innerWidth < 768;
     const [collapsed, setCollapsed] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
@@ -119,7 +133,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 alt: "icon"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 63,
+                                lineNumber: 92,
                                 columnNumber: 11
                             }, this),
                             !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -130,13 +144,13 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 className: "mt-3 -ml-2"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 65,
+                                lineNumber: 94,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 62,
+                        lineNumber: 91,
                         columnNumber: 9
                     }, this),
                     !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -147,18 +161,18 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                             size: 15
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                            lineNumber: 71,
+                            lineNumber: 109,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 69,
+                        lineNumber: 104,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 61,
+                lineNumber: 88,
                 columnNumber: 7
             }, this),
             collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -171,17 +185,17 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                         size: 15
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 80,
+                        lineNumber: 121,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 78,
+                    lineNumber: 116,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 77,
+                lineNumber: 115,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -196,19 +210,19 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 className: "shrink-0"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 96,
+                                lineNumber: 141,
                                 columnNumber: 13
                             }, this),
                             !collapsed && label
                         ]
                     }, label, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 88,
+                        lineNumber: 129,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 86,
+                lineNumber: 127,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -222,7 +236,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 children: user.initials
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 105,
+                                lineNumber: 152,
                                 columnNumber: 11
                             }, this),
                             !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -235,7 +249,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                                 children: user.name
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                                lineNumber: 111,
+                                                lineNumber: 158,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -243,13 +257,13 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                                 children: user.email
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                                lineNumber: 112,
+                                                lineNumber: 161,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                        lineNumber: 110,
+                                        lineNumber: 157,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
@@ -257,7 +271,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                         className: "text-gray-300"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                        lineNumber: 114,
+                                        lineNumber: 165,
                                         columnNumber: 15
                                     }, this)
                                 ]
@@ -265,7 +279,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 104,
+                        lineNumber: 149,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -277,26 +291,26 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 size: 12
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 123,
+                                lineNumber: 176,
                                 columnNumber: 11
                             }, this),
                             !collapsed && "Log Out"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 118,
+                        lineNumber: 169,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 103,
+                lineNumber: 148,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-        lineNumber: 59,
+        lineNumber: 84,
         columnNumber: 5
     }, this);
     // Mobile overlay drawer
@@ -308,7 +322,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                     onClick: ()=>setCollapsed(true)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 135,
+                    lineNumber: 188,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -316,14 +330,14 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                     children: panel
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 138,
+                    lineNumber: 193,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "w-14 shrink-0"
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 141,
+                    lineNumber: 198,
                     columnNumber: 9
                 }, this)
             ]
@@ -335,7 +349,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
         children: panel
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-        lineNumber: 148,
+        lineNumber: 205,
         columnNumber: 5
     }, this);
 }
@@ -557,7 +571,7 @@ function AlertBadge({ level }) {
     }, this);
 }
 _c = AlertBadge;
-function InventoryPage() {
+function InventoryPage({ isReadOnly = false }) {
     _s();
     const [items, setItems] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
@@ -697,7 +711,7 @@ function InventoryPage() {
                                 lineNumber: 145,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            !isReadOnly && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>setShowModal(true),
                                 className: "flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors",
                                 children: [
@@ -705,15 +719,15 @@ function InventoryPage() {
                                         size: 13
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                        lineNumber: 155,
-                                        columnNumber: 13
+                                        lineNumber: 156,
+                                        columnNumber: 15
                                     }, this),
                                     " Add New Item"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                lineNumber: 151,
-                                columnNumber: 11
+                                lineNumber: 152,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
@@ -742,46 +756,46 @@ function InventoryPage() {
                                 className: "h-3 bg-gray-100 rounded w-32"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                lineNumber: 165,
+                                lineNumber: 167,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-3 bg-gray-100 rounded w-20"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                lineNumber: 166,
+                                lineNumber: 168,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-3 bg-gray-100 rounded flex-1"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                lineNumber: 167,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "h-3 bg-gray-100 rounded w-16"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                lineNumber: 168,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "h-3 bg-gray-100 rounded w-16"
-                            }, void 0, false, {
-                                fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
                                 lineNumber: 169,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "h-3 bg-gray-100 rounded w-16"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
+                                lineNumber: 170,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "h-3 bg-gray-100 rounded w-16"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
+                                lineNumber: 171,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, i, true, {
                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                        lineNumber: 164,
+                        lineNumber: 166,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                lineNumber: 162,
+                lineNumber: 164,
                 columnNumber: 9
             }, this),
             !loading && error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -792,7 +806,7 @@ function InventoryPage() {
                         children: error
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                        lineNumber: 178,
+                        lineNumber: 180,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -801,13 +815,13 @@ function InventoryPage() {
                         children: "Try again"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                        lineNumber: 179,
+                        lineNumber: 181,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                lineNumber: 177,
+                lineNumber: 179,
                 columnNumber: 9
             }, this),
             !loading && !error && filtered.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -818,7 +832,7 @@ function InventoryPage() {
                         children: lowStock ? "No low stock items found." : search ? "No items match your search." : "No inventory items yet."
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                        lineNumber: 191,
+                        lineNumber: 193,
                         columnNumber: 11
                     }, this),
                     search && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -827,13 +841,13 @@ function InventoryPage() {
                         children: "Clear search"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                        lineNumber: 199,
+                        lineNumber: 201,
                         columnNumber: 13
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                lineNumber: 190,
+                lineNumber: 192,
                 columnNumber: 9
             }, this),
             !loading && !error && filtered.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -860,17 +874,17 @@ function InventoryPage() {
                                             children: col
                                         }, col, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 226,
+                                            lineNumber: 228,
                                             columnNumber: 21
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 215,
+                                    lineNumber: 217,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                lineNumber: 214,
+                                lineNumber: 216,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -886,7 +900,7 @@ function InventoryPage() {
                                                         children: item.name ?? "—"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                        lineNumber: 243,
+                                                        lineNumber: 245,
                                                         columnNumber: 23
                                                     }, this),
                                                     item.sku && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -894,13 +908,13 @@ function InventoryPage() {
                                                         children: item.sku
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                        lineNumber: 247,
+                                                        lineNumber: 249,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                lineNumber: 242,
+                                                lineNumber: 244,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -908,7 +922,7 @@ function InventoryPage() {
                                                 children: item.category ?? "—"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                lineNumber: 252,
+                                                lineNumber: 254,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -916,7 +930,7 @@ function InventoryPage() {
                                                 children: item.quantityOnHand != null ? `${item.quantityOnHand} ${item.unit ?? ""}`.trim() : "—"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                lineNumber: 255,
+                                                lineNumber: 257,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -924,7 +938,7 @@ function InventoryPage() {
                                                 children: item.reorderLevel != null ? `${item.reorderLevel} ${item.unit ?? ""}`.trim() : "—"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                lineNumber: 260,
+                                                lineNumber: 262,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -933,12 +947,12 @@ function InventoryPage() {
                                                     level: item.isLowStock ? "high" : "low"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 266,
+                                                    lineNumber: 268,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                lineNumber: 265,
+                                                lineNumber: 267,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -950,7 +964,7 @@ function InventoryPage() {
                                                 }) : "—"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                lineNumber: 268,
+                                                lineNumber: 270,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -960,74 +974,84 @@ function InventoryPage() {
                                                     children: "Active"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 279,
+                                                    lineNumber: 281,
                                                     columnNumber: 25
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     className: "text-gray-400",
                                                     children: "Inactive"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 283,
+                                                    lineNumber: 285,
                                                     columnNumber: 25
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                lineNumber: 277,
+                                                lineNumber: 279,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                                 className: "py-4 px-5",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                    onClick: (e)=>{
-                                                        e.stopPropagation();
-                                                        setEditingItem(item);
-                                                    },
-                                                    className: "flex items-center gap-1 text-[#4CAF50] hover:text-[#43a047] font-semibold text-xs transition-colors",
-                                                    children: [
-                                                        "Edit ",
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2d$pen$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Edit$3e$__["Edit"], {
-                                                            size: 11
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                            lineNumber: 294,
-                                                            columnNumber: 30
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 287,
-                                                    columnNumber: 23
-                                                }, this)
-                                            }, void 0, false, {
+                                                children: [
+                                                    !isReadOnly && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        onClick: (e)=>{
+                                                            e.stopPropagation();
+                                                            setEditingItem(item);
+                                                        },
+                                                        className: "flex items-center gap-1 text-[#4CAF50] hover:text-[#43a047] font-semibold text-xs transition-colors",
+                                                        children: [
+                                                            "Edit ",
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2d$pen$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Edit$3e$__["Edit"], {
+                                                                size: 11
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
+                                                                lineNumber: 297,
+                                                                columnNumber: 32
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
+                                                        lineNumber: 290,
+                                                        columnNumber: 25
+                                                    }, this),
+                                                    isReadOnly && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-xs text-gray-300",
+                                                        children: "—"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
+                                                        lineNumber: 301,
+                                                        columnNumber: 25
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
                                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                lineNumber: 286,
+                                                lineNumber: 288,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, item.publicId ?? i, true, {
                                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                        lineNumber: 237,
+                                        lineNumber: 239,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                lineNumber: 235,
+                                lineNumber: 237,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                        lineNumber: 213,
+                        lineNumber: 215,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                    lineNumber: 212,
+                    lineNumber: 214,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                lineNumber: 211,
+                lineNumber: 213,
                 columnNumber: 9
             }, this),
             showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AddItemModal, {
@@ -1035,7 +1059,7 @@ function InventoryPage() {
                 onSuccess: ()=>fetchInventory(lowStock)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                lineNumber: 306,
+                lineNumber: 313,
                 columnNumber: 9
             }, this),
             editingItem && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(EditItemModal, {
@@ -1047,7 +1071,7 @@ function InventoryPage() {
                 }
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                lineNumber: 313,
+                lineNumber: 320,
                 columnNumber: 9
             }, this)
         ]
@@ -1158,7 +1182,7 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                     children: "Edit Item"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 424,
+                                    lineNumber: 431,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1166,13 +1190,13 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                     children: item.sku ?? item.publicId?.slice(0, 8)
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 425,
+                                    lineNumber: 432,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 423,
+                            lineNumber: 430,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1182,18 +1206,18 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                 size: 18
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                lineNumber: 433,
+                                lineNumber: 440,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 429,
+                            lineNumber: 436,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                    lineNumber: 422,
+                    lineNumber: 429,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1205,7 +1229,7 @@ function EditItemModal({ item, onClose, onSuccess }) {
                             children: error
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 439,
+                            lineNumber: 446,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1222,13 +1246,13 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                                     children: "*"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 448,
+                                                    lineNumber: 455,
                                                     columnNumber: 27
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 447,
+                                            lineNumber: 454,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1237,13 +1261,13 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 450,
+                                            lineNumber: 457,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 446,
+                                    lineNumber: 453,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1253,7 +1277,7 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                             children: "SKU"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 457,
+                                            lineNumber: 464,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1262,19 +1286,19 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 460,
+                                            lineNumber: 467,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 456,
+                                    lineNumber: 463,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 445,
+                            lineNumber: 452,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1291,13 +1315,13 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                                     children: "*"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 472,
+                                                    lineNumber: 479,
                                                     columnNumber: 26
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 471,
+                                            lineNumber: 478,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1310,7 +1334,7 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                                     children: "Select category"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 479,
+                                                    lineNumber: 486,
                                                     columnNumber: 17
                                                 }, this),
                                                 CATEGORIES.map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1319,19 +1343,19 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                                         children: c
                                                     }, c, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                        lineNumber: 481,
+                                                        lineNumber: 488,
                                                         columnNumber: 19
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 474,
+                                            lineNumber: 481,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 470,
+                                    lineNumber: 477,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1345,13 +1369,13 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                                     children: "*"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 489,
+                                                    lineNumber: 496,
                                                     columnNumber: 22
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 488,
+                                            lineNumber: 495,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1364,7 +1388,7 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                                     children: "Select unit"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 496,
+                                                    lineNumber: 503,
                                                     columnNumber: 17
                                                 }, this),
                                                 UNITS.map((u)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1372,25 +1396,25 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                                         children: u
                                                     }, u, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                        lineNumber: 498,
+                                                        lineNumber: 505,
                                                         columnNumber: 19
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 491,
+                                            lineNumber: 498,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 487,
+                                    lineNumber: 494,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 469,
+                            lineNumber: 476,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1403,7 +1427,7 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                             children: "Quantity on Hand"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 509,
+                                            lineNumber: 516,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1414,13 +1438,13 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 512,
+                                            lineNumber: 519,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 508,
+                                    lineNumber: 515,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1430,7 +1454,7 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                             children: "Reorder Level"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 521,
+                                            lineNumber: 528,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1441,19 +1465,19 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 524,
+                                            lineNumber: 531,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 520,
+                                    lineNumber: 527,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 507,
+                            lineNumber: 514,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1463,7 +1487,7 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                     children: "Description"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 536,
+                                    lineNumber: 543,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -1473,13 +1497,13 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                     className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors resize-none"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 539,
+                                    lineNumber: 546,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 535,
+                            lineNumber: 542,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1492,7 +1516,7 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 549,
+                                    lineNumber: 556,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1505,37 +1529,37 @@ function EditItemModal({ item, onClose, onSuccess }) {
                                             className: "animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 565,
+                                            lineNumber: 572,
                                             columnNumber: 27
                                         }, this),
                                         loading ? "Saving..." : "Save Changes"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 556,
+                                    lineNumber: 563,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 548,
+                            lineNumber: 555,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                    lineNumber: 437,
+                    lineNumber: 444,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-            lineNumber: 420,
+            lineNumber: 427,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-        lineNumber: 419,
+        lineNumber: 426,
         columnNumber: 5
     }, this);
 }
@@ -1629,7 +1653,7 @@ function AddItemModal({ onClose, onSuccess }) {
                             children: "Add New Item"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 662,
+                            lineNumber: 669,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1639,18 +1663,18 @@ function AddItemModal({ onClose, onSuccess }) {
                                 size: 18
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                lineNumber: 667,
+                                lineNumber: 674,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 663,
+                            lineNumber: 670,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                    lineNumber: 661,
+                    lineNumber: 668,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1662,7 +1686,7 @@ function AddItemModal({ onClose, onSuccess }) {
                             children: error
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 673,
+                            lineNumber: 680,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1679,13 +1703,13 @@ function AddItemModal({ onClose, onSuccess }) {
                                                     children: "*"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 682,
+                                                    lineNumber: 689,
                                                     columnNumber: 27
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 681,
+                                            lineNumber: 688,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1695,13 +1719,13 @@ function AddItemModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 684,
+                                            lineNumber: 691,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 680,
+                                    lineNumber: 687,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1711,7 +1735,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                             children: "SKU"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 692,
+                                            lineNumber: 699,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1721,19 +1745,19 @@ function AddItemModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 695,
+                                            lineNumber: 702,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 691,
+                                    lineNumber: 698,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 679,
+                            lineNumber: 686,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1750,13 +1774,13 @@ function AddItemModal({ onClose, onSuccess }) {
                                                     children: "*"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 708,
+                                                    lineNumber: 715,
                                                     columnNumber: 26
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 707,
+                                            lineNumber: 714,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1769,7 +1793,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                                     children: "Select category"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 715,
+                                                    lineNumber: 722,
                                                     columnNumber: 17
                                                 }, this),
                                                 CATEGORIES.map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1778,19 +1802,19 @@ function AddItemModal({ onClose, onSuccess }) {
                                                         children: c
                                                     }, c, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                        lineNumber: 717,
+                                                        lineNumber: 724,
                                                         columnNumber: 19
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 710,
+                                            lineNumber: 717,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 706,
+                                    lineNumber: 713,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1804,13 +1828,13 @@ function AddItemModal({ onClose, onSuccess }) {
                                                     children: "*"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 725,
+                                                    lineNumber: 732,
                                                     columnNumber: 22
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 724,
+                                            lineNumber: 731,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1823,7 +1847,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                                     children: "Select unit"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                    lineNumber: 732,
+                                                    lineNumber: 739,
                                                     columnNumber: 17
                                                 }, this),
                                                 UNITS.map((u)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1831,25 +1855,25 @@ function AddItemModal({ onClose, onSuccess }) {
                                                         children: u
                                                     }, u, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                                        lineNumber: 734,
+                                                        lineNumber: 741,
                                                         columnNumber: 19
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 727,
+                                            lineNumber: 734,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 723,
+                                    lineNumber: 730,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 705,
+                            lineNumber: 712,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1862,7 +1886,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                             children: "Quantity on Hand"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 745,
+                                            lineNumber: 752,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1874,13 +1898,13 @@ function AddItemModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 748,
+                                            lineNumber: 755,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 744,
+                                    lineNumber: 751,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1890,7 +1914,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                             children: "Reorder Level"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 758,
+                                            lineNumber: 765,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1902,19 +1926,19 @@ function AddItemModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 761,
+                                            lineNumber: 768,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 757,
+                                    lineNumber: 764,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 743,
+                            lineNumber: 750,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1924,7 +1948,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                     children: "Description"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 774,
+                                    lineNumber: 781,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -1935,13 +1959,13 @@ function AddItemModal({ onClose, onSuccess }) {
                                     className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors resize-none"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 777,
+                                    lineNumber: 784,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 773,
+                            lineNumber: 780,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1951,7 +1975,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                     children: "Item Photo (optional)"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 788,
+                                    lineNumber: 795,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -1962,7 +1986,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                             children: "📦"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 792,
+                                            lineNumber: 799,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1970,7 +1994,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                             children: image ? image.name : "Click to upload photo"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 793,
+                                            lineNumber: 800,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1980,19 +2004,19 @@ function AddItemModal({ onClose, onSuccess }) {
                                             onChange: (e)=>setImage(e.target.files?.[0] ?? null)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 796,
+                                            lineNumber: 803,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 791,
+                                    lineNumber: 798,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 787,
+                            lineNumber: 794,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2005,7 +2029,7 @@ function AddItemModal({ onClose, onSuccess }) {
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 807,
+                                    lineNumber: 814,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2018,37 +2042,37 @@ function AddItemModal({ onClose, onSuccess }) {
                                             className: "animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                            lineNumber: 823,
+                                            lineNumber: 830,
                                             columnNumber: 27
                                         }, this),
                                         loading ? "Adding..." : "Add Item"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                                    lineNumber: 814,
+                                    lineNumber: 821,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                            lineNumber: 806,
+                            lineNumber: 813,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-                    lineNumber: 671,
+                    lineNumber: 678,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-            lineNumber: 659,
+            lineNumber: 666,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/storekeeper/InventoryPage.jsx",
-        lineNumber: 658,
+        lineNumber: 665,
         columnNumber: 5
     }, this);
 }
@@ -2798,7 +2822,7 @@ const emptyMap = {
     stock_in: "No stock receipts recorded yet.",
     adjustment: "No adjustments recorded yet."
 };
-function StockLedgerPage() {
+function StockLedgerPage({ isReadOnly = false }) {
     _s1();
     const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("stock_out");
     const [movements, setMovements] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
@@ -2885,7 +2909,7 @@ function StockLedgerPage() {
                                 lineNumber: 492,
                                 columnNumber: 11
                             }, this),
-                            activeTab === "stock_out" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            !isReadOnly && activeTab === "stock_out" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>setModalType("stock_out"),
                                 className: "flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors",
                                 children: [
@@ -2903,7 +2927,7 @@ function StockLedgerPage() {
                                 lineNumber: 499,
                                 columnNumber: 13
                             }, this),
-                            activeTab === "stock_in" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            !isReadOnly && activeTab === "stock_in" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>setModalType("stock_in"),
                                 className: "flex items-center gap-1.5 bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors",
                                 children: [
@@ -2921,7 +2945,7 @@ function StockLedgerPage() {
                                 lineNumber: 507,
                                 columnNumber: 13
                             }, this),
-                            activeTab === "adjustment" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            !isReadOnly && activeTab === "adjustment" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>setModalType("adjustment"),
                                 className: "flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-colors",
                                 children: [

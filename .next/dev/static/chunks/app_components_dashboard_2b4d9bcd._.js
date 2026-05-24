@@ -19,6 +19,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-right.js [app-client] (ecmascript) <export default as ChevronRight>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$close$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftClose$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-close.js [app-client] (ecmascript) <export default as PanelLeftClose>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$open$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-open.js [app-client] (ecmascript) <export default as PanelLeftOpen>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-client] (ecmascript) <export default as Package>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$context$2f$AuthContext$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/context/AuthContext.js [app-client] (ecmascript)");
 ;
@@ -55,6 +56,11 @@ const defaultNavItems = [
         href: "/staff"
     },
     {
+        label: "Inventory",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
+        href: "/inventory"
+    },
+    {
         label: "Notifications",
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"],
         href: "/notifications"
@@ -79,7 +85,15 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
             onLogout();
             return;
         }
-        auth?.logout?.(); // clears localStorage + redirects to /login
+        if (auth?.logout) {
+            auth.logout();
+        } else {
+            localStorage.removeItem("sr_user");
+            localStorage.removeItem("sr_role");
+            localStorage.removeItem("sr_token");
+            localStorage.removeItem("sr_slug");
+            window.location.href = "/login";
+        }
     };
     const isMobile = ()=>("TURBOPACK compile-time value", "object") !== "undefined" && window.innerWidth < 768;
     const [collapsed, setCollapsed] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
@@ -119,7 +133,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 alt: "icon"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 63,
+                                lineNumber: 92,
                                 columnNumber: 11
                             }, this),
                             !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -130,13 +144,13 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 className: "mt-3 -ml-2"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 65,
+                                lineNumber: 94,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 62,
+                        lineNumber: 91,
                         columnNumber: 9
                     }, this),
                     !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -147,18 +161,18 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                             size: 15
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                            lineNumber: 71,
+                            lineNumber: 109,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 69,
+                        lineNumber: 104,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 61,
+                lineNumber: 88,
                 columnNumber: 7
             }, this),
             collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -171,17 +185,17 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                         size: 15
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 80,
+                        lineNumber: 121,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 78,
+                    lineNumber: 116,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 77,
+                lineNumber: 115,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -196,19 +210,19 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 className: "shrink-0"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 96,
+                                lineNumber: 141,
                                 columnNumber: 13
                             }, this),
                             !collapsed && label
                         ]
                     }, label, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 88,
+                        lineNumber: 129,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 86,
+                lineNumber: 127,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -222,7 +236,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 children: user.initials
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 105,
+                                lineNumber: 152,
                                 columnNumber: 11
                             }, this),
                             !collapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -235,7 +249,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                                 children: user.name
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                                lineNumber: 111,
+                                                lineNumber: 158,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -243,13 +257,13 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                                 children: user.email
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                                lineNumber: 112,
+                                                lineNumber: 161,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                        lineNumber: 110,
+                                        lineNumber: 157,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
@@ -257,7 +271,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                         className: "text-gray-300"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                        lineNumber: 114,
+                                        lineNumber: 165,
                                         columnNumber: 15
                                     }, this)
                                 ]
@@ -265,7 +279,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 104,
+                        lineNumber: 149,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -277,26 +291,26 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                                 size: 12
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                                lineNumber: 123,
+                                lineNumber: 176,
                                 columnNumber: 11
                             }, this),
                             !collapsed && "Log Out"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                        lineNumber: 118,
+                        lineNumber: 169,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                lineNumber: 103,
+                lineNumber: 148,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-        lineNumber: 59,
+        lineNumber: 84,
         columnNumber: 5
     }, this);
     // Mobile overlay drawer
@@ -308,7 +322,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                     onClick: ()=>setCollapsed(true)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 135,
+                    lineNumber: 188,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -316,14 +330,14 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
                     children: panel
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 138,
+                    lineNumber: 193,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "w-14 shrink-0"
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-                    lineNumber: 141,
+                    lineNumber: 198,
                     columnNumber: 9
                 }, this)
             ]
@@ -335,7 +349,7 @@ function Sidebar({ activeItem = "Dashboard", navItems = defaultNavItems, user: u
         children: panel
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/shared/Sidebar.jsx",
-        lineNumber: 148,
+        lineNumber: 205,
         columnNumber: 5
     }, this);
 }
@@ -4631,10 +4645,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/upload.js [app-client] (ecmascript) <export default as Upload>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-left.js [app-client] (ecmascript) <export default as ChevronLeft>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-right.js [app-client] (ecmascript) <export default as ChevronRight>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-client] (ecmascript) <export default as Loader2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$dashboard$2f$pages$2f$owner$2f$CowDetailsPage$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/dashboard/pages/owner/CowDetailsPage.jsx [app-client] (ecmascript)");
 ;
-var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature();
+var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
@@ -4677,7 +4692,7 @@ function StatusBadge({ status }) {
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-        lineNumber: 54,
+        lineNumber: 55,
         columnNumber: 5
     }, this);
 }
@@ -4784,7 +4799,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                             children: "Add New Animal"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                            lineNumber: 157,
+                            lineNumber: 158,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4794,18 +4809,18 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                 size: 18
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 162,
+                                lineNumber: 163,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                            lineNumber: 158,
+                            lineNumber: 159,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                    lineNumber: 156,
+                    lineNumber: 157,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -4817,7 +4832,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                             children: error
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                            lineNumber: 168,
+                            lineNumber: 169,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4834,13 +4849,13 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                                     children: "*"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                                    lineNumber: 177,
+                                                    lineNumber: 178,
                                                     columnNumber: 25
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 176,
+                                            lineNumber: 177,
                                             columnNumber: 15
                                         }, this),
                                         speciesLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4848,7 +4863,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             children: "Loading species..."
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 180,
+                                            lineNumber: 181,
                                             columnNumber: 17
                                         }, this) : species.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                                             value: form.speciesId,
@@ -4860,7 +4875,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                                     children: "Select species"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                                    lineNumber: 189,
+                                                    lineNumber: 190,
                                                     columnNumber: 19
                                                 }, this),
                                                 species.map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4872,13 +4887,13 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                                         ]
                                                     }, s.id, true, {
                                                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                                        lineNumber: 191,
+                                                        lineNumber: 192,
                                                         columnNumber: 21
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 184,
+                                            lineNumber: 185,
                                             columnNumber: 17
                                         }, this) : // Fallback: manual UUID input if species endpoint not available
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4888,13 +4903,13 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 198,
+                                            lineNumber: 199,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 175,
+                                    lineNumber: 176,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4904,7 +4919,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             children: "Tag Number"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 207,
+                                            lineNumber: 208,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4914,19 +4929,19 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 210,
+                                            lineNumber: 211,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 206,
+                                    lineNumber: 207,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                            lineNumber: 174,
+                            lineNumber: 175,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4939,7 +4954,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             children: "RFID Tag"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 222,
+                                            lineNumber: 223,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4949,13 +4964,13 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 225,
+                                            lineNumber: 226,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 221,
+                                    lineNumber: 222,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4969,13 +4984,13 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                                     children: "*"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                                    lineNumber: 234,
+                                                    lineNumber: 235,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 233,
+                                            lineNumber: 234,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -4988,7 +5003,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                                     children: "Select sex"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                                    lineNumber: 241,
+                                                    lineNumber: 242,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4996,7 +5011,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                                     children: "Male"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                                    lineNumber: 242,
+                                                    lineNumber: 243,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5004,25 +5019,25 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                                     children: "Female"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                                    lineNumber: 243,
+                                                    lineNumber: 244,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 236,
+                                            lineNumber: 237,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 232,
+                                    lineNumber: 233,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                            lineNumber: 220,
+                            lineNumber: 221,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5035,7 +5050,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             children: "Date of Birth"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 251,
+                                            lineNumber: 252,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5045,13 +5060,13 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 254,
+                                            lineNumber: 255,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 250,
+                                    lineNumber: 251,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5061,7 +5076,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             children: "Breed"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 262,
+                                            lineNumber: 263,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5071,19 +5086,19 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 265,
+                                            lineNumber: 266,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 261,
+                                    lineNumber: 262,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                            lineNumber: 249,
+                            lineNumber: 250,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5093,7 +5108,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                     children: "Weight (kg)"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 276,
+                                    lineNumber: 277,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5104,13 +5119,13 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                     className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 279,
+                                    lineNumber: 280,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                            lineNumber: 275,
+                            lineNumber: 276,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5120,7 +5135,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                     children: "Animal Photo"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 290,
+                                    lineNumber: 291,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -5130,7 +5145,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             size: 18
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 294,
+                                            lineNumber: 295,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5138,7 +5153,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             children: image ? image.name : "Click to upload photo"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 295,
+                                            lineNumber: 296,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5148,19 +5163,19 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                             onChange: (e)=>setImage(e.target.files?.[0] ?? null)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                            lineNumber: 298,
+                                            lineNumber: 299,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 293,
+                                    lineNumber: 294,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                            lineNumber: 289,
+                            lineNumber: 290,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5173,7 +5188,7 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 309,
+                                    lineNumber: 310,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5183,30 +5198,30 @@ function AddAnimalModal({ onClose, onSuccess }) {
                                     children: loading ? "Adding..." : "Add Animal"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 316,
+                                    lineNumber: 317,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                            lineNumber: 308,
+                            lineNumber: 309,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                    lineNumber: 166,
+                    lineNumber: 167,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-            lineNumber: 154,
+            lineNumber: 155,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-        lineNumber: 153,
+        lineNumber: 154,
         columnNumber: 5
     }, this);
 }
@@ -5238,7 +5253,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                         children: "Filter Animals"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 347,
+                        lineNumber: 348,
                         columnNumber: 9
                     }, this),
                     activeCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5250,13 +5265,13 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                         children: "Clear all"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 349,
+                        lineNumber: 350,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 346,
+                lineNumber: 347,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5266,7 +5281,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                         children: "Health Status"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 363,
+                        lineNumber: 364,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -5279,7 +5294,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "All"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 371,
+                                lineNumber: 372,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5287,7 +5302,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "Healthy"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 372,
+                                lineNumber: 373,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5295,7 +5310,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "Sick"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 373,
+                                lineNumber: 374,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5303,19 +5318,19 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "Under Treatment"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 374,
+                                lineNumber: 375,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 366,
+                        lineNumber: 367,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 362,
+                lineNumber: 363,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5325,7 +5340,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                         children: "Status"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 380,
+                        lineNumber: 381,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -5338,7 +5353,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "All"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 388,
+                                lineNumber: 389,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5346,7 +5361,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "Active"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 389,
+                                lineNumber: 390,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5354,19 +5369,19 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "Inactive"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 390,
+                                lineNumber: 391,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 383,
+                        lineNumber: 384,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 379,
+                lineNumber: 380,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5376,7 +5391,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                         children: "Sex"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 396,
+                        lineNumber: 397,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -5389,7 +5404,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "All"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 404,
+                                lineNumber: 405,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5397,7 +5412,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "Male"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 405,
+                                lineNumber: 406,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5405,19 +5420,19 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "Female"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 406,
+                                lineNumber: 407,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 399,
+                        lineNumber: 400,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 395,
+                lineNumber: 396,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5427,7 +5442,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                         children: "Species"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 412,
+                        lineNumber: 413,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -5440,7 +5455,7 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                 children: "All"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 420,
+                                lineNumber: 421,
                                 columnNumber: 11
                             }, this),
                             speciesList.map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5448,19 +5463,19 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                                     children: s.name
                                 }, s.id, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                    lineNumber: 422,
+                                    lineNumber: 423,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 415,
+                        lineNumber: 416,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 411,
+                lineNumber: 412,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5469,18 +5484,454 @@ function FilterPanel({ filters, onChange, onApply, onClear, speciesList }) {
                 children: "Apply Filters"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 430,
+                lineNumber: 431,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-        lineNumber: 345,
+        lineNumber: 346,
         columnNumber: 5
     }, this);
 }
 _s1(FilterPanel, "2IryEPyZ9y5thH9CIUb8kN8Fjw4=");
 _c2 = FilterPanel;
+// ── Report Issue Modal ────────────────────────────────────────────────────────
+function ReportIssueModal({ animal, onClose, onSuccess }) {
+    _s2();
+    const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
+        title: `Health concern — ${animal.tagNumber ?? animal.publicId?.slice(0, 8)}`,
+        description: "",
+        priority: "medium"
+    });
+    const [image, setImage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const set = (k)=>(e)=>setForm((f)=>({
+                    ...f,
+                    [k]: e.target.value
+                }));
+    const isValid = form.title && form.description;
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        setError("");
+        setLoading(true);
+        try {
+            const data = new FormData();
+            data.append("title", form.title);
+            data.append("description", form.description);
+            data.append("category", "health");
+            data.append("priority", form.priority);
+            data.append("entityType", "animal");
+            data.append("entityPublicId", animal.publicId ?? "");
+            if (image) data.append("image", image);
+            const res = await fetch(`${API}/ranches/${getSlug()}/concerns`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                },
+                body: data
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message ?? "Failed to report issue");
+            }
+            onSuccess?.();
+            onClose();
+        } catch (err) {
+            setError(err.message);
+        } finally{
+            setLoading(false);
+        }
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-center justify-between px-6 py-4 border-b border-gray-100",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                    className: "text-sm font-bold text-gray-800",
+                                    children: "Report Animal Issue"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 493,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-xs text-gray-400 mt-0.5",
+                                    children: [
+                                        animal.tagNumber ?? "—",
+                                        " · ",
+                                        animal.species?.name ?? "—",
+                                        " ·",
+                                        " ",
+                                        animal.healthStatus ?? "—"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 496,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                            lineNumber: 492,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: onClose,
+                            className: "text-gray-400 hover:text-gray-600",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                size: 18
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                lineNumber: 505,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                            lineNumber: 501,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                    lineNumber: 491,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                    onSubmit: handleSubmit,
+                    className: "px-6 py-5 space-y-4",
+                    children: [
+                        error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "px-4 py-3 rounded-xl bg-red-50 text-xs text-red-500",
+                            children: error
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                            lineNumber: 511,
+                            columnNumber: 13
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "bg-[#f0fdf4] border border-[#d1fae5] rounded-xl px-4 py-3 text-xs",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "font-semibold text-[#4CAF50] mb-1",
+                                    children: "Reporting for:"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 518,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "grid grid-cols-3 gap-2 text-gray-700",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-gray-400",
+                                                    children: "Tag"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                                    lineNumber: 521,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "font-medium",
+                                                    children: animal.tagNumber ?? "—"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                                    lineNumber: 522,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                            lineNumber: 520,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-gray-400",
+                                                    children: "Species"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                                    lineNumber: 525,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "font-medium capitalize",
+                                                    children: animal.species?.name ?? "—"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                                    lineNumber: 526,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                            lineNumber: 524,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-gray-400",
+                                                    children: "Health"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                                    lineNumber: 531,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "font-medium capitalize",
+                                                    children: animal.healthStatus ?? "—"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                                    lineNumber: 532,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                            lineNumber: 530,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 519,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                            lineNumber: 517,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: [
+                                        "Title ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-red-400",
+                                            children: "*"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                            lineNumber: 542,
+                                            columnNumber: 21
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 541,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    value: form.title,
+                                    onChange: set("title"),
+                                    className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50]"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 544,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                            lineNumber: 540,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: [
+                                        "Description ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-red-400",
+                                            children: "*"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                            lineNumber: 554,
+                                            columnNumber: 27
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 553,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                    value: form.description,
+                                    onChange: set("description"),
+                                    rows: 3,
+                                    placeholder: "Describe the issue in detail — symptoms, behaviour, anything unusual...",
+                                    className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 556,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                            lineNumber: 552,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-2",
+                                    children: "Priority"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 567,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex gap-2",
+                                    children: [
+                                        "low",
+                                        "medium",
+                                        "high",
+                                        "urgent"
+                                    ].map((p)=>{
+                                        const cls = {
+                                            low: "text-gray-500 border-gray-200",
+                                            medium: "text-amber-500 border-amber-200",
+                                            high: "text-orange-500 border-orange-200",
+                                            urgent: "text-red-500 border-red-200"
+                                        }[p];
+                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            type: "button",
+                                            onClick: ()=>setForm((f)=>({
+                                                        ...f,
+                                                        priority: p
+                                                    })),
+                                            className: `flex-1 py-2 rounded-xl border text-xs font-semibold capitalize transition-all ${form.priority === p ? `${cls} bg-opacity-10 ring-2 ring-current` : "border-gray-200 text-gray-400"}`,
+                                            children: p
+                                        }, p, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                            lineNumber: 579,
+                                            columnNumber: 19
+                                        }, this);
+                                    })
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 570,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                            lineNumber: 566,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: "Attach Photo (optional)"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 598,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "w-full border-2 border-dashed border-gray-200 rounded-xl py-3 flex items-center justify-center gap-2 text-gray-400 hover:border-[#4CAF50] hover:text-[#4CAF50] cursor-pointer bg-gray-50 text-xs font-medium",
+                                    children: [
+                                        "📷 ",
+                                        image ? image.name : "Click to attach photo",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            type: "file",
+                                            accept: "image/*",
+                                            className: "hidden",
+                                            onChange: (e)=>setImage(e.target.files?.[0] ?? null)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                            lineNumber: 603,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 601,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                            lineNumber: 597,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex gap-3 pt-1",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    type: "button",
+                                    onClick: onClose,
+                                    className: "flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50",
+                                    children: "Cancel"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 613,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    type: "submit",
+                                    disabled: !isValid || loading,
+                                    className: `flex-1 py-2.5 rounded-xl text-xs font-semibold text-white flex items-center justify-center gap-1.5 ${isValid && !loading ? "bg-[#4CAF50] hover:bg-[#43a047]" : "bg-[#a5d6a7] cursor-not-allowed"}`,
+                                    children: [
+                                        loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                            size: 12,
+                                            className: "animate-spin"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                            lineNumber: 629,
+                                            columnNumber: 27
+                                        }, this),
+                                        loading ? "Submitting..." : "Submit Report"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                                    lineNumber: 620,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                            lineNumber: 612,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                    lineNumber: 509,
+                    columnNumber: 9
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+            lineNumber: 490,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+        lineNumber: 489,
+        columnNumber: 5
+    }, this);
+}
+_s2(ReportIssueModal, "pSvgKXvRk7zuzHaXeqdlQy2HGvY=");
+_c3 = ReportIssueModal;
+// ── Livestock Card ────────────────────────────────────────────────────────────
 function LivestockCard({ animal, onClick, onReportIssue }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         onClick: onClick,
@@ -5494,7 +5945,7 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                         children: "🐄"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 448,
+                        lineNumber: 649,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5502,7 +5953,7 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                         children: animal.tagNumber ?? animal.publicId?.slice(0, 8) ?? "—"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 451,
+                        lineNumber: 652,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5510,13 +5961,13 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                         children: animal.species?.name ?? "—"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 454,
+                        lineNumber: 655,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 447,
+                lineNumber: 648,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5529,7 +5980,7 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: "Sex"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 462,
+                                lineNumber: 663,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5537,13 +5988,13 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: animal.sex ?? "—"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 463,
+                                lineNumber: 664,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 461,
+                        lineNumber: 662,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5553,7 +6004,7 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: "Health Status"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 468,
+                                lineNumber: 669,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5565,13 +6016,13 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 469,
+                                lineNumber: 670,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 467,
+                        lineNumber: 668,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5581,7 +6032,7 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: "Breed"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 481,
+                                lineNumber: 682,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5589,13 +6040,13 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: animal.breed ?? "—"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 482,
+                                lineNumber: 683,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 480,
+                        lineNumber: 681,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5605,7 +6056,7 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: "Weight"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 487,
+                                lineNumber: 688,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5613,13 +6064,13 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: animal.weight ? `${animal.weight} kg` : "—"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 488,
+                                lineNumber: 689,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 486,
+                        lineNumber: 687,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5629,7 +6080,7 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: "Age"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 493,
+                                lineNumber: 694,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5637,13 +6088,13 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: calcAge(animal.dateOfBirth)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 494,
+                                lineNumber: 695,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 492,
+                        lineNumber: 693,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5653,7 +6104,7 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: "Status"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 499,
+                                lineNumber: 700,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5661,19 +6112,19 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: animal.status ?? "—"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 500,
+                                lineNumber: 701,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 498,
+                        lineNumber: 699,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 460,
+                lineNumber: 661,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5689,13 +6140,13 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 children: animal.rfidTag ?? "—"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 510,
+                                lineNumber: 711,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 508,
+                        lineNumber: 709,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5710,29 +6161,29 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
                                 size: 12
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 521,
+                                lineNumber: 722,
                                 columnNumber: 24
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 514,
+                        lineNumber: 715,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 507,
+                lineNumber: 708,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-        lineNumber: 442,
+        lineNumber: 643,
         columnNumber: 5
     }, this);
 }
-_c3 = LivestockCard;
+_c4 = LivestockCard;
 // ── Pagination ────────────────────────────────────────────────────────────────
 function Pagination({ page, totalPages, onPageChange }) {
     if (totalPages <= 1) return null;
@@ -5747,12 +6198,12 @@ function Pagination({ page, totalPages, onPageChange }) {
                     size: 14
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                    lineNumber: 539,
+                    lineNumber: 740,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 534,
+                lineNumber: 735,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5764,7 +6215,7 @@ function Pagination({ page, totalPages, onPageChange }) {
                         children: page
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 542,
+                        lineNumber: 743,
                         columnNumber: 14
                     }, this),
                     " of",
@@ -5773,7 +6224,7 @@ function Pagination({ page, totalPages, onPageChange }) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 541,
+                lineNumber: 742,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5784,24 +6235,24 @@ function Pagination({ page, totalPages, onPageChange }) {
                     size: 14
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                    lineNumber: 550,
+                    lineNumber: 751,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 545,
+                lineNumber: 746,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-        lineNumber: 533,
+        lineNumber: 734,
         columnNumber: 5
     }, this);
 }
-_c4 = Pagination;
-function LivestockPage({ canAdd = true, mobileCols }) {
-    _s2();
+_c5 = Pagination;
+function LivestockPage({ canAdd = true, mobileCols = false }) {
+    _s3();
     const [animals, setAnimals] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [pagination, setPagination] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         page: 1,
@@ -5813,6 +6264,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [selectedCow, setSelectedCow] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [showModal, setShowModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [reportAnimal, setReportAnimal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [page, setPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
     const [showFilter, setShowFilter] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [filters, setFilters] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(EMPTY_FILTERS);
@@ -5860,9 +6312,9 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                 });
                 if (!res.ok) throw new Error("Failed to fetch animals");
                 const json = await res.json();
-                console.log("✅ Animals API raw response:", json);
-                // Handle all common response shapes
-                // Could be: { animals: [] } or { data: { animals: [] } } or { data: [] }
+                console.log("✅ Animals API raw response keys:", Object.keys(json));
+                console.log("✅ Animals data keys:", json?.data ? Object.keys(json.data) : "no data key");
+                console.log("✅ Animals pagination:", json?.data?.pagination ?? json?.data?.meta ?? json?.pagination ?? json?.meta ?? "NOT FOUND");
                 let list = [];
                 let meta = {
                     page: p,
@@ -5872,15 +6324,32 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                 };
                 if (Array.isArray(json?.data?.animals)) {
                     list = json.data.animals;
-                    meta = json.data?.pagination ?? json.data?.meta ?? meta;
+                    // Actual shape: { data: { animals: [] }, meta: { pagination: {}, filters: {} } }
+                    meta = json?.meta?.pagination ?? json.data?.pagination ?? json.data?.meta ?? json?.pagination ?? {
+                        ...meta,
+                        total: list.length
+                    };
                 } else if (Array.isArray(json?.animals)) {
                     list = json.animals;
-                    meta = json?.pagination ?? meta;
+                    meta = json?.meta?.pagination ?? json?.pagination ?? {
+                        ...meta,
+                        total: list.length
+                    };
                 } else if (Array.isArray(json?.data)) {
                     list = json.data;
-                    meta = json?.pagination ?? meta;
+                    meta = json?.meta?.pagination ?? json?.pagination ?? {
+                        ...meta,
+                        total: list.length
+                    };
                 }
-                console.log("✅ Animals parsed:", list.length, "animals");
+                // Normalise field names — API may use totalCount, count, etc.
+                meta = {
+                    page: meta.page ?? meta.currentPage ?? p,
+                    limit: meta.limit ?? meta.pageSize ?? 50,
+                    total: meta.total ?? meta.totalCount ?? meta.count ?? list.length,
+                    totalPages: meta.totalPages ?? meta.pages ?? Math.ceil((meta.total ?? list.length) / (meta.limit ?? 50))
+                };
+                console.log("✅ Animals parsed:", list.length, "| total:", meta.total, "| pages:", meta.totalPages);
                 setAnimals(list);
                 setPagination(meta);
             } catch (err) {
@@ -5911,7 +6380,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
             onBack: ()=>setSelectedCow(null)
         }, void 0, false, {
             fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-            lineNumber: 656,
+            lineNumber: 892,
             columnNumber: 7
         }, this);
     }
@@ -5928,16 +6397,13 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                 children: "Livestock Overview"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 665,
+                                lineNumber: 901,
                                 columnNumber: 11
                             }, this),
                             !loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "text-xs text-gray-400 mt-0.5",
                                 children: [
-                                    filteredAnimals.length,
-                                    " of ",
-                                    pagination.total,
-                                    " animals",
+                                    activeFilterCount > 0 ? `${filteredAnimals.length} filtered` : `${animals.length} of ${pagination.total > 0 ? pagination.total : animals.length} animals`,
                                     activeFilterCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "text-[#4CAF50] font-medium",
                                         children: [
@@ -5951,19 +6417,19 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                        lineNumber: 672,
+                                        lineNumber: 910,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 669,
+                                lineNumber: 905,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 664,
+                        lineNumber: 900,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5982,7 +6448,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                                 children: activeFilterCount
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                                lineNumber: 694,
+                                                lineNumber: 932,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
@@ -5990,13 +6456,13 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                                 className: showFilter ? "rotate-180 transition-transform" : "transition-transform"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                                lineNumber: 698,
+                                                lineNumber: 936,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                        lineNumber: 684,
+                                        lineNumber: 922,
                                         columnNumber: 13
                                     }, this),
                                     showFilter && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FilterPanel, {
@@ -6009,13 +6475,13 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                         onClear: ()=>setFilters(EMPTY_FILTERS)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                        lineNumber: 709,
+                                        lineNumber: 947,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 683,
+                                lineNumber: 921,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6026,13 +6492,13 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                         size: 13
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                        lineNumber: 722,
+                                        lineNumber: 960,
                                         columnNumber: 23
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 721,
+                                lineNumber: 959,
                                 columnNumber: 11
                             }, this),
                             canAdd && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6043,26 +6509,26 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                         size: 13
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                        lineNumber: 729,
+                                        lineNumber: 967,
                                         columnNumber: 15
                                     }, this),
                                     " Add Animal"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 725,
+                                lineNumber: 963,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 681,
+                        lineNumber: 919,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 663,
+                lineNumber: 899,
                 columnNumber: 7
             }, this),
             showFilter && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6070,7 +6536,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                 onClick: ()=>setShowFilter(false)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 737,
+                lineNumber: 975,
                 columnNumber: 9
             }, this),
             loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6084,7 +6550,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                 className: "h-3 bg-gray-100 rounded w-2/3 mb-3"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 751,
+                                lineNumber: 989,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6095,23 +6561,23 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                         className: "h-8 bg-gray-100 rounded"
                                     }, j, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                        lineNumber: 754,
+                                        lineNumber: 992,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 752,
+                                lineNumber: 990,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, i, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 747,
+                        lineNumber: 985,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 745,
+                lineNumber: 983,
                 columnNumber: 9
             }, this),
             !loading && error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6122,7 +6588,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                         children: error
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 765,
+                        lineNumber: 1003,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6131,13 +6597,13 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                         children: "Try again"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 766,
+                        lineNumber: 1004,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 764,
+                lineNumber: 1002,
                 columnNumber: 9
             }, this),
             !loading && !error && filteredAnimals.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6148,7 +6614,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                         children: "🐄"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 778,
+                        lineNumber: 1016,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -6156,7 +6622,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                         children: activeFilterCount > 0 ? "No animals match the selected filters." : "No animals found in this ranch."
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 779,
+                        lineNumber: 1017,
                         columnNumber: 11
                     }, this),
                     activeFilterCount > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6165,7 +6631,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                         children: "Clear filters"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 785,
+                        lineNumber: 1023,
                         columnNumber: 13
                     }, this) : canAdd && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: ()=>setShowModal(true),
@@ -6175,38 +6641,38 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                                 size: 13
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 797,
+                                lineNumber: 1035,
                                 columnNumber: 17
                             }, this),
                             " Add First Animal"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 793,
+                        lineNumber: 1031,
                         columnNumber: 15
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 777,
+                lineNumber: 1015,
                 columnNumber: 9
             }, this),
             !loading && !error && filteredAnimals.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: mobileCols ? "grid grid-cols-1 gap-4" : "grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4",
+                        className: mobileCols ? "grid grid-cols-1 gap-5" : "grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5",
                         children: filteredAnimals.map((animal, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(LivestockCard, {
                                 animal: animal,
                                 onClick: ()=>setSelectedCow(animal),
-                                onReportIssue: (a)=>console.log("Report issue:", a)
+                                onReportIssue: (a)=>setReportAnimal(a)
                             }, animal.publicId ?? i, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                                lineNumber: 815,
+                                lineNumber: 1053,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 807,
+                        lineNumber: 1045,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Pagination, {
@@ -6215,7 +6681,7 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                         onPageChange: handlePageChange
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                        lineNumber: 823,
+                        lineNumber: 1061,
                         columnNumber: 11
                     }, this)
                 ]
@@ -6225,25 +6691,35 @@ function LivestockPage({ canAdd = true, mobileCols }) {
                 onSuccess: ()=>fetchAnimals(page)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-                lineNumber: 833,
+                lineNumber: 1071,
+                columnNumber: 9
+            }, this),
+            reportAnimal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ReportIssueModal, {
+                animal: reportAnimal,
+                onClose: ()=>setReportAnimal(null),
+                onSuccess: ()=>setReportAnimal(null)
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
+                lineNumber: 1078,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/LivestckOverview.jsx",
-        lineNumber: 661,
+        lineNumber: 897,
         columnNumber: 5
     }, this);
 }
-_s2(LivestockPage, "Q1de2Gs8AQ1SMi4iG9eoF6QS+I0=");
-_c5 = LivestockPage;
-var _c, _c1, _c2, _c3, _c4, _c5;
+_s3(LivestockPage, "nHO9bI6dUjL13y/1lLwYWBJ5TZI=");
+_c6 = LivestockPage;
+var _c, _c1, _c2, _c3, _c4, _c5, _c6;
 __turbopack_context__.k.register(_c, "StatusBadge");
 __turbopack_context__.k.register(_c1, "AddAnimalModal");
 __turbopack_context__.k.register(_c2, "FilterPanel");
-__turbopack_context__.k.register(_c3, "LivestockCard");
-__turbopack_context__.k.register(_c4, "Pagination");
-__turbopack_context__.k.register(_c5, "LivestockPage");
+__turbopack_context__.k.register(_c3, "ReportIssueModal");
+__turbopack_context__.k.register(_c4, "LivestockCard");
+__turbopack_context__.k.register(_c5, "Pagination");
+__turbopack_context__.k.register(_c6, "LivestockPage");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
