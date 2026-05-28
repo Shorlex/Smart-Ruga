@@ -144,7 +144,7 @@ function QuickAlerts({ concerns, onSeeAll }) {
                   {c.category ?? "General"}
                 </span>
               </td>
-              <td className="py-3 px-3 text-gray-500 max-w-[200px] truncate">
+              <td className="py-3 px-3 text-gray-500 max-w-50 truncate">
                 {c.title ?? "—"}
               </td>
               <td className="py-3 px-3 text-gray-600 whitespace-nowrap">
