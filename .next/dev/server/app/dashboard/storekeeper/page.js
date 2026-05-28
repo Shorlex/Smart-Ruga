@@ -1,6 +1,6 @@
 var R=require("../../../chunks/ssr/[turbopack]_runtime.js")("server/app/dashboard/storekeeper/page.js")
 R.c("server/chunks/ssr/node_modules_next_dist_80068a4e._.js")
-R.c("server/chunks/ssr/[root-of-the-server]__90b7187a._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__655ea190._.js")
 R.c("server/chunks/ssr/node_modules_eb7ec0ea._.js")
 R.c("server/chunks/ssr/[root-of-the-server]__e8a2741f._.js")
 R.c("server/chunks/ssr/app_b9b1292a._.js")

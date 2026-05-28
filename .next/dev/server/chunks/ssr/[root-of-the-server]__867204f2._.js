@@ -113,6 +113,8 @@ module.exports = mod;
 __turbopack_context__.s([
     "AuthProvider",
     ()=>AuthProvider,
+    "refreshAccessToken",
+    ()=>refreshAccessToken,
     "useAuth",
     ()=>useAuth
 ]);
@@ -133,16 +135,104 @@ const initialFormData = {
     email: "",
     password: ""
 };
-// Maps role values to dashboard routes
 const ROLE_ROUTES = {
     owner: "/dashboard/owner",
+    admin: "/dashboard",
     manager: "/dashboard/manager",
     vet: "/dashboard/vet",
     storekeeper: "/dashboard/storekeeper",
     worker: "/dashboard/worker",
-    admin: "/dashboard/owner",
     user: "/dashboard"
 };
+// ── Token helpers ─────────────────────────────────────────────────────────────
+function getToken() {
+    return localStorage.getItem("sr_token") ?? "";
+}
+function getRefreshToken() {
+    return localStorage.getItem("sr_refresh_token") ?? "";
+}
+function saveTokens(accessToken, refreshToken) {
+    localStorage.setItem("sr_token", accessToken);
+    if (refreshToken) localStorage.setItem("sr_refresh_token", refreshToken);
+}
+function clearSession() {
+    [
+        "sr_token",
+        "sr_refresh_token",
+        "sr_user",
+        "sr_role",
+        "sr_slug"
+    ].forEach((k)=>localStorage.removeItem(k));
+}
+async function refreshAccessToken() {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) return null;
+    try {
+        const res = await fetch(`${API}/auth/refresh`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${refreshToken}`
+            }
+        });
+        if (!res.ok) return null;
+        const json = await res.json();
+        const accessToken = json?.data?.accessToken ?? json?.accessToken ?? null;
+        if (accessToken) {
+            localStorage.setItem("sr_token", accessToken);
+            return accessToken;
+        }
+        return null;
+    } catch  {
+        return null;
+    }
+}
+// ── Axios interceptor — auto-refresh on 401 ───────────────────────────────────
+let isRefreshing = false;
+let refreshQueue = []; // pending requests waiting for new token
+function setupAxiosInterceptor() {
+    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].interceptors.request.use((config)=>{
+        const token = getToken();
+        if (token) config.headers["Authorization"] = `Bearer ${token}`;
+        return config;
+    });
+    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].interceptors.response.use((res)=>res, async (error)=>{
+        const original = error.config;
+        if (error.response?.status === 401 && !original._retry) {
+            original._retry = true;
+            if (isRefreshing) {
+                // Queue this request until refresh completes
+                return new Promise((resolve, reject)=>{
+                    refreshQueue.push({
+                        resolve,
+                        reject
+                    });
+                }).then((token)=>{
+                    original.headers["Authorization"] = `Bearer ${token}`;
+                    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])(original);
+                });
+            }
+            isRefreshing = true;
+            const newToken = await refreshAccessToken();
+            isRefreshing = false;
+            if (newToken) {
+                // Retry all queued requests with new token
+                refreshQueue.forEach(({ resolve })=>resolve(newToken));
+                refreshQueue = [];
+                original.headers["Authorization"] = `Bearer ${newToken}`;
+                return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])(original);
+            } else {
+                // Refresh failed — clear session and redirect to login
+                refreshQueue.forEach(({ reject })=>reject(error));
+                refreshQueue = [];
+                clearSession();
+                window.location.href = "/";
+                return Promise.reject(error);
+            }
+        }
+        return Promise.reject(error);
+    });
+}
 const AuthProvider = ({ children })=>{
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(initialFormData);
     const [success, setSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
@@ -151,6 +241,10 @@ const AuthProvider = ({ children })=>{
     const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [role, setRole] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
+    // Setup axios interceptor once on mount
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        setupAxiosInterceptor();
+    }, []);
     // Rehydrate session from localStorage on first load
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         try {
@@ -160,17 +254,15 @@ const AuthProvider = ({ children })=>{
             if (storedRole) setRole(storedRole);
         } catch (_) {}
     }, []);
-    const handleChange = (e)=>{
-        setFormData((prev)=>({
+    const handleChange = (e)=>setFormData((prev)=>({
                 ...prev,
                 [e.target.name]: e.target.value
             }));
-    };
     const formReset = ()=>setFormData(initialFormData);
     const isRegisterValidForm = formData.firstName && formData.lastName && formData.email && formData.password;
     const isLoginValidForm = formData.email && formData.password;
     const passwordLength = formData.password && formData.password.length < 8;
-    // ── Register ────────────────────────────────────────────────────────────────
+    // ── Register ─────────────────────────────────────────────────────────────────
     const register = async (e)=>{
         e.preventDefault();
         setError("");
@@ -190,7 +282,6 @@ const AuthProvider = ({ children })=>{
             });
             setSuccess(response.data.message || "Account created successfully!");
             formReset();
-            // New users always go to the waiting room until a role is assigned
             setTimeout(()=>router.push("/dashboard"), 3000);
         } catch (err) {
             setError(err.response?.data?.message || "Something went wrong. Please try again.");
@@ -198,7 +289,7 @@ const AuthProvider = ({ children })=>{
             setLoading(false);
         }
     };
-    // ── Login ───────────────────────────────────────────────────────────────────
+    // ── Login ────────────────────────────────────────────────────────────────────
     const login = async (e)=>{
         e.preventDefault();
         setError("");
@@ -209,77 +300,62 @@ const AuthProvider = ({ children })=>{
                 email: formData.email,
                 password: formData.password
             });
-            // ── Map API response ────────────────────────────────────────────────
-            // Shape: { success, message, data: { accessToken, user: {...}, ranch: { slug, role, ... } } }
-            const { accessToken, user: apiUser, ranch } = response.data.data;
-            // Role comes from ranch.role (not platformRole)
-            // Falls back to platformRole for users not yet assigned to a ranch
+            const { accessToken, refreshToken, user: apiUser, ranch } = response.data.data;
             const userRole = ranch?.role ?? apiUser.platformRole ?? "user";
             const ranchSlug = ranch?.slug ?? null;
             const userProfile = {
                 id: apiUser.id,
-                name: `${apiUser.firstName} ${apiUser.lastName}`.trim(),
+                name: `${apiUser.firstName ?? ""} ${apiUser.lastName ?? ""}`.trim(),
                 email: apiUser.email,
-                initials: `${apiUser.firstName?.[0] ?? ""}${apiUser.lastName?.[0] ?? ""}`.toUpperCase(),
+                initials: `${(apiUser.firstName ?? "")[0] ?? ""}${(apiUser.lastName ?? "")[0] ?? ""}`.toUpperCase(),
                 ranchSlug,
                 ranchName: ranch?.name ?? null
             };
-            // Save to state
             setUser(userProfile);
             setRole(userRole);
-            // Persist to localStorage
             localStorage.setItem("sr_user", JSON.stringify(userProfile));
             localStorage.setItem("sr_role", userRole);
-            localStorage.setItem("sr_token", accessToken);
             if (ranchSlug) localStorage.setItem("sr_slug", ranchSlug);
-            // ─────────────────────────────────────────────────────────────────────
+            // Store both tokens
+            saveTokens(accessToken, refreshToken);
             setSuccess(response.data.message || "Login successful!");
             formReset();
-            // "user" = no role assigned → waiting room
-            // any other role → their specific dashboard
             const destination = ROLE_ROUTES[userRole] ?? "/dashboard";
-            setTimeout(()=>router.push(destination), 2000);
+            setTimeout(()=>window.location.href = destination, 1500);
         } catch (err) {
             setError(err.response?.data?.message || "Invalid email or password");
         } finally{
             setLoading(false);
         }
     };
-    // ── Logout ──────────────────────────────────────────────────────────────────
+    // ── Logout ───────────────────────────────────────────────────────────────────
     const logout = ()=>{
         setUser(null);
         setRole(null);
-        localStorage.removeItem("sr_user");
-        localStorage.removeItem("sr_role");
-        localStorage.removeItem("sr_token");
-        router.push("/");
+        clearSession();
+        window.location.href = "/";
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(AuthContext.Provider, {
         value: {
-            // Form state
             formData,
             handleChange,
             formReset,
-            // Validation helpers
             isLoginValidForm,
             isRegisterValidForm,
             passwordLength,
-            // API state
             success,
             error,
             loading,
-            // Auth actions
             register,
             login,
             logout,
-            // Session
             user,
             role
         },
         children: children
     }, void 0, false, {
         fileName: "[project]/app/context/AuthContext.js",
-        lineNumber: 166,
+        lineNumber: 264,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

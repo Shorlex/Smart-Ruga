@@ -1,10 +1,15 @@
 "use client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 
 const AuthContext = createContext("");
-
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 const initialFormData = {
@@ -14,16 +19,116 @@ const initialFormData = {
   password: "",
 };
 
-// Maps role values to dashboard routes
 const ROLE_ROUTES = {
   owner: "/dashboard/owner",
+  admin: "/dashboard",
   manager: "/dashboard/manager",
   vet: "/dashboard/vet",
   storekeeper: "/dashboard/storekeeper",
   worker: "/dashboard/worker",
-  admin: "/dashboard/owner", // ← treat admin as owner for now; update once backend clarifies
-  user: "/dashboard", // waiting room — no role assigned yet
+  user: "/dashboard",
 };
+
+// ── Token helpers ─────────────────────────────────────────────────────────────
+
+function getToken() {
+  return localStorage.getItem("sr_token") ?? "";
+}
+function getRefreshToken() {
+  return localStorage.getItem("sr_refresh_token") ?? "";
+}
+
+function saveTokens(accessToken, refreshToken) {
+  localStorage.setItem("sr_token", accessToken);
+  if (refreshToken) localStorage.setItem("sr_refresh_token", refreshToken);
+}
+
+function clearSession() {
+  ["sr_token", "sr_refresh_token", "sr_user", "sr_role", "sr_slug"].forEach(
+    (k) => localStorage.removeItem(k),
+  );
+}
+
+// ── Silent refresh ────────────────────────────────────────────────────────────
+
+export async function refreshAccessToken() {
+  const refreshToken = getRefreshToken();
+  if (!refreshToken) return null;
+  try {
+    const res = await fetch(`${API}/auth/refresh`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${refreshToken}`,
+      },
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const accessToken = json?.data?.accessToken ?? json?.accessToken ?? null;
+    if (accessToken) {
+      localStorage.setItem("sr_token", accessToken);
+      return accessToken;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+// ── Axios interceptor — auto-refresh on 401 ───────────────────────────────────
+
+let isRefreshing = false;
+let refreshQueue = []; // pending requests waiting for new token
+
+function setupAxiosInterceptor() {
+  axios.interceptors.request.use((config) => {
+    const token = getToken();
+    if (token) config.headers["Authorization"] = `Bearer ${token}`;
+    return config;
+  });
+
+  axios.interceptors.response.use(
+    (res) => res,
+    async (error) => {
+      const original = error.config;
+      if (error.response?.status === 401 && !original._retry) {
+        original._retry = true;
+
+        if (isRefreshing) {
+          // Queue this request until refresh completes
+          return new Promise((resolve, reject) => {
+            refreshQueue.push({ resolve, reject });
+          }).then((token) => {
+            original.headers["Authorization"] = `Bearer ${token}`;
+            return axios(original);
+          });
+        }
+
+        isRefreshing = true;
+        const newToken = await refreshAccessToken();
+        isRefreshing = false;
+
+        if (newToken) {
+          // Retry all queued requests with new token
+          refreshQueue.forEach(({ resolve }) => resolve(newToken));
+          refreshQueue = [];
+          original.headers["Authorization"] = `Bearer ${newToken}`;
+          return axios(original);
+        } else {
+          // Refresh failed — clear session and redirect to login
+          refreshQueue.forEach(({ reject }) => reject(error));
+          refreshQueue = [];
+          clearSession();
+          window.location.href = "/";
+          return Promise.reject(error);
+        }
+      }
+      return Promise.reject(error);
+    },
+  );
+}
+
+// ── Provider ──────────────────────────────────────────────────────────────────
 
 export const AuthProvider = ({ children }) => {
   const [formData, setFormData] = useState(initialFormData);
@@ -35,6 +140,11 @@ export const AuthProvider = ({ children }) => {
 
   const router = useRouter();
 
+  // Setup axios interceptor once on mount
+  useEffect(() => {
+    setupAxiosInterceptor();
+  }, []);
+
   // Rehydrate session from localStorage on first load
   useEffect(() => {
     try {
@@ -45,10 +155,8 @@ export const AuthProvider = ({ children }) => {
     } catch (_) {}
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
   const formReset = () => setFormData(initialFormData);
 
   const isRegisterValidForm =
@@ -56,23 +164,20 @@ export const AuthProvider = ({ children }) => {
     formData.lastName &&
     formData.email &&
     formData.password;
-
   const isLoginValidForm = formData.email && formData.password;
   const passwordLength = formData.password && formData.password.length < 8;
 
-  // ── Register ────────────────────────────────────────────────────────────────
+  // ── Register ─────────────────────────────────────────────────────────────────
   const register = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
     setLoading(true);
-
     if (passwordLength) {
       setError("Password must be at least 8 characters");
       setLoading(false);
       return;
     }
-
     try {
       const response = await axios.post(`${API}/auth/register`, {
         firstName: formData.firstName,
@@ -80,10 +185,8 @@ export const AuthProvider = ({ children }) => {
         email: formData.email,
         password: formData.password,
       });
-
       setSuccess(response.data.message || "Account created successfully!");
       formReset();
-      // New users always go to the waiting room until a role is assigned
       setTimeout(() => router.push("/dashboard"), 3000);
     } catch (err) {
       setError(
@@ -95,56 +198,53 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ── Login ───────────────────────────────────────────────────────────────────
+  // ── Login ────────────────────────────────────────────────────────────────────
   const login = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
     setLoading(true);
-
     try {
       const response = await axios.post(`${API}/auth/login`, {
         email: formData.email,
         password: formData.password,
       });
 
-      // ── Map API response ────────────────────────────────────────────────
-      // Shape: { success, message, data: { accessToken, user: {...}, ranch: { slug, role, ... } } }
-      const { accessToken, user: apiUser, ranch } = response.data.data;
+      const {
+        accessToken,
+        refreshToken,
+        user: apiUser,
+        ranch,
+      } = response.data.data;
 
-      // Role comes from ranch.role (not platformRole)
-      // Falls back to platformRole for users not yet assigned to a ranch
       const userRole = ranch?.role ?? apiUser.platformRole ?? "user";
       const ranchSlug = ranch?.slug ?? null;
 
       const userProfile = {
         id: apiUser.id,
-        name: `${apiUser.firstName} ${apiUser.lastName}`.trim(),
+        name: `${apiUser.firstName ?? ""} ${apiUser.lastName ?? ""}`.trim(),
         email: apiUser.email,
         initials:
-          `${apiUser.firstName?.[0] ?? ""}${apiUser.lastName?.[0] ?? ""}`.toUpperCase(),
-        ranchSlug, // stored so livestock page can use it
+          `${(apiUser.firstName ?? "")[0] ?? ""}${(apiUser.lastName ?? "")[0] ?? ""}`.toUpperCase(),
+        ranchSlug,
         ranchName: ranch?.name ?? null,
       };
 
-      // Save to state
       setUser(userProfile);
       setRole(userRole);
 
-      // Persist to localStorage
       localStorage.setItem("sr_user", JSON.stringify(userProfile));
       localStorage.setItem("sr_role", userRole);
-      localStorage.setItem("sr_token", accessToken);
       if (ranchSlug) localStorage.setItem("sr_slug", ranchSlug);
-      // ─────────────────────────────────────────────────────────────────────
+
+      // Store both tokens
+      saveTokens(accessToken, refreshToken);
 
       setSuccess(response.data.message || "Login successful!");
       formReset();
 
-      // "user" = no role assigned → waiting room
-      // any other role → their specific dashboard
       const destination = ROLE_ROUTES[userRole] ?? "/dashboard";
-      setTimeout(() => router.push(destination), 2000);
+      setTimeout(() => (window.location.href = destination), 1500);
     } catch (err) {
       setError(err.response?.data?.message || "Invalid email or password");
     } finally {
@@ -152,36 +252,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ── Logout ──────────────────────────────────────────────────────────────────
+  // ── Logout ───────────────────────────────────────────────────────────────────
   const logout = () => {
     setUser(null);
     setRole(null);
-    localStorage.removeItem("sr_user");
-    localStorage.removeItem("sr_role");
-    localStorage.removeItem("sr_token");
-    router.push("/");
+    clearSession();
+    window.location.href = "/";
   };
 
   return (
     <AuthContext.Provider
       value={{
-        // Form state
         formData,
         handleChange,
         formReset,
-        // Validation helpers
         isLoginValidForm,
         isRegisterValidForm,
         passwordLength,
-        // API state
         success,
         error,
         loading,
-        // Auth actions
         register,
         login,
         logout,
-        // Session
         user,
         role,
       }}

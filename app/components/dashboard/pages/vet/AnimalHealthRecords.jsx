@@ -52,11 +52,18 @@ function formatDate(str) {
 
 function formatDateShort(str) {
   if (!str) return "—";
-  return new Date(str).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+  return (
+    new Date(str).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }) +
+    " " +
+    new Date(str).toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+  );
 }
 
 function toDatetimeLocal(str) {
@@ -831,17 +838,27 @@ export default function AnimalHealthRecords() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [selected, setSelected] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState({ total: 0, totalPages: 1 });
 
-  const fetchAnimals = useCallback(async () => {
+  const fetchAnimals = useCallback(async (p = 1) => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API}/ranches/${getSlug()}/animals?limit=100`, {
-        headers: { Authorization: `Bearer ${getToken()}` },
-      });
+      const res = await fetch(
+        `${API}/ranches/${getSlug()}/animals?limit=50&page=${p}`,
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        },
+      );
       if (!res.ok) throw new Error(`Failed to fetch animals (${res.status})`);
       const json = await res.json();
       setAnimals(json?.data?.animals ?? json?.animals ?? []);
+      const meta = json?.meta?.pagination ?? json?.data?.pagination ?? {};
+      setPagination({
+        total: Number(meta.total) || 0,
+        totalPages: Number(meta.totalPages) || 1,
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -850,8 +867,8 @@ export default function AnimalHealthRecords() {
   }, []);
 
   useEffect(() => {
-    fetchAnimals();
-  }, [fetchAnimals]);
+    fetchAnimals(page);
+  }, [fetchAnimals, page]);
 
   const handleHealthUpdate = (animalId, newStatus) => {
     setAnimals((prev) =>
@@ -897,7 +914,7 @@ export default function AnimalHealthRecords() {
           <p className="text-base font-bold text-gray-800">Health Records</p>
           {!loading && (
             <p className="text-xs text-gray-400 mt-0.5">
-              {filtered.length} of {animals.length} animals
+              {animals.length} of {pagination.total || animals.length} animals
             </p>
           )}
         </div>
@@ -1061,6 +1078,35 @@ export default function AnimalHealthRecords() {
             )}
           </button>
         ))}
+
+      {/* Pagination */}
+      {pagination.totalPages > 1 && (
+        <div className="flex items-center justify-between pt-2 pb-4">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="flex items-center gap-1 px-4 py-2 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 disabled:opacity-40 hover:bg-gray-50 transition-colors"
+          >
+            ← Prev
+          </button>
+          <p className="text-xs text-gray-500">
+            Page <span className="font-bold text-gray-800">{page}</span> of{" "}
+            {pagination.totalPages}
+            <span className="text-gray-400 ml-1">
+              ({pagination.total} animals)
+            </span>
+          </p>
+          <button
+            onClick={() =>
+              setPage((p) => Math.min(pagination.totalPages, p + 1))
+            }
+            disabled={page === pagination.totalPages}
+            className="flex items-center gap-1 px-4 py-2 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 disabled:opacity-40 hover:bg-gray-50 transition-colors"
+          >
+            Next →
+          </button>
+        </div>
+      )}
     </div>
   );
 }

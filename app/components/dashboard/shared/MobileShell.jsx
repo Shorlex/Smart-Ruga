@@ -1,36 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Search, Bell, Menu, X, ChevronRight } from "lucide-react";
+import { Search, Bell, Menu, X, ChevronRight, Scan } from "lucide-react";
 import Sidebar from "./Sidebar";
-import { useAuth } from "../../..//context/AuthContext";
-
-const API = process.env.NEXT_PUBLIC_API_URL;
-function getSlug() {
-  if (typeof window === "undefined") return "";
-  return localStorage.getItem("sr_slug") ?? "";
-}
-function getToken() {
-  if (typeof window === "undefined") return "";
-  return localStorage.getItem("sr_token") ?? "";
-}
-
-function formatTime(str) {
-  if (!str) return "—";
-  return (
-    new Date(str).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-    }) +
-    " · " +
-    new Date(str).toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  );
-}
-
-// Helper — find the right nav key by matching label keywords
+import { useAuth } from "../../../context/AuthContext";
+import ScanAnimalModal from "./ScanAnimalModal";
 function findNavKey(navItems, ...keywords) {
   for (const kw of keywords) {
     const item = navItems.find(
@@ -62,15 +36,42 @@ function SearchOverlay({ onClose, onNavigate, navItems }) {
     }
     setLoading(true);
     try {
-      const res = await fetch(`${API}/ranches/${getSlug()}/animals?limit=100`, {
-        headers: { Authorization: `Bearer ${getToken()}` },
-      });
-      if (!res.ok) throw new Error();
-      const json = await res.json();
-      const animals = json?.data?.animals ?? json?.animals ?? [];
+      // Fetch page 1 to get total pages
+      const res1 = await fetch(
+        `${API}/ranches/${getSlug()}/animals?limit=50&page=1`,
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        },
+      );
+      if (!res1.ok) throw new Error();
+      const json1 = await res1.json();
+      const firstBatch = json1?.data?.animals ?? json1?.animals ?? [];
+      const totalPages =
+        json1?.meta?.pagination?.totalPages ??
+        json1?.data?.pagination?.totalPages ??
+        1;
+
+      // Fetch remaining pages in parallel
+      let allAnimals = [...firstBatch];
+      if (totalPages > 1) {
+        const pages = Array.from({ length: totalPages - 1 }, (_, i) => i + 2);
+        const rest = await Promise.all(
+          pages.map((p) =>
+            fetch(`${API}/ranches/${getSlug()}/animals?limit=50&page=${p}`, {
+              headers: { Authorization: `Bearer ${getToken()}` },
+            }).then((r) => (r.ok ? r.json() : null)),
+          ),
+        );
+        rest.forEach((j) => {
+          if (j)
+            allAnimals = allAnimals.concat(
+              j?.data?.animals ?? j?.animals ?? [],
+            );
+        });
+      }
 
       const q2 = q.toLowerCase();
-      const filteredAnimals = animals.filter(
+      const filteredAnimals = allAnimals.filter(
         (a) =>
           (a.tagNumber ?? "").toLowerCase().includes(q2) ||
           (a.species?.name ?? "").toLowerCase().includes(q2) ||
@@ -78,8 +79,7 @@ function SearchOverlay({ onClose, onNavigate, navItems }) {
           (a.rfidTag ?? "").toLowerCase().includes(q2),
       );
 
-      // Vaccinations: filter animals with overdue vaccinations matching query
-      const filteredVax = animals.filter(
+      const filteredVax = allAnimals.filter(
         (a) =>
           a.isOverdue &&
           ((a.tagNumber ?? "").toLowerCase().includes(q2) ||
@@ -415,6 +415,13 @@ export default function MobileShell({
   const [searchOpen, setSearchOpen] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [showScan, setShowScan] = useState(false);
+
+  const role =
+    typeof window !== "undefined"
+      ? (localStorage.getItem("sr_role") ?? "")
+      : "";
+  const canScan = ["worker", "vet"].includes(role);
 
   // Fetch unread count for bell badge
   useEffect(() => {
@@ -497,6 +504,21 @@ export default function MobileShell({
         <div className="flex-1 overflow-y-auto">
           <PageComponent greeting={displayGreeting} onNavigate={handleNav} />
         </div>
+
+        {/* ── Scan Animal FAB (worker + vet only) ─────────── */}
+        {canScan && (
+          <div className="absolute bottom-4 right-4 z-10">
+            <button
+              onClick={() => setShowScan(true)}
+              className="flex items-center gap-2 bg-[#4CAF50] hover:bg-[#43a047] text-white text-sm font-semibold px-4 py-3 rounded-full shadow-lg transition-colors"
+            >
+              <Scan size={16} /> Scan Animal
+            </button>
+          </div>
+        )}
+
+        {/* ── Scan Modal ───────────────────────────────────── */}
+        {showScan && <ScanAnimalModal onClose={() => setShowScan(false)} />}
 
         {/* ── Search overlay ──────────────────────────────── */}
         {searchOpen && (

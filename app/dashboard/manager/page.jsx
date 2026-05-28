@@ -1,10 +1,13 @@
-import React from 'react'
-import ManagerDashboard from '../../components/dashboard/pages/manager/ManagerDashboard'
+import React from "react";
+import ManagerDashboard from "../../components/dashboard/pages/manager/ManagerDashboard";
+import RouteGuard from "@/app/components/RouteGuard";
 
 function page() {
   return (
-    <ManagerDashboard />
-  )
+    <RouteGuard allowedRoles={["manager"]}>
+      <ManagerDashboard />
+    </RouteGuard>
+  );
 }
 
-export default page
+export default page;
