@@ -178,8 +178,8 @@ function JoinPageContent() {
   return (
     <div className="min-h-screen flex">
       {/* Left panel */}
-      {/* <div className="hidden lg:flex lg:w-[52%] relative rounded-r-3xl overflow-hidden bg-[#1a1a1a]">
-        <div
+      <div className="hidden lg:flex lg:w-[52%] relative rounded-r-3xl overflow-hidden">
+        {/* <div
           className="absolute inset-0 bg-cover bg-center opacity-60"
           style={{ backgroundImage: "url('/images/ranch-hero.jpg')" }}
         />
@@ -199,9 +199,9 @@ function JoinPageContent() {
               profitability.
             </p>
           </div>
-        </div>
-      </div> */}
+        </div> */}
           <HomePageImage />
+      </div>
 
       {/* Right panel */}
       <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-16 py-12 bg-white overflow-y-auto">

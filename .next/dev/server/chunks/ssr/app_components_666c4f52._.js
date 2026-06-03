@@ -9098,6 +9098,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/copy.js [app-ssr] (ecmascript) <export default as Copy>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/plus.js [app-ssr] (ecmascript) <export default as Plus>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-ssr] (ecmascript) <export default as Loader2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-ssr] (ecmascript) <export default as X>");
 "use client";
 ;
 ;
@@ -9319,6 +9320,7 @@ function AccountTab() {
     const [showPassword, setShowPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [success, setSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [showCreateRanch, setShowCreateRanch] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
         firstName: "",
         lastName: "",
@@ -9519,7 +9521,7 @@ function AccountTab() {
                         className: "w-20 h-20 rounded-full bg-gray-100"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 358,
+                        lineNumber: 359,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9529,26 +9531,26 @@ function AccountTab() {
                                 className: "h-3 bg-gray-100 rounded w-1/3"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 360,
+                                lineNumber: 361,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-8 bg-gray-100 rounded w-48"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 361,
+                                lineNumber: 362,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 359,
+                        lineNumber: 360,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 357,
+                lineNumber: 358,
                 columnNumber: 9
             }, this),
             [
@@ -9559,13 +9561,13 @@ function AccountTab() {
                     className: "h-10 bg-gray-100 rounded"
                 }, i, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                    lineNumber: 365,
+                    lineNumber: 366,
                     columnNumber: 11
                 }, this))
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 356,
+        lineNumber: 357,
         columnNumber: 7
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9576,7 +9578,7 @@ function AccountTab() {
                 message: success
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 372,
+                lineNumber: 373,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Banner, {
@@ -9584,7 +9586,7 @@ function AccountTab() {
                 message: error
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 373,
+                lineNumber: 374,
                 columnNumber: 7
             }, this),
             isOwner && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9597,43 +9599,44 @@ function AccountTab() {
                                 children: "Ranch"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 379,
+                                lineNumber: 380,
                                 columnNumber: 13
                             }, this),
                             hasRanch ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "text-[11px] text-gray-500 mt-0.5",
                                 children: [
-                                    profile?.ranch?.ranchName ?? "Your ranch",
+                                    profile?.memberships?.[0]?.ranchName ?? "Your ranch",
                                     " ·",
                                     " ",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "text-gray-400",
-                                        children: profile?.ranch?.ranchSlug
+                                        children: profile?.memberships?.[0]?.ranchSlug
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 383,
+                                        lineNumber: 384,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 381,
+                                lineNumber: 382,
                                 columnNumber: 15
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "text-[11px] text-amber-500 mt-0.5",
                                 children: "You haven't created a ranch yet"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 388,
+                                lineNumber: 389,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 378,
+                        lineNumber: 379,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>!hasRanch && setShowCreateRanch(true),
                         disabled: hasRanch,
                         title: hasRanch ? "You already have a ranch" : "Create a new ranch",
                         className: `flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg transition-colors ${hasRanch ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-[#4CAF50] hover:bg-[#43a047] text-white shadow-sm"}`,
@@ -9642,20 +9645,41 @@ function AccountTab() {
                                 size: 13
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 402,
+                                lineNumber: 404,
                                 columnNumber: 13
                             }, this),
                             hasRanch ? "Ranch Created" : "Create Ranch"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 393,
+                        lineNumber: 394,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 377,
+                lineNumber: 378,
+                columnNumber: 9
+            }, this),
+            showCreateRanch && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(CreateRanchModal, {
+                onClose: ()=>setShowCreateRanch(false),
+                onSuccess: ()=>{
+                    setShowCreateRanch(false);
+                    // Mark ranch as created immediately so button disables without reload
+                    setProfile((prev)=>({
+                            ...prev,
+                            memberships: [
+                                ...prev?.memberships ?? [],
+                                {
+                                    ranchRole: "owner"
+                                }
+                            ]
+                        }));
+                    setSuccess("Ranch created successfully! Please log out and log back in to access your ranch dashboard.");
+                }
+            }, void 0, false, {
+                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                lineNumber: 412,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9669,19 +9693,19 @@ function AccountTab() {
                             className: "w-full h-full object-cover"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 412,
+                            lineNumber: 435,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "w-full h-full flex items-center justify-center text-gray-400 text-2xl",
                             children: "👤"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 418,
+                            lineNumber: 441,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 410,
+                        lineNumber: 433,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9691,7 +9715,7 @@ function AccountTab() {
                                 children: "Profile Picture"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 424,
+                                lineNumber: 447,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -9699,7 +9723,7 @@ function AccountTab() {
                                 children: "PNG, JPEG under 10mb"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 427,
+                                lineNumber: 450,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9713,7 +9737,7 @@ function AccountTab() {
                                         onChange: handleImageUpload
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 429,
+                                        lineNumber: 452,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -9726,14 +9750,14 @@ function AccountTab() {
                                                 className: "animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                                lineNumber: 442,
+                                                lineNumber: 465,
                                                 columnNumber: 17
                                             }, this) : null,
                                             "Change Picture"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 436,
+                                        lineNumber: 459,
                                         columnNumber: 13
                                     }, this),
                                     profile?.imageUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -9743,32 +9767,32 @@ function AccountTab() {
                                         children: "Delete Picture"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 447,
+                                        lineNumber: 470,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 428,
+                                lineNumber: 451,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 423,
+                        lineNumber: 446,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 409,
+                lineNumber: 432,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "border-t border-gray-100"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 459,
+                lineNumber: 482,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9783,12 +9807,12 @@ function AccountTab() {
                             placeholder: "First name"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 464,
+                            lineNumber: 487,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 463,
+                        lineNumber: 486,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -9800,18 +9824,18 @@ function AccountTab() {
                             placeholder: "Last name"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 471,
+                            lineNumber: 494,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 470,
+                        lineNumber: 493,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 462,
+                lineNumber: 485,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -9824,12 +9848,12 @@ function AccountTab() {
                     placeholder: "Email address"
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                    lineNumber: 483,
+                    lineNumber: 506,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 479,
+                lineNumber: 502,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -9842,12 +9866,12 @@ function AccountTab() {
                     placeholder: "+234 800 000 0000"
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                    lineNumber: 492,
+                    lineNumber: 515,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 491,
+                lineNumber: 514,
                 columnNumber: 7
             }, this),
             profile?.ranch?.ranchSlug && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -9864,22 +9888,22 @@ function AccountTab() {
                             size: 13
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 517,
+                            lineNumber: 540,
                             columnNumber: 17
                         }, void 0)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 510,
+                        lineNumber: 533,
                         columnNumber: 15
                     }, void 0)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                    lineNumber: 506,
+                    lineNumber: 529,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 502,
+                lineNumber: 525,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -9898,7 +9922,7 @@ function AccountTab() {
                                 className: "w-full text-xs border border-gray-200 rounded-lg px-3 py-2.5 pr-8 bg-white text-gray-800 focus:outline-none focus:border-[#4CAF50] transition-colors placeholder-gray-400"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 531,
+                                lineNumber: 554,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -9908,34 +9932,34 @@ function AccountTab() {
                                     size: 13
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 542,
+                                    lineNumber: 565,
                                     columnNumber: 31
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
                                     size: 13
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 542,
+                                    lineNumber: 565,
                                     columnNumber: 54
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 538,
+                                lineNumber: 561,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 530,
+                        lineNumber: 553,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                    lineNumber: 529,
+                    lineNumber: 552,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 525,
+                lineNumber: 548,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9950,25 +9974,25 @@ function AccountTab() {
                             className: "animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                            lineNumber: 555,
+                            lineNumber: 578,
                             columnNumber: 21
                         }, this) : null,
                         saving ? "Saving..." : "Save Changes"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                    lineNumber: 550,
+                    lineNumber: 573,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 549,
+                lineNumber: 572,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 371,
+        lineNumber: 372,
         columnNumber: 5
     }, this);
 }
@@ -10041,7 +10065,7 @@ function UsersRolesTab() {
                         label: role
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 633,
+                        lineNumber: 656,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10057,7 +10081,7 @@ function UsersRolesTab() {
                                                 children: label
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                                lineNumber: 638,
+                                                lineNumber: 661,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -10065,13 +10089,13 @@ function UsersRolesTab() {
                                                 children: hint
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                                lineNumber: 641,
+                                                lineNumber: 664,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 637,
+                                        lineNumber: 660,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TogglePair, {
@@ -10086,36 +10110,36 @@ function UsersRolesTab() {
                                                 }))
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                        lineNumber: 643,
+                                        lineNumber: 666,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, key, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 636,
+                                lineNumber: 659,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 634,
+                        lineNumber: 657,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "border-t border-gray-100 mt-6"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 651,
+                        lineNumber: 674,
                         columnNumber: 11
                     }, this)
                 ]
             }, role, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 632,
+                lineNumber: 655,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 630,
+        lineNumber: 653,
         columnNumber: 5
     }, this);
 }
@@ -10136,7 +10160,7 @@ function ReportingTab() {
                         label: "Report Format & Frequency"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 671,
+                        lineNumber: 694,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10155,12 +10179,12 @@ function ReportingTab() {
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 677,
+                                    lineNumber: 700,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 673,
+                                lineNumber: 696,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -10176,24 +10200,24 @@ function ReportingTab() {
                                     onChange: setScheduleReport
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 687,
+                                    lineNumber: 710,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 683,
+                                lineNumber: 706,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 672,
+                        lineNumber: 695,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 670,
+                lineNumber: 693,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10202,7 +10226,7 @@ function ReportingTab() {
                         label: "Financial Preferences"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 696,
+                        lineNumber: 719,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10222,12 +10246,12 @@ function ReportingTab() {
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 702,
+                                    lineNumber: 725,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 698,
+                                lineNumber: 721,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -10242,24 +10266,24 @@ function ReportingTab() {
                                     onChange: setNumberFormat
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 712,
+                                    lineNumber: 735,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 708,
+                                lineNumber: 731,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 697,
+                        lineNumber: 720,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 695,
+                lineNumber: 718,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10268,7 +10292,7 @@ function ReportingTab() {
                         label: "Livestock Data Preferences"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 721,
+                        lineNumber: 744,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10286,12 +10310,12 @@ function ReportingTab() {
                                     ]
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 727,
+                                    lineNumber: 750,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 723,
+                                lineNumber: 746,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -10306,30 +10330,30 @@ function ReportingTab() {
                                     onChange: setAgeDisplay
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                    lineNumber: 737,
+                                    lineNumber: 760,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 733,
+                                lineNumber: 756,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 722,
+                        lineNumber: 745,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 720,
+                lineNumber: 743,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 669,
+        lineNumber: 692,
         columnNumber: 5
     }, this);
 }
@@ -10348,6 +10372,310 @@ const tabs = [
         label: "Reporting & Data Preferences"
     }
 ];
+// ── Create Ranch Modal ────────────────────────────────────────────────────────
+function CreateRanchModal({ onClose, onSuccess }) {
+    const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
+        name: "",
+        slug: "",
+        locationName: "",
+        address: ""
+    });
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const API2 = ("TURBOPACK compile-time value", "https://smartruga-api-d11b7da5a7fa.herokuapp.com/api/v1");
+    const getToken2 = ()=>localStorage.getItem("sr_token") ?? "";
+    const set = (k)=>(e)=>setForm((f)=>({
+                    ...f,
+                    [k]: e.target.value
+                }));
+    const isValid = form.name && form.slug;
+    const handleNameChange = (e)=>{
+        const name = e.target.value;
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+        setForm((f)=>({
+                ...f,
+                name,
+                slug
+            }));
+    };
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        setError("");
+        setLoading(true);
+        try {
+            const body = {
+                name: form.name,
+                slug: form.slug
+            };
+            if (form.locationName) body.locationName = form.locationName;
+            if (form.address) body.address = form.address;
+            const res = await fetch(`${API2}/ranches`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken2()}`
+                },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.message ?? "Failed to create ranch");
+            }
+            onSuccess();
+        } catch (err) {
+            setError(err.message);
+        } finally{
+            setLoading(false);
+        }
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "bg-white rounded-2xl w-full max-w-md shadow-xl",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-center justify-between px-6 py-4 border-b border-gray-100",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                            className: "text-sm font-bold text-gray-800",
+                            children: "Create Your Ranch"
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 839,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: onClose,
+                            className: "text-gray-400 hover:text-gray-600",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                size: 18
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                lineNumber: 844,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 840,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                    lineNumber: 838,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                    onSubmit: handleSubmit,
+                    className: "px-6 py-5 space-y-4",
+                    children: [
+                        error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "px-4 py-3 rounded-xl bg-red-50 text-xs text-red-500",
+                            children: error
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 849,
+                            columnNumber: 13
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: [
+                                        "Ranch Name ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-red-400",
+                                            children: "*"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                            lineNumber: 856,
+                                            columnNumber: 26
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 855,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    value: form.name,
+                                    onChange: handleNameChange,
+                                    placeholder: "e.g. Greenfield Ranch",
+                                    className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 858,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 854,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: [
+                                        "Slug ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-red-400",
+                                            children: "*"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                            lineNumber: 868,
+                                            columnNumber: 20
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 867,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#4CAF50]",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "px-3 text-xs text-gray-400 border-r border-gray-200 py-2.5 bg-gray-100 whitespace-nowrap",
+                                            children: "smartruga.com/"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                            lineNumber: 871,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            value: form.slug,
+                                            onChange: set("slug"),
+                                            placeholder: "greenfield-ranch",
+                                            className: "flex-1 px-3 py-2.5 text-xs text-gray-700 bg-transparent focus:outline-none"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                            lineNumber: 874,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 870,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 866,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: "Location"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 884,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    value: form.locationName,
+                                    onChange: set("locationName"),
+                                    placeholder: "e.g. Kaduna, Nigeria",
+                                    className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 887,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 883,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                    className: "block text-xs font-semibold text-gray-700 mb-1.5",
+                                    children: "Address"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 896,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                    value: form.address,
+                                    onChange: set("address"),
+                                    rows: 2,
+                                    placeholder: "Full address...",
+                                    className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none transition-colors"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 899,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 895,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex gap-3 pt-1",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    type: "button",
+                                    onClick: onClose,
+                                    className: "flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50",
+                                    children: "Cancel"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 909,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    type: "submit",
+                                    disabled: !isValid || loading,
+                                    className: `flex-1 py-2.5 rounded-xl text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-colors ${isValid && !loading ? "bg-[#4CAF50] hover:bg-[#43a047]" : "bg-[#a5d6a7] cursor-not-allowed"}`,
+                                    children: [
+                                        loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                            size: 12,
+                                            className: "animate-spin"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                            lineNumber: 925,
+                                            columnNumber: 27
+                                        }, this),
+                                        loading ? "Creating..." : "Create Ranch"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                                    lineNumber: 916,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                            lineNumber: 908,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+                    lineNumber: 847,
+                    columnNumber: 9
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+            lineNumber: 837,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
+        lineNumber: 836,
+        columnNumber: 5
+    }, this);
+}
 function SettingsPage() {
     const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("account");
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -10361,7 +10689,7 @@ function SettingsPage() {
                         children: "Settings"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 763,
+                        lineNumber: 943,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10372,18 +10700,18 @@ function SettingsPage() {
                                 children: label
                             }, key, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                                lineNumber: 766,
+                                lineNumber: 946,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 764,
+                        lineNumber: 944,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 762,
+                lineNumber: 942,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -10391,29 +10719,29 @@ function SettingsPage() {
                 children: [
                     activeTab === "account" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(AccountTab, {}, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 782,
+                        lineNumber: 962,
                         columnNumber: 37
                     }, this),
                     activeTab === "roles" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(UsersRolesTab, {}, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 783,
+                        lineNumber: 963,
                         columnNumber: 35
                     }, this),
                     activeTab === "reporting" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ReportingTab, {}, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                        lineNumber: 784,
+                        lineNumber: 964,
                         columnNumber: 39
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-                lineNumber: 781,
+                lineNumber: 961,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/SettingsPage.jsx",
-        lineNumber: 761,
+        lineNumber: 941,
         columnNumber: 5
     }, this);
 }
@@ -13925,31 +14253,30 @@ function RouteGuard({ allowedRoles = [], children }) {
     const [status, setStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("checking"); // "checking" | "allowed" | "denied"
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const token = localStorage.getItem("sr_token");
-        const role = localStorage.getItem("sr_role");
+        const role = localStorage.getItem("sr_role") ?? "";
+        const roleMap = {
+            super_admin: "/dashboard/super_admin",
+            owner: "/dashboard/owner",
+            admin: "/dashboard/owner",
+            manager: "/dashboard/manager",
+            vet: "/dashboard/vet",
+            storekeeper: "/dashboard/storekeeper",
+            worker: "/dashboard/worker",
+            user: "/dashboard"
+        };
         if (!token) {
-            // Not logged in — redirect to login
             setStatus("denied");
             router.replace("/");
-            return;
-        }
-        if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-            // Logged in but wrong role — redirect to their correct dashboard
-            const roleMap = {
-                owner: "/dashboard/owner",
-                superadmin: "/dashboard/admin",
-                manager: "/dashboard/manager",
-                vet: "/dashboard/vet",
-                storekeeper: "/dashboard/storekeeper",
-                worker: "/dashboard/worker",
-                user: "/dashboard"
-            };
-            const correctPath = roleMap[role] ?? "/";
+        } else if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
             setStatus("denied");
-            router.replace(correctPath);
-            return;
+            router.replace(roleMap[role] ?? "/");
+        } else {
+            setStatus("allowed");
         }
-        setStatus("allowed");
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        router
+    ]);
     if (status === "checking") {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "min-h-screen flex items-center justify-center bg-gray-50",
@@ -13961,7 +14288,7 @@ function RouteGuard({ allowedRoles = [], children }) {
                         className: "animate-spin text-[#4CAF50]"
                     }, void 0, false, {
                         fileName: "[project]/app/components/RouteGuard.js",
-                        lineNumber: 56,
+                        lineNumber: 52,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -13969,18 +14296,18 @@ function RouteGuard({ allowedRoles = [], children }) {
                         children: "Verifying access..."
                     }, void 0, false, {
                         fileName: "[project]/app/components/RouteGuard.js",
-                        lineNumber: 57,
+                        lineNumber: 53,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/RouteGuard.js",
-                lineNumber: 55,
+                lineNumber: 51,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/components/RouteGuard.js",
-            lineNumber: 54,
+            lineNumber: 50,
             columnNumber: 7
         }, this);
     }
@@ -13995,7 +14322,7 @@ function RouteGuard({ allowedRoles = [], children }) {
                         children: "🔒"
                     }, void 0, false, {
                         fileName: "[project]/app/components/RouteGuard.js",
-                        lineNumber: 67,
+                        lineNumber: 63,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -14003,18 +14330,18 @@ function RouteGuard({ allowedRoles = [], children }) {
                         children: "Redirecting..."
                     }, void 0, false, {
                         fileName: "[project]/app/components/RouteGuard.js",
-                        lineNumber: 68,
+                        lineNumber: 64,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/RouteGuard.js",
-                lineNumber: 66,
+                lineNumber: 62,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/components/RouteGuard.js",
-            lineNumber: 65,
+            lineNumber: 61,
             columnNumber: 7
         }, this);
     }

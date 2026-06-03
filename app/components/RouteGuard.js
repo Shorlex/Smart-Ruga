@@ -15,39 +15,35 @@ import { Loader2 } from "lucide-react";
  * </RouteGuard>
  */
 export default function RouteGuard({ allowedRoles = [], children }) {
-  const router = useRouter();
+  const router  = useRouter();
   const [status, setStatus] = useState("checking"); // "checking" | "allowed" | "denied"
 
   useEffect(() => {
     const token = localStorage.getItem("sr_token");
-    const role = localStorage.getItem("sr_role");
+    const role  = localStorage.getItem("sr_role") ?? "";
+
+    const roleMap = {
+      super_admin: "/dashboard/super_admin",
+      owner: "/dashboard/owner",
+      admin: "/dashboard/owner",
+      manager: "/dashboard/manager",
+      vet: "/dashboard/vet",
+      storekeeper: "/dashboard/storekeeper",
+      worker: "/dashboard/worker",
+      user: "/dashboard",
+    };
 
     if (!token) {
-      // Not logged in — redirect to login
       setStatus("denied");
       router.replace("/");
-      return;
-    }
-
-    if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-      // Logged in but wrong role — redirect to their correct dashboard
-      const roleMap = {
-        owner: "/dashboard/owner",
-        superadmin: "/dashboard/admin",
-        manager: "/dashboard/manager",
-        vet: "/dashboard/vet",
-        storekeeper: "/dashboard/storekeeper",
-        worker: "/dashboard/worker",
-        user: "/dashboard",
-      };
-      const correctPath = roleMap[role] ?? "/";
+    } else if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
       setStatus("denied");
-      router.replace(correctPath);
-      return;
+      router.replace(roleMap[role] ?? "/");
+    } else {
+      setStatus("allowed");
     }
-
-    setStatus("allowed");
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   if (status === "checking") {
     return (

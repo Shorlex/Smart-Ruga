@@ -20,8 +20,9 @@ const initialFormData = {
 };
 
 const ROLE_ROUTES = {
+  super_admin: "/dashboard/super_admin",
   owner: "/dashboard/owner",
-  admin: "/dashboard",
+  admin: "/dashboard/owner",
   manager: "/dashboard/manager",
   vet: "/dashboard/vet",
   storekeeper: "/dashboard/storekeeper",
@@ -217,7 +218,13 @@ export const AuthProvider = ({ children }) => {
         ranch,
       } = response.data.data;
 
-      const userRole = ranch?.role ?? apiUser.platformRole ?? "user";
+      // platformRole takes precedence for super_admin
+      // otherwise use ranch.role for regular staff
+      const platformRole = apiUser.platformRole ?? "";
+      const userRole =
+        platformRole === "super_admin"
+          ? "super_admin"
+          : (ranch?.role ?? platformRole ?? "user");
       const ranchSlug = ranch?.slug ?? null;
 
       const userProfile = {

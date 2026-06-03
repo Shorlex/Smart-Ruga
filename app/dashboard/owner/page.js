@@ -4,7 +4,7 @@ import RouteGuard from "@/app/components/RouteGuard"
 
 const page = () => {
   return (
-    <RouteGuard allowedRoles={['owner']}>
+    <RouteGuard allowedRoles={['owner', 'admin']}>
       <OwnerDashboard />
     </RouteGuard>
   )

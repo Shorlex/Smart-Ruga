@@ -239,13 +239,12 @@ function NewConcernModal({ onClose, onSuccess }) {
 const STATUSES = ["open", "in_review", "resolved", "dismissed"];
 
 function DetailPanel({ concern, members, onClose, onUpdate }) {
-  const canAssign = getRole() === "manager";
   const isManager = ["manager", "owner", "admin"].includes(getRole());
 
   const [priority, setPriority] = useState(concern.priority ?? "");
   const [saving, setSaving] = useState(false);
   const [assigneeId, setAssigneeId] = useState(
-    concern.assignedTo?.id ?? concern.assignedTo?.publicId ?? "",
+    concern.assignedTo?.publicId ?? concern.assignedTo?.id ?? "",
   );
   const [status, setStatus] = useState(concern.status ?? "open");
   const [note, setNote] = useState("");
@@ -259,7 +258,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
       const body = { status };
       if (priority !== concern.priority) body.priority = priority;
       if (note) body.resolutionNotes = note;
-      if (assigneeId) body.assignedToId = assigneeId;
+      if (assigneeId) body.assignedToUserPublicId = assigneeId;
       console.log("📡 PATCH concern body:", JSON.stringify(body, null, 2));
 
       if (Object.keys(body).length === 0) {
@@ -420,21 +419,27 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] appearance-none"
                 >
                   <option value="">— Unassigned —</option>
-                  {members.map((m) => {
-                    const id =
-                      m.user?.id ?? m.user?.publicId ?? m.memberId ?? "";
-                    const name = m.user?.firstName
-                      ? [m.user.firstName, m.user.lastName]
-                          .filter(Boolean)
-                          .join(" ")
-                      : (m.user?.name ?? m.user?.email ?? "—");
-                    const role = m.ranchRole ?? m.role ?? "";
-                    return (
-                      <option key={id} value={id}>
-                        {name} ({role})
-                      </option>
-                    );
-                  })}
+                  {members
+                    .filter((m) =>
+                      ["vet", "storekeeper", "worker", "manager"].includes(
+                        m.ranchRole ?? m.role ?? "",
+                      ),
+                    )
+                    .map((m) => {
+                      const id =
+                        m.user?.publicId ?? m.user?.id ?? m.memberId ?? "";
+                      const name = m.user?.firstName
+                        ? [m.user.firstName, m.user.lastName]
+                            .filter(Boolean)
+                            .join(" ")
+                        : (m.user?.name ?? m.user?.email ?? "—");
+                      const role = m.ranchRole ?? m.role ?? "";
+                      return (
+                        <option key={id} value={id}>
+                          {name} ({role})
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
 

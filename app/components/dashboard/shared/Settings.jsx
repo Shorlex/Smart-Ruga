@@ -77,6 +77,7 @@ export default function SharedSettingsPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [profileWarning, setProfileWarning] = useState("");
 
   const [form, setForm] = useState({
     firstName: "",
@@ -129,9 +130,39 @@ export default function SharedSettingsPage() {
         const json = await res.json();
         const user = json?.data?.user ?? {};
         setProfile({ ...user, memberships: json?.data?.memberships ?? [] });
+
+        // Show profile completion warning if incomplete
+        const missingFields = json?.data?.missingFields ?? [];
+        if (missingFields.length > 0) {
+          setProfileWarning(
+            `Complete your profile — missing: ${missingFields.join(", ")}`,
+          );
+        }
+
+        // Build display name from snake_case API fields
+        const firstName = user.first_name ?? user.firstName ?? "";
+        const lastName = user.last_name ?? user.lastName ?? "";
+        const fullName = `${firstName} ${lastName}`.trim();
+        const initials =
+          `${firstName[0] ?? ""}${lastName[0] ?? ""}`.toUpperCase();
+
+        // Update localStorage so MobileShell + Sidebar show real name
+        try {
+          const stored = JSON.parse(localStorage.getItem("sr_user") || "{}");
+          localStorage.setItem(
+            "sr_user",
+            JSON.stringify({
+              ...stored,
+              name: fullName || stored.name,
+              initials: initials || stored.initials,
+              email: user.email || stored.email,
+            }),
+          );
+        } catch {}
+
         setForm({
-          firstName: user.first_name ?? user.firstName ?? "",
-          lastName: user.last_name ?? user.lastName ?? "",
+          firstName,
+          lastName,
           email: user.email ?? "",
           phone: user.phone ?? "",
           password: "",
@@ -247,6 +278,11 @@ export default function SharedSettingsPage() {
     <div className="space-y-5 p-4">
       <Banner type="success" message={success} />
       <Banner type="error" message={error} />
+      {profileWarning && (
+        <div className="px-4 py-3 rounded-xl bg-amber-50 border border-amber-100 text-xs text-amber-600 flex items-center gap-2">
+          ⚠️ {profileWarning}
+        </div>
+      )}
 
       {/* Avatar */}
       <div className="flex items-center gap-4">

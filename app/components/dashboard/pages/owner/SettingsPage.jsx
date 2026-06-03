@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MapPin, Eye, EyeOff, Copy, Plus, Loader2 } from "lucide-react";
+import { MapPin, Eye, EyeOff, Copy, Plus, Loader2, X } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 function getToken() {
@@ -158,6 +158,7 @@ function AccountTab() {
   const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [showCreateRanch, setShowCreateRanch] = useState(false);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -372,16 +373,16 @@ function AccountTab() {
       <Banner type="success" message={success} />
       <Banner type="error" message={error} />
 
-      {/* Create Ranch button — owners only, disabled if ranch already exists */}
+      {/* Create Ranch — for admin platform role users without a ranch */}
       {isOwner && (
         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
           <div>
             <p className="text-xs font-bold text-gray-800">Ranch</p>
             {hasRanch ? (
               <p className="text-[11px] text-gray-500 mt-0.5">
-                {profile?.ranch?.ranchName ?? "Your ranch"} ·{" "}
+                {profile?.memberships?.[0]?.ranchName ?? "Your ranch"} ·{" "}
                 <span className="text-gray-400">
-                  {profile?.ranch?.ranchSlug}
+                  {profile?.memberships?.[0]?.ranchSlug}
                 </span>
               </p>
             ) : (
@@ -391,6 +392,7 @@ function AccountTab() {
             )}
           </div>
           <button
+            onClick={() => !hasRanch && setShowCreateRanch(true)}
             disabled={hasRanch}
             title={hasRanch ? "You already have a ranch" : "Create a new ranch"}
             className={`flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg transition-colors ${
@@ -403,6 +405,27 @@ function AccountTab() {
             {hasRanch ? "Ranch Created" : "Create Ranch"}
           </button>
         </div>
+      )}
+
+      {/* Create Ranch Modal */}
+      {showCreateRanch && (
+        <CreateRanchModal
+          onClose={() => setShowCreateRanch(false)}
+          onSuccess={() => {
+            setShowCreateRanch(false);
+            // Mark ranch as created immediately so button disables without reload
+            setProfile((prev) => ({
+              ...prev,
+              memberships: [
+                ...(prev?.memberships ?? []),
+                { ranchRole: "owner" },
+              ],
+            }));
+            setSuccess(
+              "Ranch created successfully! Please log out and log back in to access your ranch dashboard.",
+            );
+          }}
+        />
       )}
 
       {/* Profile picture */}
@@ -753,6 +776,163 @@ const tabs = [
   { key: "roles", label: "Users Roles" },
   { key: "reporting", label: "Reporting & Data Preferences" },
 ];
+
+// ── Create Ranch Modal ────────────────────────────────────────────────────────
+
+function CreateRanchModal({ onClose, onSuccess }) {
+  const [form, setForm] = useState({
+    name: "",
+    slug: "",
+    locationName: "",
+    address: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const API2 = process.env.NEXT_PUBLIC_API_URL;
+  const getToken2 = () => localStorage.getItem("sr_token") ?? "";
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const isValid = form.name && form.slug;
+
+  const handleNameChange = (e) => {
+    const name = e.target.value;
+    const slug = name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    setForm((f) => ({ ...f, name, slug }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const body = { name: form.name, slug: form.slug };
+      if (form.locationName) body.locationName = form.locationName;
+      if (form.address) body.address = form.address;
+
+      const res = await fetch(`${API2}/ranches`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken2()}`,
+        },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message ?? "Failed to create ranch");
+      }
+      onSuccess();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+      <div className="bg-white rounded-2xl w-full max-w-md shadow-xl">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h3 className="text-sm font-bold text-gray-800">Create Your Ranch</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <X size={18} />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+          {error && (
+            <div className="px-4 py-3 rounded-xl bg-red-50 text-xs text-red-500">
+              {error}
+            </div>
+          )}
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Ranch Name <span className="text-red-400">*</span>
+            </label>
+            <input
+              value={form.name}
+              onChange={handleNameChange}
+              placeholder="e.g. Greenfield Ranch"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Slug <span className="text-red-400">*</span>
+            </label>
+            <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#4CAF50]">
+              <span className="px-3 text-xs text-gray-400 border-r border-gray-200 py-2.5 bg-gray-100 whitespace-nowrap">
+                smartruga.com/
+              </span>
+              <input
+                value={form.slug}
+                onChange={set("slug")}
+                placeholder="greenfield-ranch"
+                className="flex-1 px-3 py-2.5 text-xs text-gray-700 bg-transparent focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Location
+            </label>
+            <input
+              value={form.locationName}
+              onChange={set("locationName")}
+              placeholder="e.g. Kaduna, Nigeria"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Address
+            </label>
+            <textarea
+              value={form.address}
+              onChange={set("address")}
+              rows={2}
+              placeholder="Full address..."
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none transition-colors"
+            />
+          </div>
+
+          <div className="flex gap-3 pt-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={!isValid || loading}
+              className={`flex-1 py-2.5 rounded-xl text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-colors ${
+                isValid && !loading
+                  ? "bg-[#4CAF50] hover:bg-[#43a047]"
+                  : "bg-[#a5d6a7] cursor-not-allowed"
+              }`}
+            >
+              {loading && <Loader2 size={12} className="animate-spin" />}
+              {loading ? "Creating..." : "Create Ranch"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("account");

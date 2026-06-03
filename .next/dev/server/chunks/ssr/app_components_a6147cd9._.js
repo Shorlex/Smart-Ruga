@@ -7260,7 +7260,6 @@ const STATUSES = [
     "dismissed"
 ];
 function DetailPanel({ concern, members, onClose, onUpdate }) {
-    const canAssign = getRole() === "manager";
     const isManager = [
         "manager",
         "owner",
@@ -7268,7 +7267,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
     ].includes(getRole());
     const [priority, setPriority] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(concern.priority ?? "");
     const [saving, setSaving] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [assigneeId, setAssigneeId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(concern.assignedTo?.id ?? concern.assignedTo?.publicId ?? "");
+    const [assigneeId, setAssigneeId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(concern.assignedTo?.publicId ?? concern.assignedTo?.id ?? "");
     const [status, setStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(concern.status ?? "open");
     const [note, setNote] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
@@ -7282,7 +7281,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
             };
             if (priority !== concern.priority) body.priority = priority;
             if (note) body.resolutionNotes = note;
-            if (assigneeId) body.assignedToId = assigneeId;
+            if (assigneeId) body.assignedToUserPublicId = assigneeId;
             console.log("📡 PATCH concern body:", JSON.stringify(body, null, 2));
             if (Object.keys(body).length === 0) {
                 onClose();
@@ -7327,7 +7326,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                 onClick: onClose
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 313,
+                lineNumber: 312,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7344,7 +7343,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                         children: concern.title
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 320,
+                                        lineNumber: 319,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7355,7 +7354,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 styleMap: PRIORITY_STYLES
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 324,
+                                                lineNumber: 323,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Badge, {
@@ -7363,7 +7362,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 styleMap: STATUS_STYLES
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 325,
+                                                lineNumber: 324,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -7371,19 +7370,19 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: concern.category
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 326,
+                                                lineNumber: 325,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 323,
+                                        lineNumber: 322,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 319,
+                                lineNumber: 318,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -7393,18 +7392,18 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                     size: 18
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 335,
+                                    lineNumber: 334,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 331,
+                                lineNumber: 330,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 318,
+                        lineNumber: 317,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7417,7 +7416,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                         children: "Description"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 343,
+                                        lineNumber: 342,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7425,13 +7424,13 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                         children: concern.description ?? "—"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 346,
+                                        lineNumber: 345,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 342,
+                                lineNumber: 341,
                                 columnNumber: 11
                             }, this),
                             concern.imageUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7441,7 +7440,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                         children: "Attached Photo"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 354,
+                                        lineNumber: 353,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
@@ -7450,13 +7449,13 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                         className: "w-full h-48 object-cover rounded-xl border border-gray-100"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 357,
+                                        lineNumber: 356,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 353,
+                                lineNumber: 352,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7469,7 +7468,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: "Raised By"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 368,
+                                                lineNumber: 367,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7477,13 +7476,13 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: raisedBy
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 371,
+                                                lineNumber: 370,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 367,
+                                        lineNumber: 366,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7493,7 +7492,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: "Date"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 374,
+                                                lineNumber: 373,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7501,13 +7500,13 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: formatDate(concern.createdAt)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 377,
+                                                lineNumber: 376,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 373,
+                                        lineNumber: 372,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7517,7 +7516,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: "Currently Assigned"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 382,
+                                                lineNumber: 381,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7525,13 +7524,13 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: assignedTo
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 385,
+                                                lineNumber: 384,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 381,
+                                        lineNumber: 380,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7541,7 +7540,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: "Category"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 388,
+                                                lineNumber: 387,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7549,26 +7548,26 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: concern.category ?? "—"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 391,
+                                                lineNumber: 390,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 387,
+                                        lineNumber: 386,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 366,
+                                lineNumber: 365,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "border-t border-gray-100"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 397,
+                                lineNumber: 396,
                                 columnNumber: 11
                             }, this),
                             isManager ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7579,7 +7578,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                         children: "Manager Actions"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 402,
+                                        lineNumber: 401,
                                         columnNumber: 15
                                     }, this),
                                     error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7587,7 +7586,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                         children: error
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 407,
+                                        lineNumber: 406,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7597,7 +7596,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: "Assign To"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 414,
+                                                lineNumber: 413,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -7610,11 +7609,16 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                         children: "— Unassigned —"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                        lineNumber: 422,
+                                                        lineNumber: 421,
                                                         columnNumber: 19
                                                     }, this),
-                                                    members.map((m)=>{
-                                                        const id = m.user?.id ?? m.user?.publicId ?? m.memberId ?? "";
+                                                    members.filter((m)=>[
+                                                            "vet",
+                                                            "storekeeper",
+                                                            "worker",
+                                                            "manager"
+                                                        ].includes(m.ranchRole ?? m.role ?? "")).map((m)=>{
+                                                        const id = m.user?.publicId ?? m.user?.id ?? m.memberId ?? "";
                                                         const name = m.user?.firstName ? [
                                                             m.user.firstName,
                                                             m.user.lastName
@@ -7630,20 +7634,20 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                             ]
                                                         }, id, true, {
                                                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                            lineNumber: 433,
-                                                            columnNumber: 23
+                                                            lineNumber: 438,
+                                                            columnNumber: 25
                                                         }, this);
                                                     })
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 417,
+                                                lineNumber: 416,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 413,
+                                        lineNumber: 412,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7653,7 +7657,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: "Update Priority"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 443,
+                                                lineNumber: 448,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7664,18 +7668,18 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                         children: p
                                                     }, p, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                        lineNumber: 448,
+                                                        lineNumber: 453,
                                                         columnNumber: 21
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 446,
+                                                lineNumber: 451,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 442,
+                                        lineNumber: 447,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7685,7 +7689,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: "Update Status"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 465,
+                                                lineNumber: 470,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7696,18 +7700,18 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                         children: s.replace(/_/g, " ")
                                                     }, s, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                        lineNumber: 470,
+                                                        lineNumber: 475,
                                                         columnNumber: 21
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 468,
+                                                lineNumber: 473,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 464,
+                                        lineNumber: 469,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7717,7 +7721,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 children: "Add Note (optional)"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 487,
+                                                lineNumber: 492,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -7728,19 +7732,19 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                                 className: "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 490,
+                                                lineNumber: 495,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 486,
+                                        lineNumber: 491,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 401,
+                                lineNumber: 400,
                                 columnNumber: 13
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "bg-gray-50 rounded-xl p-4",
@@ -7749,18 +7753,18 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                     children: "Only managers can assign and update concerns."
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 501,
+                                    lineNumber: 506,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 500,
+                                lineNumber: 505,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 340,
+                        lineNumber: 339,
                         columnNumber: 9
                     }, this),
                     isManager && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7770,7 +7774,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                             children: "✅ Saved successfully!"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 512,
+                            lineNumber: 517,
                             columnNumber: 15
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: handleSave,
@@ -7783,7 +7787,7 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                         className: "animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 523,
+                                        lineNumber: 528,
                                         columnNumber: 21
                                     }, this),
                                     " Saving..."
@@ -7795,25 +7799,25 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
                                         size: 14
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 527,
+                                        lineNumber: 532,
                                         columnNumber: 34
                                     }, this)
                                 ]
                             }, void 0, true)
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 516,
+                            lineNumber: 521,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 510,
+                        lineNumber: 515,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 316,
+                lineNumber: 315,
                 columnNumber: 7
             }, this)
         ]
@@ -7921,7 +7925,7 @@ function RequestApprovalPage() {
                                 children: "Requests & Approvals"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 639,
+                                lineNumber: 644,
                                 columnNumber: 11
                             }, this),
                             !loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7932,13 +7936,13 @@ function RequestApprovalPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 643,
+                                lineNumber: 648,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 638,
+                        lineNumber: 643,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -7949,20 +7953,20 @@ function RequestApprovalPage() {
                                 size: 13
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 652,
+                                lineNumber: 657,
                                 columnNumber: 11
                             }, this),
                             " Raise Concern"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 648,
+                        lineNumber: 653,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 637,
+                lineNumber: 642,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7978,7 +7982,7 @@ function RequestApprovalPage() {
                                 children: "All Statuses"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 663,
+                                lineNumber: 668,
                                 columnNumber: 11
                             }, this),
                             [
@@ -7991,13 +7995,13 @@ function RequestApprovalPage() {
                                     children: s.replace(/_/g, " ")
                                 }, s, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 665,
+                                    lineNumber: 670,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 658,
+                        lineNumber: 663,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -8010,7 +8014,7 @@ function RequestApprovalPage() {
                                 children: "All Priorities"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 676,
+                                lineNumber: 681,
                                 columnNumber: 11
                             }, this),
                             PRIORITIES.map((p)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -8019,13 +8023,13 @@ function RequestApprovalPage() {
                                     children: p
                                 }, p, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 678,
+                                    lineNumber: 683,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 671,
+                        lineNumber: 676,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -8038,7 +8042,7 @@ function RequestApprovalPage() {
                                 children: "All Categories"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 689,
+                                lineNumber: 694,
                                 columnNumber: 11
                             }, this),
                             CATEGORIES.map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -8047,13 +8051,13 @@ function RequestApprovalPage() {
                                     children: c
                                 }, c, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 691,
+                                    lineNumber: 696,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 684,
+                        lineNumber: 689,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -8062,7 +8066,7 @@ function RequestApprovalPage() {
                         children: "My Concerns"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 697,
+                        lineNumber: 702,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -8073,12 +8077,12 @@ function RequestApprovalPage() {
                             className: loading ? "animate-spin" : ""
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 712,
+                            lineNumber: 717,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 708,
+                        lineNumber: 713,
                         columnNumber: 9
                     }, this),
                     activeCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -8089,7 +8093,7 @@ function RequestApprovalPage() {
                                 size: 12
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 720,
+                                lineNumber: 725,
                                 columnNumber: 13
                             }, this),
                             " Clear (",
@@ -8098,13 +8102,13 @@ function RequestApprovalPage() {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 716,
+                        lineNumber: 721,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 657,
+                lineNumber: 662,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -8122,32 +8126,32 @@ function RequestApprovalPage() {
                                     className: "h-3 bg-gray-100 rounded flex-1"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 731,
+                                    lineNumber: 736,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "h-3 bg-gray-100 rounded w-20"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 732,
+                                    lineNumber: 737,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "h-3 bg-gray-100 rounded w-16"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 733,
+                                    lineNumber: 738,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, i, true, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 730,
+                            lineNumber: 735,
                             columnNumber: 15
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                    lineNumber: 728,
+                    lineNumber: 733,
                     columnNumber: 11
                 }, this) : error ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "p-8 text-center",
@@ -8157,7 +8161,7 @@ function RequestApprovalPage() {
                             children: error
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 739,
+                            lineNumber: 744,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -8166,13 +8170,13 @@ function RequestApprovalPage() {
                             children: "Try again"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 740,
+                            lineNumber: 745,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                    lineNumber: 738,
+                    lineNumber: 743,
                     columnNumber: 11
                 }, this) : concerns.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "p-8 text-center",
@@ -8182,7 +8186,7 @@ function RequestApprovalPage() {
                             children: "No concerns found."
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 749,
+                            lineNumber: 754,
                             columnNumber: 13
                         }, this),
                         activeCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -8191,13 +8195,13 @@ function RequestApprovalPage() {
                             children: "Clear filters"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                            lineNumber: 751,
+                            lineNumber: 756,
                             columnNumber: 15
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                    lineNumber: 748,
+                    lineNumber: 753,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "overflow-x-auto",
@@ -8221,17 +8225,17 @@ function RequestApprovalPage() {
                                             children: col
                                         }, col, false, {
                                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                            lineNumber: 774,
+                                            lineNumber: 779,
                                             columnNumber: 21
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                    lineNumber: 763,
+                                    lineNumber: 768,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 762,
+                                lineNumber: 767,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -8251,7 +8255,7 @@ function RequestApprovalPage() {
                                                         children: c.title ?? "—"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                        lineNumber: 797,
+                                                        lineNumber: 802,
                                                         columnNumber: 25
                                                     }, this),
                                                     c.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -8259,13 +8263,13 @@ function RequestApprovalPage() {
                                                         children: c.description
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                        lineNumber: 801,
+                                                        lineNumber: 806,
                                                         columnNumber: 27
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 796,
+                                                lineNumber: 801,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8273,7 +8277,7 @@ function RequestApprovalPage() {
                                                 children: c.category ?? "—"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 806,
+                                                lineNumber: 811,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8283,12 +8287,12 @@ function RequestApprovalPage() {
                                                     styleMap: PRIORITY_STYLES
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                    lineNumber: 810,
+                                                    lineNumber: 815,
                                                     columnNumber: 25
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 809,
+                                                lineNumber: 814,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8298,12 +8302,12 @@ function RequestApprovalPage() {
                                                     styleMap: STATUS_STYLES
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                    lineNumber: 813,
+                                                    lineNumber: 818,
                                                     columnNumber: 25
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 812,
+                                                lineNumber: 817,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8311,7 +8315,7 @@ function RequestApprovalPage() {
                                                 children: raisedBy
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 815,
+                                                lineNumber: 820,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8321,19 +8325,19 @@ function RequestApprovalPage() {
                                                     children: "⚠ Unassigned"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                    lineNumber: 820,
+                                                    lineNumber: 825,
                                                     columnNumber: 27
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     className: "text-gray-600",
                                                     children: assignedTo
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                    lineNumber: 824,
+                                                    lineNumber: 829,
                                                     columnNumber: 27
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 818,
+                                                lineNumber: 823,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8341,7 +8345,7 @@ function RequestApprovalPage() {
                                                 children: formatDate(c.createdAt)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 827,
+                                                lineNumber: 832,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -8358,46 +8362,46 @@ function RequestApprovalPage() {
                                                             size: 12
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                            lineNumber: 838,
+                                                            lineNumber: 843,
                                                             columnNumber: 32
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                    lineNumber: 831,
+                                                    lineNumber: 836,
                                                     columnNumber: 25
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                                lineNumber: 830,
+                                                lineNumber: 835,
                                                 columnNumber: 23
                                             }, this)
                                         ]
                                     }, c.publicId ?? c.id ?? i, true, {
                                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                        lineNumber: 791,
+                                        lineNumber: 796,
                                         columnNumber: 21
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                                lineNumber: 783,
+                                lineNumber: 788,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                        lineNumber: 761,
+                        lineNumber: 766,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                    lineNumber: 760,
+                    lineNumber: 765,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 726,
+                lineNumber: 731,
                 columnNumber: 7
             }, this),
             showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(NewConcernModal, {
@@ -8405,7 +8409,7 @@ function RequestApprovalPage() {
                 onSuccess: ()=>fetchConcerns(filters)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 852,
+                lineNumber: 857,
                 columnNumber: 9
             }, this),
             selected && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(DetailPanel, {
@@ -8415,13 +8419,13 @@ function RequestApprovalPage() {
                 onUpdate: handleUpdate
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-                lineNumber: 860,
+                lineNumber: 865,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/pages/owner/RequestAprrovalPage.jsx",
-        lineNumber: 635,
+        lineNumber: 640,
         columnNumber: 5
     }, this);
 }
@@ -9187,6 +9191,7 @@ function SharedSettingsPage() {
     const [showPassword, setShowPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [success, setSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [profileWarning, setProfileWarning] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
         firstName: "",
         lastName: "",
@@ -9241,9 +9246,29 @@ function SharedSettingsPage() {
                     ...user,
                     memberships: json?.data?.memberships ?? []
                 });
+                // Show profile completion warning if incomplete
+                const missingFields = json?.data?.missingFields ?? [];
+                if (missingFields.length > 0) {
+                    setProfileWarning(`Complete your profile — missing: ${missingFields.join(", ")}`);
+                }
+                // Build display name from snake_case API fields
+                const firstName = user.first_name ?? user.firstName ?? "";
+                const lastName = user.last_name ?? user.lastName ?? "";
+                const fullName = `${firstName} ${lastName}`.trim();
+                const initials = `${firstName[0] ?? ""}${lastName[0] ?? ""}`.toUpperCase();
+                // Update localStorage so MobileShell + Sidebar show real name
+                try {
+                    const stored = JSON.parse(localStorage.getItem("sr_user") || "{}");
+                    localStorage.setItem("sr_user", JSON.stringify({
+                        ...stored,
+                        name: fullName || stored.name,
+                        initials: initials || stored.initials,
+                        email: user.email || stored.email
+                    }));
+                } catch  {}
                 setForm({
-                    firstName: user.first_name ?? user.firstName ?? "",
-                    lastName: user.last_name ?? user.lastName ?? "",
+                    firstName,
+                    lastName,
                     email: user.email ?? "",
                     phone: user.phone ?? "",
                     password: ""
@@ -9353,7 +9378,7 @@ function SharedSettingsPage() {
                         className: "w-16 h-16 rounded-full bg-gray-200"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                        lineNumber: 234,
+                        lineNumber: 265,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9363,26 +9388,26 @@ function SharedSettingsPage() {
                                 className: "h-3 bg-gray-200 rounded w-1/3"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                lineNumber: 236,
+                                lineNumber: 267,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-7 bg-gray-200 rounded w-40"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                lineNumber: 237,
+                                lineNumber: 268,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                        lineNumber: 235,
+                        lineNumber: 266,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 233,
+                lineNumber: 264,
                 columnNumber: 9
             }, this),
             [
@@ -9393,13 +9418,13 @@ function SharedSettingsPage() {
                     className: "h-12 bg-gray-200 rounded-xl"
                 }, i, false, {
                     fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                    lineNumber: 241,
+                    lineNumber: 272,
                     columnNumber: 11
                 }, this))
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-        lineNumber: 232,
+        lineNumber: 263,
         columnNumber: 7
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9410,7 +9435,7 @@ function SharedSettingsPage() {
                 message: success
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 248,
+                lineNumber: 279,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Banner, {
@@ -9418,8 +9443,19 @@ function SharedSettingsPage() {
                 message: error
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 249,
+                lineNumber: 280,
                 columnNumber: 7
+            }, this),
+            profileWarning && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "px-4 py-3 rounded-xl bg-amber-50 border border-amber-100 text-xs text-amber-600 flex items-center gap-2",
+                children: [
+                    "⚠️ ",
+                    profileWarning
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
+                lineNumber: 282,
+                columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex items-center gap-4",
@@ -9432,19 +9468,19 @@ function SharedSettingsPage() {
                             className: "w-full h-full object-cover"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                            lineNumber: 255,
+                            lineNumber: 291,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "w-full h-full flex items-center justify-center text-2xl text-gray-300",
                             children: "👤"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                            lineNumber: 261,
+                            lineNumber: 297,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                        lineNumber: 253,
+                        lineNumber: 289,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9454,7 +9490,7 @@ function SharedSettingsPage() {
                                 children: "Profile Picture"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                lineNumber: 267,
+                                lineNumber: 303,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -9462,7 +9498,7 @@ function SharedSettingsPage() {
                                 children: "PNG, JPEG under 10mb"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                lineNumber: 270,
+                                lineNumber: 306,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9476,7 +9512,7 @@ function SharedSettingsPage() {
                                         onChange: handleImageUpload
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                        lineNumber: 272,
+                                        lineNumber: 308,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -9489,14 +9525,14 @@ function SharedSettingsPage() {
                                                 className: "animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                                lineNumber: 284,
+                                                lineNumber: 320,
                                                 columnNumber: 30
                                             }, this),
                                             "Change"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                        lineNumber: 279,
+                                        lineNumber: 315,
                                         columnNumber: 13
                                     }, this),
                                     profile?.imageUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -9506,32 +9542,32 @@ function SharedSettingsPage() {
                                         children: "Remove"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                        lineNumber: 288,
+                                        lineNumber: 324,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                lineNumber: 271,
+                                lineNumber: 307,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                        lineNumber: 266,
+                        lineNumber: 302,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 252,
+                lineNumber: 288,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "border-t border-gray-100"
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 300,
+                lineNumber: 336,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -9545,12 +9581,12 @@ function SharedSettingsPage() {
                             placeholder: "First name"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                            lineNumber: 305,
+                            lineNumber: 341,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                        lineNumber: 304,
+                        lineNumber: 340,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -9561,18 +9597,18 @@ function SharedSettingsPage() {
                             placeholder: "Last name"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                            lineNumber: 312,
+                            lineNumber: 348,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                        lineNumber: 311,
+                        lineNumber: 347,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 303,
+                lineNumber: 339,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -9584,12 +9620,12 @@ function SharedSettingsPage() {
                     placeholder: "Email address"
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                    lineNumber: 322,
+                    lineNumber: 358,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 321,
+                lineNumber: 357,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -9601,12 +9637,12 @@ function SharedSettingsPage() {
                     placeholder: "+234 800 000 0000"
                 }, void 0, false, {
                     fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                    lineNumber: 332,
+                    lineNumber: 368,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 331,
+                lineNumber: 367,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldGroup, {
@@ -9623,7 +9659,7 @@ function SharedSettingsPage() {
                             className: "w-full text-sm border border-gray-200 rounded-xl px-4 py-3 pr-10 bg-white text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors placeholder-gray-400"
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                            lineNumber: 346,
+                            lineNumber: 382,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -9633,29 +9669,29 @@ function SharedSettingsPage() {
                                 size: 14
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                lineNumber: 357,
+                                lineNumber: 393,
                                 columnNumber: 29
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
                                 size: 14
                             }, void 0, false, {
                                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                                lineNumber: 357,
+                                lineNumber: 393,
                                 columnNumber: 52
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                            lineNumber: 353,
+                            lineNumber: 389,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                    lineNumber: 345,
+                    lineNumber: 381,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 341,
+                lineNumber: 377,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -9668,20 +9704,20 @@ function SharedSettingsPage() {
                         className: "animate-spin"
                     }, void 0, false, {
                         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                        lineNumber: 368,
+                        lineNumber: 404,
                         columnNumber: 20
                     }, this),
                     saving ? "Saving..." : "Save Changes"
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-                lineNumber: 363,
+                lineNumber: 399,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/dashboard/shared/Settings.jsx",
-        lineNumber: 247,
+        lineNumber: 278,
         columnNumber: 5
     }, this);
 }
@@ -14010,31 +14046,30 @@ function RouteGuard({ allowedRoles = [], children }) {
     const [status, setStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("checking"); // "checking" | "allowed" | "denied"
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const token = localStorage.getItem("sr_token");
-        const role = localStorage.getItem("sr_role");
+        const role = localStorage.getItem("sr_role") ?? "";
+        const roleMap = {
+            super_admin: "/dashboard/super_admin",
+            owner: "/dashboard/owner",
+            admin: "/dashboard/owner",
+            manager: "/dashboard/manager",
+            vet: "/dashboard/vet",
+            storekeeper: "/dashboard/storekeeper",
+            worker: "/dashboard/worker",
+            user: "/dashboard"
+        };
         if (!token) {
-            // Not logged in — redirect to login
             setStatus("denied");
             router.replace("/");
-            return;
-        }
-        if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-            // Logged in but wrong role — redirect to their correct dashboard
-            const roleMap = {
-                owner: "/dashboard/owner",
-                superadmin: "/dashboard/admin",
-                manager: "/dashboard/manager",
-                vet: "/dashboard/vet",
-                storekeeper: "/dashboard/storekeeper",
-                worker: "/dashboard/worker",
-                user: "/dashboard"
-            };
-            const correctPath = roleMap[role] ?? "/";
+        } else if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
             setStatus("denied");
-            router.replace(correctPath);
-            return;
+            router.replace(roleMap[role] ?? "/");
+        } else {
+            setStatus("allowed");
         }
-        setStatus("allowed");
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        router
+    ]);
     if (status === "checking") {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "min-h-screen flex items-center justify-center bg-gray-50",
@@ -14046,7 +14081,7 @@ function RouteGuard({ allowedRoles = [], children }) {
                         className: "animate-spin text-[#4CAF50]"
                     }, void 0, false, {
                         fileName: "[project]/app/components/RouteGuard.js",
-                        lineNumber: 56,
+                        lineNumber: 52,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -14054,18 +14089,18 @@ function RouteGuard({ allowedRoles = [], children }) {
                         children: "Verifying access..."
                     }, void 0, false, {
                         fileName: "[project]/app/components/RouteGuard.js",
-                        lineNumber: 57,
+                        lineNumber: 53,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/RouteGuard.js",
-                lineNumber: 55,
+                lineNumber: 51,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/components/RouteGuard.js",
-            lineNumber: 54,
+            lineNumber: 50,
             columnNumber: 7
         }, this);
     }
@@ -14080,7 +14115,7 @@ function RouteGuard({ allowedRoles = [], children }) {
                         children: "🔒"
                     }, void 0, false, {
                         fileName: "[project]/app/components/RouteGuard.js",
-                        lineNumber: 67,
+                        lineNumber: 63,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -14088,18 +14123,18 @@ function RouteGuard({ allowedRoles = [], children }) {
                         children: "Redirecting..."
                     }, void 0, false, {
                         fileName: "[project]/app/components/RouteGuard.js",
-                        lineNumber: 68,
+                        lineNumber: 64,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/RouteGuard.js",
-                lineNumber: 66,
+                lineNumber: 62,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/components/RouteGuard.js",
-            lineNumber: 65,
+            lineNumber: 61,
             columnNumber: 7
         }, this);
     }

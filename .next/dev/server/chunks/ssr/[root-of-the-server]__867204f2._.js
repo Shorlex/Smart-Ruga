@@ -136,8 +136,9 @@ const initialFormData = {
     password: ""
 };
 const ROLE_ROUTES = {
+    super_admin: "/dashboard/super_admin",
     owner: "/dashboard/owner",
-    admin: "/dashboard",
+    admin: "/dashboard/owner",
     manager: "/dashboard/manager",
     vet: "/dashboard/vet",
     storekeeper: "/dashboard/storekeeper",
@@ -301,7 +302,10 @@ const AuthProvider = ({ children })=>{
                 password: formData.password
             });
             const { accessToken, refreshToken, user: apiUser, ranch } = response.data.data;
-            const userRole = ranch?.role ?? apiUser.platformRole ?? "user";
+            // platformRole takes precedence for super_admin
+            // otherwise use ranch.role for regular staff
+            const platformRole = apiUser.platformRole ?? "";
+            const userRole = platformRole === "super_admin" ? "super_admin" : ranch?.role ?? platformRole ?? "user";
             const ranchSlug = ranch?.slug ?? null;
             const userProfile = {
                 id: apiUser.id,
@@ -355,7 +359,7 @@ const AuthProvider = ({ children })=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/app/context/AuthContext.js",
-        lineNumber: 264,
+        lineNumber: 271,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
