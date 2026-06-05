@@ -15,6 +15,7 @@ import {
   Bell,
   Settings,
   Package,
+  Ticket
 } from "lucide-react";
 import TaskManagementPage from "./TaskManagement";
 import LivestockPage from "../../pages/owner/LivestckOverview";
@@ -25,6 +26,7 @@ import SettingsPage from "../../shared/Settings";
 import ReportsPage from "./ReportsPage";
 import InventoryPage from "../../pages/storekeeper/InventoryPage";
 import StockLedgerPage from "../../pages/storekeeper/StockLedgerPage";
+import SupportPage from "../../shared/SupportPage";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 function getSlug() {
@@ -47,6 +49,7 @@ const managerNav = [
   { label: "Inventory", icon: Package, href: "/inventory" },
   { label: "Reports", icon: BarChart2, href: "/reports" },
   { label: "Notifications", icon: Bell, href: "/notifications" },
+  { label: "Support", icon: Ticket, href: "/support" },
   { label: "Settings", icon: Settings, href: "/settings" },
 ];
 
@@ -477,6 +480,7 @@ export default function ManagerDashboard() {
         )}
         {activeItem === "Reports" && <ReportsPage />}
         {activeItem === "Notifications" && <NotificationsPage />}
+        {activeItem === "Support" && <SupportPage />}
         {activeItem === "Settings" && <SettingsPage />}
       </div>
     </div>

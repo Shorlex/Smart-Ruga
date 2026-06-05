@@ -14,6 +14,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Package,
+  Ticket,
 } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "../../../context/AuthContext";
@@ -26,6 +27,7 @@ const defaultNavItems = [
   { label: "Staff Management", icon: Users, href: "/staff" },
   { label: "Inventory", icon: Package, href: "/inventory" },
   { label: "Notifications", icon: Bell, href: "/notifications" },
+  { label: "Support", icon: Ticket, href: "/support" },
   { label: "Settings", icon: Settings, href: "/settings" },
 ];
 

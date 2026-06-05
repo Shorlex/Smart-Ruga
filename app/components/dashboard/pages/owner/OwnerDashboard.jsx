@@ -5,10 +5,7 @@ import { RefreshCw } from "lucide-react";
 import Sidebar from "../../shared/Sidebar";
 import Topbar from "../../shared/Topbar";
 import StatCard from "../../shared/StatCard";
-import {
-  LineChart,
-  DonutChart,
-} from "../../shared/Charts";
+import { LineChart, DonutChart } from "../../shared/Charts";
 import AnalyticsPage from "../../pages/owner/Analyticspage";
 import LivestockPage from "../../pages/owner/LivestckOverview";
 import RequestsApprovalsPage from "../../pages/owner/RequestAprrovalPage";
@@ -19,6 +16,7 @@ import InventoryPage from "../../pages/storekeeper/InventoryPage";
 import StockLedgerPage from "../../pages/storekeeper/StockLedgerPage";
 import Image from "next/image";
 import { useAuth } from "../../../../context/AuthContext";
+import SupportPage from "../../shared/SupportPage";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -113,6 +111,7 @@ export default function OwnerDashboard() {
             "/notifications": "Notifications",
             "/settings": "Settings",
             "/inventory": "Inventory",
+            "/support": "Support",
           };
           if (map[href]) setActiveItem(map[href]);
         }}
@@ -133,6 +132,8 @@ export default function OwnerDashboard() {
           <NotificationsPage />
         ) : activeItem === "Settings" ? (
           <SettingsPage />
+        ) : activeItem === "Support" ? (
+          <SupportPage />
         ) : activeItem === "Inventory" ? (
           <main className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
             <div className="flex items-center justify-between">
