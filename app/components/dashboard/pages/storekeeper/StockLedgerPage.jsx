@@ -110,11 +110,13 @@ function StockMovementModal({ type, onClose, onSuccess }) {
         type,
         quantity: Number(form.quantity),
         reason: form.reason || undefined,
+        createdAt: new Date().toISOString(), // set automatically
       };
       if (form.referenceType) body.referenceType = form.referenceType;
       if (form.referencePublicId)
         body.referencePublicId = form.referencePublicId;
 
+      console.log("📡 Movement body:", JSON.stringify(body, null, 2));
       const res = await fetch(
         `${API}/ranches/${getSlug()}/inventory-items/${selectedItemId}/movements`,
         {
@@ -127,17 +129,12 @@ function StockMovementModal({ type, onClose, onSuccess }) {
         },
       );
 
+      const json = await res.json();
       if (!res.ok) {
-        const err = await res.json();
-        console.error("❌ Movement error:", JSON.stringify(err, null, 2));
-        throw new Error(
-          err.message ??
-            JSON.stringify(err.errors?.fieldErrors ?? err) ??
-            "Failed to record movement",
-        );
+        console.error("❌ Movement error:", JSON.stringify(json, null, 2));
+        throw new Error(json.message ?? "Failed to record movement");
       }
-
-      console.log("✅ Movement recorded:", await res.json());
+      console.log("✅ Movement recorded:", json);
       onSuccess();
       onClose();
     } catch (err) {
@@ -328,7 +325,11 @@ function MovementTable({ rows, columns, emptyMsg }) {
                 className="border-b border-gray-50 hover:bg-gray-50 transition-colors"
               >
                 <td className="py-4 px-5 text-gray-500 whitespace-nowrap">
-                  {formatDate(row.createdAt)}
+                  {row.createdAt ? (
+                    formatDate(row.createdAt)
+                  ) : (
+                    <span className="text-gray-300">—</span>
+                  )}
                 </td>
                 <td className="py-4 px-5 whitespace-nowrap">
                   <p className="font-medium text-gray-700">
@@ -353,7 +354,7 @@ function MovementTable({ rows, columns, emptyMsg }) {
                     ? `${row.newQuantity} ${row.item?.unit ?? ""}`.trim()
                     : "—"}
                 </td>
-                <td className="py-4 px-5 text-gray-500 max-w-40">
+                <td className="py-4 px-5 text-gray-500 max-w-[160px]">
                   {row.reason ?? "—"}
                 </td>
                 <td className="py-4 px-5 text-gray-600 whitespace-nowrap">

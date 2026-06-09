@@ -54,8 +54,7 @@ export default function InventoryPage({ isReadOnly = false }) {
   const [lowStock, setLowStock] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [editingItem, setEditingItem] = useState(null); // item being edited
-  const [editItem, setEditItem] = useState(null); // item being edited
+  const [editingItem, setEditingItem] = useState(null);
 
   const fetchInventory = useCallback(async (filterLowStock = false) => {
     setLoading(true);
@@ -353,21 +352,23 @@ function EditItemModal({ item, onClose, onSuccess }) {
     setError("");
     setLoading(true);
     try {
-      // Only send fields that changed
-      const body = {};
-      const fields = ["name", "category", "unit", "sku", "description"];
-      fields.forEach((k) => {
-        if (form[k] !== (item[k] ?? "")) body[k] = form[k];
-      });
-      if (String(form.quantityOnHand) !== String(item.quantityOnHand ?? ""))
+      // Send all editable fields
+      const body = {
+        name: form.name,
+        category: form.category,
+        unit: form.unit,
+        reorderLevel: Number(form.reorderLevel) || 0,
+      };
+      if (form.sku) body.sku = form.sku;
+      if (form.description) body.description = form.description;
+      if (form.quantityOnHand !== "")
         body.quantityOnHand = Number(form.quantityOnHand);
-      if (String(form.reorderLevel) !== String(item.reorderLevel ?? ""))
-        body.reorderLevel = Number(form.reorderLevel);
 
-      if (Object.keys(body).length === 0) {
-        onClose();
-        return;
-      } // nothing changed
+      console.log("📡 PATCH body:", JSON.stringify(body, null, 2));
+      console.log(
+        "📡 PATCH url:",
+        `${API}/ranches/${getSlug()}/inventory-items/${item.publicId}`,
+      );
 
       const res = await fetch(
         `${API}/ranches/${getSlug()}/inventory-items/${item.publicId}`,
@@ -381,17 +382,12 @@ function EditItemModal({ item, onClose, onSuccess }) {
         },
       );
 
+      const json = await res.json();
       if (!res.ok) {
-        const err = await res.json();
-        console.error("❌ Edit item error:", JSON.stringify(err, null, 2));
-        throw new Error(
-          err.message ??
-            JSON.stringify(err.errors?.fieldErrors ?? err) ??
-            "Failed to update item",
-        );
+        console.error("❌ Edit item error:", JSON.stringify(json, null, 2));
+        throw new Error(json.message ?? "Failed to update item");
       }
-
-      console.log("✅ Item updated:", await res.json());
+      console.log("✅ Item updated:", json);
       onSuccess();
     } catch (err) {
       setError(err.message);
@@ -596,6 +592,33 @@ function AddItemModal({ onClose, onSuccess }) {
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const isValid = form.name && form.category && form.unit;
 
+  // Auto-generate SKU from name + category
+  const generateSKU = (name, category) => {
+    if (!name || !category) return "";
+    const catCode = category.slice(0, 3).toUpperCase();
+    const nameCode = name.replace(/\s+/g, "").slice(0, 4).toUpperCase();
+    const rand = Math.floor(100 + Math.random() * 900);
+    return `${catCode}-${nameCode}-${rand}`;
+  };
+
+  const handleNameChange = (e) => {
+    const name = e.target.value;
+    setForm((f) => ({
+      ...f,
+      name,
+      sku: f.sku || generateSKU(name, f.category),
+    }));
+  };
+
+  const handleCategoryChange = (e) => {
+    const category = e.target.value;
+    setForm((f) => ({
+      ...f,
+      category,
+      sku: f.sku || generateSKU(f.name, category),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -690,19 +713,22 @@ function AddItemModal({ onClose, onSuccess }) {
               </label>
               <input
                 value={form.name}
-                onChange={set("name")}
+                onChange={handleNameChange}
                 placeholder="e.g. Vitamin Supplement"
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
               />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                SKU
+                SKU{" "}
+                <span className="text-gray-400 font-normal">
+                  (auto-generated)
+                </span>
               </label>
               <input
                 value={form.sku}
                 onChange={set("sku")}
-                placeholder="e.g. GF-MED-201"
+                placeholder="Auto-generated..."
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] transition-colors"
               />
             </div>
@@ -716,7 +742,7 @@ function AddItemModal({ onClose, onSuccess }) {
               </label>
               <select
                 value={form.category}
-                onChange={set("category")}
+                onChange={handleCategoryChange}
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] transition-colors appearance-none"
               >
                 <option value="">Select category</option>

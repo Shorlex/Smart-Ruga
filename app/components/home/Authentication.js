@@ -19,9 +19,16 @@ const Authentication = () => {
             height={70}
             alt="main-logo"
           />
-          <h1 className="text-3xl font-extrabold text-gray-900 my-5 text-center">
-            Welcome,<br></br>Kindly {auth? "create an account" : "login"}
+          <h1 className="text-3xl font-extrabold text-gray-900 text-center">
+            {auth
+              ? "Let’s Get You Started"
+              : "Good to See You Again"}
           </h1>
+          <p className="text-gray-900 text-center">
+            {auth
+              ? "Create an account and begin managing your ranch smarter"
+              : "Sign in to access your dashboard"}
+          </p>
         </div>
         {auth ? <Register /> : <Login />}
         <div className="mt-5">
@@ -41,7 +48,5 @@ const Authentication = () => {
     </section>
   );
 };
-
-
 
 export default Authentication;

@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2, CheckCircle } from "lucide-react";
 import HomePageImage from "../components/home/HomePageImage";
+import Image from "next/image";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -200,20 +201,20 @@ function JoinPageContent() {
             </p>
           </div>
         </div> */}
-          <HomePageImage />
+        <HomePageImage />
       </div>
 
       {/* Right panel */}
       <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-16 py-12 bg-white overflow-y-auto">
         <div className="w-full max-w-lg mx-auto space-y-6">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-md bg-[#4CAF50] flex items-center justify-center">
-              <span className="text-white text-sm font-bold">SR</span>
-            </div>
-            <span className="font-bold text-lg text-gray-800 tracking-wide">
-              SMART-RUGA
-            </span>
+          <div className=" mb-10">
+            <Image
+              src={"/images/SmartRUGA-Logo.png"}
+              width={150}
+              height={70}
+              alt="main-logo"
+            />
           </div>
 
           <div>

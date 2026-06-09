@@ -81,11 +81,11 @@ const Form = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           {/* First + Last name */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                 First Name
               </label>
               <input
@@ -96,7 +96,7 @@ const Form = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                 Last Name
               </label>
               <input
@@ -110,7 +110,7 @@ const Form = () => {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
               Email Address
             </label>
             <input
@@ -122,9 +122,9 @@ const Form = () => {
             />
           </div>
 
-          {/* Phone (optional) */}
+          {/* Phone */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
               Phone Number{" "}
               <span className="text-gray-400 font-normal">(Optional)</span>
             </label>
@@ -139,7 +139,7 @@ const Form = () => {
 
           {/* Subject */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
               Subject
             </label>
             <input
@@ -152,7 +152,7 @@ const Form = () => {
 
           {/* Message */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
               Message
             </label>
             <textarea
@@ -180,12 +180,12 @@ const Form = () => {
 
         {/* Back to login */}
         <p className="mt-6 text-center text-sm text-gray-500">
-          Already have an account?{" "}
+          Want to create an account?{" "}
           <Link
             href="/"
             className="text-[#4CAF50] font-semibold hover:underline"
           >
-            Login
+            Register
           </Link>
         </p>
       </div>
