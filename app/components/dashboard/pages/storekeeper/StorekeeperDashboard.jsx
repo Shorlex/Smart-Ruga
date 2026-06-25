@@ -12,6 +12,7 @@ import {
   ClipboardList,
   Bell,
   Settings,
+  Briefcase
 } from "lucide-react";
 import InventoryPage from "./InventoryPage";
 import StockLedgerPage from "./StockLedgerPage";
@@ -19,6 +20,7 @@ import StorekeeperReportsPage from "./Report";
 import StorekeeperRequestsPage from "./Requests";
 import StorekeeperAlertsPage from "./AlertsPage";
 import SharedSettingsPage from "../../shared/Settings";
+import MyWorkPage from "../../shared/MyWork";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 function getSlug() {
@@ -34,6 +36,7 @@ function getToken() {
 
 const storekeeperNav = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
+  { label: "My Work", key: "work", icon: Briefcase },
   { label: "Inventory", icon: Archive, href: "/inventory" },
   { label: "Stock Ledger", icon: ArrowLeftRight, href: "/stock-ledger" },
   { label: "Requests", icon: ClipboardList, href: "/requests" },
@@ -599,6 +602,7 @@ export default function StorekeeperDashboard() {
         <Topbar userInitials={user.initials} notificationCount={0} />
 
         {activeItem === "Dashboard" && <DashboardHome />}
+        {activeItem === "My Work" && <MyWorkPage />}
         {activeItem === "Inventory" && <InventoryPage />}
         {activeItem === "Stock Ledger" && <StockLedgerPage />}
         {activeItem === "Reports" && <StorekeeperReportsPage />}

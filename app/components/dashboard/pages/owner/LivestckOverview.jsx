@@ -10,7 +10,7 @@ import {
   ChevronLeft,
   ChevronRight as ChevronRightIcon,
   Loader2,
-  Scan
+  Scan,
 } from "lucide-react";
 import Image from "next/image";
 import CowDetailPage from "./CowDetailsPage";
@@ -455,6 +455,7 @@ function ReportIssueModal({ animal, onClose, onSuccess }) {
     title: `Health concern — ${animal.tagNumber ?? animal.publicId?.slice(0, 8)}`,
     description: "",
     priority: "medium",
+    category: "health",
   });
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -471,7 +472,7 @@ function ReportIssueModal({ animal, onClose, onSuccess }) {
       const data = new FormData();
       data.append("title", form.title);
       data.append("description", form.description);
-      data.append("category", "health");
+      data.append("category", form.category ?? "health");
       data.append("priority", form.priority);
       data.append("entityType", "animal");
       data.append("entityPublicId", animal.publicId ?? "");
@@ -572,6 +573,31 @@ function ReportIssueModal({ animal, onClose, onSuccess }) {
             />
           </div>
 
+          {/* Category */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-2">
+              Category
+            </label>
+            <div className="flex gap-2 flex-wrap">
+              {["health", "feed", "equipment", "inventory", "other"].map(
+                (c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => setForm((f) => ({ ...f, category: c }))}
+                    className={`px-3 py-1.5 rounded-xl border text-xs font-semibold capitalize transition-all ${
+                      form.category === c
+                        ? "border-[#4CAF50] bg-[#f0fdf4] text-[#4CAF50]"
+                        : "border-gray-200 text-gray-500 hover:border-gray-300"
+                    }`}
+                  >
+                    {c}
+                  </button>
+                ),
+              )}
+            </div>
+          </div>
+
           {/* Priority */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-2">
@@ -648,11 +674,15 @@ function ReportIssueModal({ animal, onClose, onSuccess }) {
 
 // ── Livestock Card ────────────────────────────────────────────────────────────
 
-function LivestockCard({ animal, onClick, onReportIssue }) {
+function LivestockCard({ animal, concernCount = 0, onClick, onReportIssue }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex flex-col gap-3 cursor-pointer hover:border-[#4CAF50] hover:shadow-md transition-all"
+      className={`bg-white rounded-xl border shadow-sm p-4 flex flex-col gap-3 cursor-pointer hover:shadow-md transition-all ${
+        concernCount > 0
+          ? "border-red-200 hover:border-red-300"
+          : "border-gray-100 hover:border-[#4CAF50]"
+      }`}
     >
       {/* Header */}
       <div className="flex items-center gap-2">
@@ -662,6 +692,11 @@ function LivestockCard({ animal, onClick, onReportIssue }) {
         <span className="text-sm font-bold text-gray-800">
           {animal.tagNumber ?? animal.publicId?.slice(0, 8) ?? "—"}
         </span>
+        {concernCount > 0 && (
+          <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+            ⚠ {concernCount}
+          </span>
+        )}
         <span className="ml-auto text-[10px] text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full capitalize">
           {animal.species?.name ?? "—"}
         </span>
@@ -768,6 +803,7 @@ function Pagination({ page, totalPages, onPageChange }) {
 
 export default function LivestockPage({ canAdd = true, mobileCols = false }) {
   const [animals, setAnimals] = useState([]);
+  const [concernMap, setConcernMap] = useState({});
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 50,
@@ -879,8 +915,18 @@ export default function LivestockPage({ canAdd = true, mobileCols = false }) {
         "| pages:",
         meta.totalPages,
       );
+      console.log("✅ Full meta object:", JSON.stringify(meta));
       setAnimals(list);
-      setPagination(meta);
+      setPagination({
+        page: Number(meta.page) || p,
+        limit: Number(meta.limit) || 50,
+        total: Number(meta.total) || list.length,
+        totalPages:
+          Number(meta.totalPages) ||
+          Math.ceil(
+            (Number(meta.total) || list.length) / (Number(meta.limit) || 50),
+          ),
+      });
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -891,6 +937,39 @@ export default function LivestockPage({ canAdd = true, mobileCols = false }) {
   useEffect(() => {
     fetchAnimals(page);
   }, [page, fetchAnimals]);
+
+  // Fetch all open concerns once, build count map by animal publicId
+  useEffect(() => {
+    const loadConcerns = async () => {
+      try {
+        const res = await fetch(
+          `${API}/ranches/${getSlug()}/concerns?status=open`,
+          {
+            headers: { Authorization: `Bearer ${getToken()}` },
+          },
+        );
+        if (!res.ok) return;
+        const json = await res.json();
+        const all =
+          json?.data?.data?.concerns ??
+          json?.data?.concerns ??
+          json?.concerns ??
+          [];
+        const map = {};
+        all.forEach((c) => {
+          const id =
+            c.entityPublicId ?? c.animal?.publicId ?? c.entity?.publicId;
+          if (id && (c.status === "open" || c.status === "in_review")) {
+            map[id] = (map[id] ?? 0) + 1;
+          }
+        });
+        setConcernMap(map);
+      } catch {
+        /* non-critical */
+      }
+    };
+    loadConcerns();
+  }, []);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -1063,6 +1142,7 @@ export default function LivestockPage({ canAdd = true, mobileCols = false }) {
               <LivestockCard
                 key={animal.publicId ?? i}
                 animal={animal}
+                concernCount={concernMap[animal.publicId] ?? 0}
                 onClick={() => setSelectedCow(animal)}
                 onReportIssue={(a) => setReportAnimal(a)}
               />

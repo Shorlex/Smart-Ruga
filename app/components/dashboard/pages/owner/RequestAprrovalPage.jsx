@@ -238,7 +238,7 @@ function NewConcernModal({ onClose, onSuccess }) {
 
 const STATUSES = ["open", "in_review", "resolved", "dismissed"];
 
-function DetailPanel({ concern, members, onClose, onUpdate }) {
+function DetailPanel({ concern, members, onClose, onUpdate, onCreateTask }) {
   const isManager = ["manager", "owner", "admin"].includes(getRole());
 
   const [priority, setPriority] = useState(concern.priority ?? "");
@@ -512,32 +512,238 @@ function DetailPanel({ concern, members, onClose, onUpdate }) {
 
         {/* Footer */}
         {isManager && (
-          <div className="px-6 py-4 border-t border-gray-100">
+          <div className="px-6 py-4 border-t border-gray-100 space-y-2">
             {saved ? (
               <div className="w-full py-3 rounded-xl bg-[#f0fdf4] text-[#4CAF50] text-xs font-semibold text-center">
                 ✅ Saved successfully!
               </div>
             ) : (
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="w-full py-3 rounded-xl bg-[#4CAF50] hover:bg-[#43a047] text-white text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60 transition-colors"
-              >
-                {saving ? (
-                  <>
-                    <Loader2 size={14} className="animate-spin" /> Saving...
-                  </>
-                ) : (
-                  <>
-                    Save Changes <ArrowRight size={14} />
-                  </>
-                )}
-              </button>
+              <>
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="w-full py-3 rounded-xl bg-[#4CAF50] hover:bg-[#43a047] text-white text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60 transition-colors"
+                >
+                  {saving ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" /> Saving...
+                    </>
+                  ) : (
+                    <>
+                      Save Changes <ArrowRight size={14} />
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={() => onCreateTask(concern)}
+                  className="w-full py-3 rounded-xl border-2 border-[#4CAF50] text-[#4CAF50] hover:bg-[#f0fdf4] text-sm font-semibold flex items-center justify-center gap-2 transition-colors"
+                >
+                  <Plus size={14} /> Create Task from Concern
+                </button>
+              </>
             )}
           </div>
         )}
       </div>
     </>
+  );
+}
+
+// ── Create Task from Concern Modal ────────────────────────────────────────────
+
+function CreateTaskFromConcernModal({ concern, members, onClose, onSuccess }) {
+  const [form, setForm] = useState({
+    title: `Resolve: ${concern.title}`,
+    description: concern.description ?? "",
+    assignedToUserPublicId: concern.assignedTo?.publicId ?? "",
+    priority: concern.priority ?? "medium",
+    dueDate: "",
+    category: concern.category ?? "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const isValid = form.title && form.dueDate && form.assignedToUserPublicId;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const body = {
+        title: form.title,
+        dueDate: new Date(form.dueDate).toISOString(),
+        assignedToUserPublicId: form.assignedToUserPublicId,
+        priority: form.priority,
+      };
+      if (form.description) body.description = form.description;
+      if (form.category) body.category = form.category;
+      // Link to the concern so it can be tracked
+      body.relatedConcernPublicId = concern.publicId;
+
+      const res = await fetch(`${API}/ranches/${getSlug()}/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message ?? "Failed to create task");
+      }
+      onSuccess();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 px-4">
+      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <div>
+            <h3 className="text-sm font-bold text-gray-800">
+              Create Task from Concern
+            </h3>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Assign actionable work to a staff member
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+          {error && (
+            <div className="px-4 py-3 rounded-xl bg-red-50 text-xs text-red-500">
+              {error}
+            </div>
+          )}
+
+          <div className="bg-amber-50 border border-amber-100 rounded-xl px-4 py-2.5 text-xs text-amber-600">
+            📋 Linked to concern:{" "}
+            <span className="font-semibold">{concern.title}</span>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Task Title <span className="text-red-400">*</span>
+            </label>
+            <input
+              value={form.title}
+              onChange={set("title")}
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Description
+            </label>
+            <textarea
+              value={form.description}
+              onChange={set("description")}
+              rows={3}
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Assign To <span className="text-red-400">*</span>
+            </label>
+            <select
+              value={form.assignedToUserPublicId}
+              onChange={set("assignedToUserPublicId")}
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] appearance-none"
+            >
+              <option value="">— Select staff member —</option>
+              {members
+                .filter((m) =>
+                  ["vet", "storekeeper", "worker", "manager"].includes(
+                    m.ranchRole ?? m.role ?? "",
+                  ),
+                )
+                .map((m) => {
+                  const id = m.user?.publicId ?? m.user?.id ?? m.memberId ?? "";
+                  const name = m.user?.firstName
+                    ? [m.user.firstName, m.user.lastName]
+                        .filter(Boolean)
+                        .join(" ")
+                    : (m.user?.name ?? m.user?.email ?? "—");
+                  const role = m.ranchRole ?? m.role ?? "";
+                  return (
+                    <option key={id} value={id}>
+                      {name} ({role})
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                Due Date <span className="text-red-400">*</span>
+              </label>
+              <input
+                type="datetime-local"
+                value={form.dueDate}
+                onChange={set("dueDate")}
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50]"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                Priority
+              </label>
+              <select
+                value={form.priority}
+                onChange={set("priority")}
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:border-[#4CAF50] appearance-none capitalize"
+              >
+                {["low", "medium", "high", "urgent"].map((p) => (
+                  <option key={p} value={p}>
+                    {p}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={!isValid || loading}
+              className={`flex-1 py-2.5 rounded-xl text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-colors ${
+                isValid && !loading
+                  ? "bg-[#4CAF50] hover:bg-[#43a047]"
+                  : "bg-[#a5d6a7] cursor-not-allowed"
+              }`}
+            >
+              {loading && <Loader2 size={12} className="animate-spin" />}
+              {loading ? "Creating..." : "Create Task"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 
@@ -558,6 +764,7 @@ export default function RequestApprovalPage() {
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [showModal, setShowModal] = useState(false);
   const [selected, setSelected] = useState(null); // concern in detail panel
+  const [taskFromConcern, setTaskFromConcern] = useState(null);
   const [pagination, setPagination] = useState({ total: 0 });
 
   const isManager = ["manager", "owner", "admin"].includes(getRole());
@@ -867,6 +1074,20 @@ export default function RequestApprovalPage() {
           members={members}
           onClose={() => setSelected(null)}
           onUpdate={handleUpdate}
+          onCreateTask={(c) => {
+            setTaskFromConcern(c);
+            setSelected(null);
+          }}
+        />
+      )}
+
+      {/* Create Task from Concern modal */}
+      {taskFromConcern && (
+        <CreateTaskFromConcernModal
+          concern={taskFromConcern}
+          members={members}
+          onClose={() => setTaskFromConcern(null)}
+          onSuccess={() => setTaskFromConcern(null)}
         />
       )}
     </main>

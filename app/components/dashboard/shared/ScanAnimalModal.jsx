@@ -53,7 +53,11 @@ function HealthUpdateModal({ animal, onClose, onSuccess }) {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch(`${API}/animals/${animal.publicId}/health`, {
+      const animalId = animal.publicId ?? animal.id;
+      const url = `${API}/ranches/${getSlug()}/animals/${animalId}/health`;
+      console.log("🩺 Health POST url:", url);
+
+      const res = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,9 +65,10 @@ function HealthUpdateModal({ animal, onClose, onSuccess }) {
         },
         body: JSON.stringify({ status, notes: notes || undefined }),
       });
+      const json = await res.json();
+      console.log("🩺 Health response:", JSON.stringify(json, null, 2));
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message ?? "Failed to update health status");
+        throw new Error(json.message ?? "Failed to update health status");
       }
       onSuccess(status);
       onClose();
@@ -75,7 +80,7 @@ function HealthUpdateModal({ animal, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-60 flex items-end justify-center bg-black/40 px-4 pb-4">
+    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 px-4 pb-4">
       <div className="bg-white rounded-2xl w-full max-w-md shadow-xl space-y-4 p-5">
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-gray-800">
@@ -153,6 +158,7 @@ function ReportIssueModal({ animal, onClose, onSuccess }) {
     title: `Health concern — ${animal.tagNumber ?? animal.publicId?.slice(0, 8)}`,
     description: "",
     priority: "medium",
+    category: "health",
   });
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -171,7 +177,7 @@ function ReportIssueModal({ animal, onClose, onSuccess }) {
       const data = new FormData();
       data.append("title", form.title);
       data.append("description", form.description);
-      data.append("category", "health");
+      data.append("category", form.category ?? "health");
       data.append("priority", form.priority);
       data.append("entityType", "animal");
       data.append("entityPublicId", animal.publicId ?? "");
@@ -196,7 +202,7 @@ function ReportIssueModal({ animal, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-60 flex items-end justify-center bg-black/40 px-4 pb-4">
+    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 px-4 pb-4">
       <div className="bg-white rounded-2xl w-full max-w-md shadow-xl space-y-4 p-5 max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-gray-800">Report Issue</p>
@@ -242,6 +248,28 @@ function ReportIssueModal({ animal, onClose, onSuccess }) {
             placeholder="Describe the issue — symptoms, behaviour, anything unusual..."
             className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#4CAF50] resize-none"
           />
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-gray-700 mb-2">
+            Category
+          </label>
+          <div className="flex gap-2 flex-wrap">
+            {["health", "feed", "equipment", "inventory", "other"].map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, category: c }))}
+                className={`px-3 py-1.5 rounded-xl border text-xs font-semibold capitalize transition-all ${
+                  form.category === c
+                    ? "border-[#4CAF50] bg-[#f0fdf4] text-[#4CAF50]"
+                    : "border-gray-200 text-gray-500 hover:border-gray-300"
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -512,7 +540,7 @@ function VaccinationFormModal({ animal, vaccination, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-70 flex items-end justify-center bg-black/40 px-4 pb-4">
+    <div className="fixed inset-0 z-[70] flex items-end justify-center bg-black/40 px-4 pb-4">
       <div className="bg-white rounded-2xl w-full max-w-md shadow-xl space-y-4 p-5 max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-gray-800">
@@ -601,7 +629,7 @@ function VaccinationFormModal({ animal, vaccination, onClose, onSuccess }) {
   );
 }
 
-function AnimalCard({ animal, onUpdateHealth, onReportIssue }) {
+function AnimalCard({ animal, concerns = [], onUpdateHealth, onReportIssue }) {
   const role =
     typeof window !== "undefined"
       ? (localStorage.getItem("sr_role") ?? "")
@@ -624,7 +652,7 @@ function AnimalCard({ animal, onUpdateHealth, onReportIssue }) {
           className="w-full h-36 object-cover"
         />
       ) : (
-        <div className="w-full h-36 bg-linear-to-br from-green-50 to-green-100 flex items-center justify-center">
+        <div className="w-full h-36 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center">
           <span className="text-5xl opacity-30">🐄</span>
         </div>
       )}
@@ -698,15 +726,17 @@ function AnimalCard({ animal, onUpdateHealth, onReportIssue }) {
             </div>
 
             <div className="flex gap-2 pt-1">
-              <button
-                onClick={onUpdateHealth}
-                className="flex-1 py-3 rounded-xl bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors"
-              >
-                Update Health
-              </button>
+              {isVet && (
+                <button
+                  onClick={onUpdateHealth}
+                  className="flex-1 py-3 rounded-xl bg-[#4CAF50] hover:bg-[#43a047] text-white text-xs font-semibold transition-colors"
+                >
+                  Update Health
+                </button>
+              )}
               <button
                 onClick={onReportIssue}
-                className="flex-1 py-3 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                className={`${isVet ? "flex-1" : "w-full"} py-3 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5`}
               >
                 <AlertTriangle size={12} /> Report Issue
               </button>
@@ -718,6 +748,54 @@ function AnimalCard({ animal, onUpdateHealth, onReportIssue }) {
         {tab === "vaccinations" && isVet && (
           <VaccinationSection animal={animal} />
         )}
+
+        {/* Active Concerns — show for all roles */}
+        {concerns.length > 0 && tab === "details" && (
+          <div className="space-y-2 pt-1">
+            <p className="text-xs font-bold text-red-500 uppercase tracking-wide">
+              ⚠ {concerns.length} Active Concern{concerns.length > 1 ? "s" : ""}
+            </p>
+            {concerns.map((c, i) => (
+              <div
+                key={c.publicId ?? i}
+                className={`rounded-xl px-3 py-2.5 border ${
+                  c.priority === "urgent"
+                    ? "border-red-200 bg-red-50"
+                    : c.priority === "high"
+                      ? "border-orange-100 bg-orange-50"
+                      : "border-amber-100 bg-amber-50"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-xs font-semibold text-gray-800">
+                      {c.title}
+                    </p>
+                    <p className="text-[10px] text-gray-500 mt-0.5 capitalize">
+                      {c.category} · {(c.status ?? "open").replace(/_/g, " ")}
+                    </p>
+                  </div>
+                  <span
+                    className={`text-[10px] font-bold capitalize px-2 py-0.5 rounded-full ${
+                      c.priority === "urgent"
+                        ? "bg-red-100 text-red-600"
+                        : c.priority === "high"
+                          ? "bg-orange-100 text-orange-600"
+                          : "bg-amber-100 text-amber-600"
+                    }`}
+                  >
+                    {c.priority}
+                  </span>
+                </div>
+                {c.description && (
+                  <p className="text-[10px] text-gray-500 mt-1 line-clamp-2">
+                    {c.description}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -728,6 +806,7 @@ function AnimalCard({ animal, onUpdateHealth, onReportIssue }) {
 export default function ScanAnimalModal({ onClose }) {
   const [rfidInput, setRfidInput] = useState("");
   const [animal, setAnimal] = useState(null);
+  const [concerns, setConcerns] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showHealth, setShowHealth] = useState(false);
@@ -759,6 +838,27 @@ export default function ScanAnimalModal({ onClose }) {
       const found = json?.data?.animal ?? json?.animal ?? json?.data ?? null;
       if (!found) throw new Error("Animal not found");
       setAnimal(found);
+
+      // Fetch open concerns for this animal
+      try {
+        const cRes = await fetch(
+          `${API}/ranches/${getSlug()}/concerns?entityPublicId=${found.publicId}`,
+          { headers: { Authorization: `Bearer ${getToken()}` } },
+        );
+        if (cRes.ok) {
+          const cJson = await cRes.json();
+          const all =
+            cJson?.data?.data?.concerns ??
+            cJson?.data?.concerns ??
+            cJson?.concerns ??
+            [];
+          setConcerns(
+            all.filter((c) => c.status === "open" || c.status === "in_review"),
+          );
+        }
+      } catch {
+        setConcerns([]);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -773,6 +873,7 @@ export default function ScanAnimalModal({ onClose }) {
 
   const handleReset = () => {
     setAnimal(null);
+    setConcerns([]);
     setRfidInput("");
     setError("");
     setSuccessMsg("");
@@ -863,6 +964,7 @@ export default function ScanAnimalModal({ onClose }) {
               <>
                 <AnimalCard
                   animal={animal}
+                  concerns={concerns}
                   onUpdateHealth={() => setShowHealth(true)}
                   onReportIssue={() => setShowReport(true)}
                 />
@@ -884,7 +986,7 @@ export default function ScanAnimalModal({ onClose }) {
                 <p className="text-sm font-semibold text-gray-600">
                   Ready to scan
                 </p>
-                <p className="text-xs text-gray-400 max-w-60">
+                <p className="text-xs text-gray-400 max-w-[240px]">
                   Hold the RFID reader near the animal's tag or type the tag
                   number manually
                 </p>

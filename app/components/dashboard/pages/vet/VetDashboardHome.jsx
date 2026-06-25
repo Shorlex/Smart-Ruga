@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { ChevronDown, ArrowLeft, Scan, Loader2 } from "lucide-react";
-import Image from "next/image";
+import { ChevronDown, ArrowLeft, Loader2 } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 function getSlug() {
@@ -153,17 +152,20 @@ function CasesBarChart({ data }) {
         className="flex flex-col justify-between text-right shrink-0 pb-5"
         style={{ height: H }}
       >
-        {[...yTicks].reverse().map((t) => (
-          <span key={t} className="text-[9px] text-gray-400 leading-none">
+        {[...yTicks].reverse().map((t, i) => (
+          <span
+            key={`tick-${i}`}
+            className="text-[9px] text-gray-400 leading-none"
+          >
             {t}
           </span>
         ))}
       </div>
       <div className="flex-1 min-w-0">
         <svg width="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
-          {yTicks.map((t) => (
+          {yTicks.map((t, i) => (
             <line
-              key={t}
+              key={`line-${i}`}
               x1="0"
               y1={H - (t / maxV) * H}
               x2={W}
@@ -178,7 +180,7 @@ function CasesBarChart({ data }) {
             const bh = Math.max((value / maxV) * H, 2);
             return (
               <rect
-                key={i}
+                key={`bar-${i}`}
                 x={x}
                 y={H - bh}
                 width={barW}
@@ -190,8 +192,11 @@ function CasesBarChart({ data }) {
           })}
         </svg>
         <div className="flex justify-around mt-1">
-          {data.map(({ label }) => (
-            <span key={label} className="text-[9px] text-gray-400 text-center">
+          {data.map(({ label }, i) => (
+            <span
+              key={`label-${i}`}
+              className="text-[9px] text-gray-400 text-center"
+            >
               {label}
             </span>
           ))}

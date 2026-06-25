@@ -168,6 +168,7 @@ export default function CowDetailPage({ cow: initialCow, onBack }) {
   const [saveSuccess, setSaveSuccess] = useState("");
   const [activity, setActivity] = useState([]);
   const [activityLoading, setActivityLoading] = useState(true);
+  const [concerns, setConcerns] = useState([]);
 
   // ── Fetch single animal ───────────────────────────────────────────────────
 
@@ -209,6 +210,31 @@ export default function CowDetailPage({ cow: initialCow, onBack }) {
           /* activity is non-critical, fail silently */
         }
         setActivityLoading(false);
+
+        // Fetch concerns for this animal
+        try {
+          const cRes = await fetch(
+            `${API}/ranches/${slug}/concerns?entityPublicId=${data.publicId ?? initialCow.id}`,
+            {
+              headers: { Authorization: `Bearer ${getToken()}` },
+            },
+          );
+          if (cRes.ok) {
+            const cJson = await cRes.json();
+            const all =
+              cJson?.data?.data?.concerns ??
+              cJson?.data?.concerns ??
+              cJson?.concerns ??
+              [];
+            setConcerns(
+              all.filter(
+                (c) => c.status === "open" || c.status === "in_review",
+              ),
+            );
+          }
+        } catch {
+          /* concerns non-critical */
+        }
       } catch (err) {
         setFetchError(err.message);
         setAnimal(initialCow); // fallback to card data
@@ -529,6 +555,57 @@ export default function CowDetailPage({ cow: initialCow, onBack }) {
           </div>
         )}
       </InfoCard>
+
+      {/* ── Active Concerns ── */}
+      {concerns.length > 0 && (
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+          <h3 className="text-sm font-bold text-red-500 mb-4 flex items-center gap-2">
+            ⚠ Active Concerns ({concerns.length})
+          </h3>
+          <div className="space-y-2">
+            {concerns.map((c, i) => (
+              <div
+                key={c.publicId ?? i}
+                className={`rounded-xl px-4 py-3 border ${
+                  c.priority === "urgent"
+                    ? "border-red-200 bg-red-50"
+                    : c.priority === "high"
+                      ? "border-orange-100 bg-orange-50"
+                      : "border-amber-100 bg-amber-50"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-800">
+                      {c.title}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-0.5 capitalize">
+                      {c.category} · {(c.status ?? "open").replace(/_/g, " ")} ·
+                      Raised by {c.raisedBy?.name ?? "—"}
+                    </p>
+                    {c.description && (
+                      <p className="text-xs text-gray-600 mt-1">
+                        {c.description}
+                      </p>
+                    )}
+                  </div>
+                  <span
+                    className={`text-[10px] font-bold capitalize px-2 py-0.5 rounded-full shrink-0 ${
+                      c.priority === "urgent"
+                        ? "bg-red-100 text-red-600"
+                        : c.priority === "high"
+                          ? "bg-orange-100 text-orange-600"
+                          : "bg-amber-100 text-amber-600"
+                    }`}
+                  >
+                    {c.priority}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* ── Activity Log ── */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">

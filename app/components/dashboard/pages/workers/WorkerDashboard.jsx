@@ -2,11 +2,10 @@
 
 import {
   LayoutDashboard,
-  History,
   Beef,
   Bell,
   Settings,
-  PackageSearch,
+  PackageSearch, Briefcase
 } from "lucide-react";
 import MobileShell from "../../shared/MobileShell";
 import WorkerDashboardHome from "./WorkerDashboardHome";
@@ -15,10 +14,11 @@ import LivestockRecords from "./LivestockRecords";
 import Notifications from "./Notifications";
 import SharedSettingsPage from "../../shared/Settings";
 import MyRequests from "../../shared/MyRequests";
+import MyWorkPage from "../../shared/MyWork";
 
 const workerNav = [
   { label: "Dashboard", key: "dashboard", icon: LayoutDashboard },
-  { label: "Task History", key: "history", icon: History },
+  { label: "My Work", key: "history", icon: Briefcase },
   { label: "Livestock Records", key: "livestock", icon: Beef },
   { label: "My Requests", key: "requests", icon: PackageSearch },
   { label: "Notifications", key: "notifications", icon: Bell },
@@ -27,7 +27,7 @@ const workerNav = [
 
 const pageMap = {
   dashboard: WorkerDashboardHome,
-  history: WorkerTask,
+  history: MyWorkPage,
   livestock: LivestockRecords,
   requests: MyRequests,
   notifications: Notifications,
