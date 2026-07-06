@@ -80,7 +80,7 @@ function HealthUpdateModal({ animal, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 px-4 pb-4">
+    <div className="fixed inset-0 z-60 flex items-end justify-center bg-black/40 px-4 pb-4">
       <div className="bg-white rounded-2xl w-full max-w-md shadow-xl space-y-4 p-5">
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-gray-800">
@@ -202,7 +202,7 @@ function ReportIssueModal({ animal, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 px-4 pb-4">
+    <div className="fixed inset-0 z-60 flex items-end justify-center bg-black/40 px-4 pb-4">
       <div className="bg-white rounded-2xl w-full max-w-md shadow-xl space-y-4 p-5 max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-gray-800">Report Issue</p>
@@ -540,7 +540,7 @@ function VaccinationFormModal({ animal, vaccination, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-end justify-center bg-black/40 px-4 pb-4">
+    <div className="fixed inset-0 z-70 flex items-end justify-center bg-black/40 px-4 pb-4">
       <div className="bg-white rounded-2xl w-full max-w-md shadow-xl space-y-4 p-5 max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-gray-800">
@@ -652,7 +652,7 @@ function AnimalCard({ animal, concerns = [], onUpdateHealth, onReportIssue }) {
           className="w-full h-36 object-cover"
         />
       ) : (
-        <div className="w-full h-36 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center">
+        <div className="w-full h-36 bg-linear-to-br from-green-50 to-green-100 flex items-center justify-center">
           <span className="text-5xl opacity-30">🐄</span>
         </div>
       )}
@@ -986,7 +986,7 @@ export default function ScanAnimalModal({ onClose }) {
                 <p className="text-sm font-semibold text-gray-600">
                   Ready to scan
                 </p>
-                <p className="text-xs text-gray-400 max-w-[240px]">
+                <p className="text-xs text-gray-400 max-w-60">
                   Hold the RFID reader near the animal's tag or type the tag
                   number manually
                 </p>
