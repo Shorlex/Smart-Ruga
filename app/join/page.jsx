@@ -210,7 +210,7 @@ function JoinPageContent() {
           {/* Logo */}
           <div className=" mb-10">
             <Image
-              src={"/images/SmartRUGA-Logo.png"}
+              src={"/images/SmartRUGA-logo.png"}
               width={150}
               height={70}
               alt="main-logo"

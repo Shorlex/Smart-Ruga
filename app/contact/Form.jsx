@@ -54,7 +54,7 @@ const Form = () => {
         {/* Logo */}
         <div className="flex flex-col items-center gap-3">
           <Image
-            src={"/images/Smart-Ruga-Logo.png"}
+            src={"/images/SmartRUGA-Logo.png"}
             width={250}
             height={70}
             alt="main-logo"

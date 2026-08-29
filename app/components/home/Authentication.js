@@ -14,7 +14,7 @@ const Authentication = () => {
       <div className="w-full lg:px-12 xl:px-12 px-5">
         <div className=" mb-10">
           <Image
-            src={"/images/SmartRUGA-Logo.png"}
+            src={"/images/SmartRUGA-logo.png"}
             width={150}
             height={70}
             alt="main-logo"
